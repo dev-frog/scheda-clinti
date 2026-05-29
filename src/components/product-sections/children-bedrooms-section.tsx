@@ -1,0 +1,156 @@
+"use client";
+
+import { useState } from "react";
+import type { UseFormReturn } from "react-hook-form";
+import { Plus, Trash2 } from "lucide-react";
+
+import type { FormValues } from "../scheda-clienti-form";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+
+interface BedroomItem {
+  id: string;
+  name: string;
+  productCode: string;
+  productLink: string;
+}
+
+interface ChildrenBedroomsSectionProps {
+  form: UseFormReturn<FormValues>;
+}
+
+export default function ChildrenBedroomsSection({
+  form,
+}: ChildrenBedroomsSectionProps) {
+  const [items, setItems] = useState<BedroomItem[]>([
+    {
+      id: "bedroom-1",
+      name: "",
+      productCode: "",
+      productLink: "",
+    },
+  ]);
+
+  const addItem = () => {
+    setItems((prev) => [
+      ...prev,
+      {
+        id: `bedroom-${prev.length + 1}`,
+        name: "",
+        productCode: "",
+        productLink: "",
+      },
+    ]);
+  };
+
+  const removeItem = (id: string) => {
+    setItems((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const updateItem = (id: string, field: keyof BedroomItem, value: string) => {
+    setItems((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, [field]: value } : item))
+    );
+
+    // Update form values
+    const products = form.getValues("products") || [];
+    const updatedProducts = [...products];
+
+    items.forEach((item) => {
+      if (item.id === id) {
+        const existingProductIndex = products.findIndex(
+          (p) => p.type === "Children's Bedroom" && p.details.id === id
+        );
+
+        const updatedItem = {
+          ...item,
+          [field]: value,
+        };
+
+        if (existingProductIndex >= 0) {
+          updatedProducts[existingProductIndex] = {
+            type: "Children's Bedroom",
+            details: updatedItem,
+          };
+        } else {
+          updatedProducts.push({
+            type: "Children's Bedroom",
+            details: updatedItem,
+          });
+        }
+      }
+    });
+
+    form.setValue("products", updatedProducts);
+  };
+
+  return (
+    <div className="space-y-4">
+      {items.map((item) => (
+        <Card key={item.id} className="border border-muted">
+          <CardContent className="pt-6">
+            <div className="grid gap-4">
+              <div className="space-y-2">
+                <Label htmlFor={`name-${item.id}`}>Name</Label>
+                <Input
+                  id={`name-${item.id}`}
+                  value={item.name}
+                  onChange={(e) => updateItem(item.id, "name", e.target.value)}
+                  placeholder="Enter bedroom name"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor={`product-code-${item.id}`}>Product Code</Label>
+                <Input
+                  id={`product-code-${item.id}`}
+                  value={item.productCode}
+                  onChange={(e) =>
+                    updateItem(item.id, "productCode", e.target.value)
+                  }
+                  placeholder="Enter product code"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor={`product-link-${item.id}`}>Product Link</Label>
+                <Input
+                  id={`product-link-${item.id}`}
+                  value={item.productLink}
+                  onChange={(e) =>
+                    updateItem(item.id, "productLink", e.target.value)
+                  }
+                  placeholder="Enter product link"
+                />
+              </div>
+            </div>
+
+            {items.length > 1 && (
+              <Button
+                variant="outline"
+                size="sm"
+                className="mt-4"
+                onClick={() => removeItem(item.id)}
+              >
+                <Trash2 className="mr-2 h-4 w-4" />
+                Remove
+              </Button>
+            )}
+          </CardContent>
+        </Card>
+      ))}
+
+      <Button
+        type="button"
+        variant="outline"
+        onClick={addItem}
+        className="w-full"
+      >
+        <Plus className="mr-2 h-4 w-4" />
+        Add Another Bedroom
+      </Button>
+    </div>
+  );
+}
