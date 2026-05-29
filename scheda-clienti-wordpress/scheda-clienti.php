@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: Scheda Clienti - Furniture Order Form
- * Plugin URI: https://github.com/your-repo/scheda-clienti
+ * Plugin URI: https://github.com/dev-frog/scheda-clinti
  * Description: A modern furniture ordering form plugin for WordPress. Display the form with shortcode [scheda_clienti]
  * Version: 1.0.0
- * Author: Your Name
- * Author URI: https://yourwebsite.com
+ * Author: dev-frog
+ * Author URI: https://dev-frog.github.io/blog
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: scheda-clienti
@@ -104,20 +104,11 @@ class Scheda_Clienti_Plugin {
                 SC_VERSION
             );
 
-            // Enqueue WordPress bridge script (must load before React)
-            wp_enqueue_script(
-                'scheda-clienti-bridge',
-                SC_PLUGIN_URL . 'assets/wp-bridge.js',
-                [],
-                SC_VERSION,
-                true
-            );
-
-            // Enqueue React app (using hashed filename)
+            // Enqueue React app bundle (includes React bundled inside)
             wp_enqueue_script(
                 'scheda-clienti-js',
-                SC_PLUGIN_URL . 'assets/index-DDqDgeVF.js',
-                ['scheda-clienti-bridge'],
+                SC_PLUGIN_URL . 'assets/index-CA0_JFqZ.js',
+                [],
                 SC_VERSION,
                 true
             );

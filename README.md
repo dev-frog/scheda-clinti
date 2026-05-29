@@ -44,6 +44,7 @@
 ## Features
 
 ### Core Functionality
+
 - ✅ **Two-step form workflow** with visual progress indicator
 - ✅ **Customer information collection** (name, email, phone, city, address, notes)
 - ✅ **9 product categories** with accordion-style navigation
@@ -142,6 +143,7 @@ scheda-clienti-wordpress/
 ## Tech Stack
 
 ### React Application
+
 - **React 18** - UI library
 - **TypeScript** - Type safety
 - **Vite** - Build tool
@@ -152,6 +154,7 @@ scheda-clienti-wordpress/
 - **Lucide React** - Icons
 
 ### WordPress Plugin
+
 - **WordPress 5.0+** - CMS platform
 - **PHP 7.4+** - Server language
 - **jQuery** - JavaScript library
@@ -162,6 +165,7 @@ scheda-clienti-wordpress/
 ### React Application
 
 #### Prerequisites
+
 - Node.js 18+
 - npm or yarn
 
@@ -170,33 +174,38 @@ scheda-clienti-wordpress/
 1. **Clone or download** the repository
 
 2. **Install dependencies**
-   ```bash
+
+```bash
    npm install
-   ```
+```
 
 3. **Start development server**
-   ```bash
+
+```bash
    npm run dev
-   ```
+```
 
 4. **Build for production**
-   ```bash
-   npm run build
-   ```
+
+```bash
+npm run build
+```
 
 5. **Preview production build**
-   ```bash
-   npm run preview
-   ```
+
+```bash
+npm run preview
+```
 
 ### WordPress Plugin
 
 #### Option 1: Upload ZIP (Recommended)
 
 1. **Download plugin ZIP**
-   ```bash
-   zip -r scheda-clienti-plugin.zip scheda-clienti-wordpress/
-   ```
+
+```bash
+zip -r scheda-clienti-plugin.zip scheda-clienti-wordpress/
+```
 
 2. **Upload to WordPress**
    - Go to: `Plugins → Add New → Upload Plugin`
@@ -204,9 +213,10 @@ scheda-clienti-wordpress/
    - Activate the plugin
 
 3. **Add shortcode** to any page:
-   ```
-   [scheda_clienti]
-   ```
+
+```bash
+[scheda_clienti]
+```
 
 #### Option 2: Manual Upload
 
@@ -271,11 +281,13 @@ After starting the development server:
 #### Adding the Form
 
 **On a page:**
+
 ```
 [scheda_clienti]
 ```
 
 **With custom options:**
+
 ```
 [scheda_clienti
     title="Order Your Furniture"
@@ -320,6 +332,7 @@ The WordPress plugin provides complete integration with WordPress admin function
 ```
 
 **Attributes:**
+
 - `title` - Form heading
 - `description` - Form subtitle
 - `class` - Additional CSS classes
@@ -335,12 +348,14 @@ After activation, find **Scheda Orders** in WordPress admin:
 ### Email Notifications
 
 **Admin Email Includes:**
+
 - Order number and date
 - Complete customer details
 - All order items
 - Direct link to order
 
 **Customer Email Includes:**
+
 - Order number
 - Order summary
 - Confirmation message
@@ -430,6 +445,7 @@ scheda-clienti-wordpress/
 #### Modifying WordPress Code
 
 Edit PHP files directly:
+
 - `scheda-clienti.php` - Main functionality
 - `includes/class-sc-ajax.php` - AJAX handlers
 - `includes/class-sc-data.php` - Admin interface
@@ -454,6 +470,7 @@ npm run lint
 #### WordPress Plugin
 
 1. **Enable debug mode**
+
    ```php
    define('WP_DEBUG', true);
    ```
@@ -482,6 +499,7 @@ npm run lint
 ### Component Reference
 
 See [COMPONENT_REFERENCE.md](COMPONENT_REFERENCE.md) for:
+
 - Detailed component documentation
 - Props and interfaces
 - State management patterns
@@ -491,6 +509,7 @@ See [COMPONENT_REFERENCE.md](COMPONENT_REFERENCE.md) for:
 ### WordPress Plugin Guide
 
 See [scheda-clienti-wordpress/README.md](scheda-clienti-wordpress/README.md) for:
+
 - Complete plugin documentation
 - Installation instructions
 - Usage examples
@@ -501,6 +520,7 @@ See [scheda-clienti-wordpress/README.md](scheda-clienti-wordpress/README.md) for
 ### Elementor Addon
 
 See [ELEMENTOR_ADDON_INSTRUCTIONS.md](ELEMENTOR_ADDON_INSTRUCTIONS.md) for:
+
 - Widget specifications
 - All form fields
 - Product categories
@@ -513,11 +533,11 @@ See [ELEMENTOR_ADDON_INSTRUCTIONS.md](ELEMENTOR_ADDON_INSTRUCTIONS.md) for:
 
 ```typescript
 {
-  name: string;           // min 2 chars, required
-  email: string;          // valid email, required
-  telephone: string;      // min 5 chars, required
-  city: string;           // min 2 chars, required
-  address: string;        // min 5 chars, required
+  name: string; // min 2 chars, required
+  email: string; // valid email, required
+  telephone: string; // min 5 chars, required
+  city: string; // min 2 chars, required
+  address: string; // min 5 chars, required
   additionalNotes: string; // optional
 }
 ```
@@ -527,9 +547,9 @@ See [ELEMENTOR_ADDON_INSTRUCTIONS.md](ELEMENTOR_ADDON_INSTRUCTIONS.md) for:
 ```typescript
 {
   products: Array<{
-    type: string;        // Product category
+    type: string; // Product category
     details: {
-      id: string;        // Unique item ID
+      id: string; // Unique item ID
       [key: string]: any; // Product-specific fields
     };
   }>;
