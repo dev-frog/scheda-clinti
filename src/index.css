@@ -3,7 +3,7 @@
 @tailwind utilities;
 /* Change Theme Color: https://ui.shadcn.com/themes */
 @layer base {
-  :root {
+  #scheda-clienti-root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
 
@@ -35,7 +35,7 @@
     --radius: 0.5rem;
   }
 
-  .dark {
+  .dark #scheda-clienti-root {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
 
@@ -67,10 +67,10 @@
 }
 
 @layer base {
-  * {
+  #scheda-clienti-root * {
     @apply border-border;
   }
-  body {
+  #scheda-clienti-root {
     @apply bg-background text-foreground;
   }
 }

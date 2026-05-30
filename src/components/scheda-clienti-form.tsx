@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import CustomerOnboarding from "./customer-onboarding";
 import ProductSelection from "./product-selection";
-import useToast from "react-hook-toast";
+import { useToast } from "@/hooks/use-toast";
 
 // Define the form schema
 const formSchema = z.object({
@@ -41,7 +41,7 @@ export type FormValues = z.infer<typeof formSchema>;
 
 export default function SchedaClientiForm() {
   const [step, setStep] = useState(1);
-  const toast = useToast();
+  const { toast, active, message } = useToast();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -64,17 +64,42 @@ export default function SchedaClientiForm() {
 
     // Handle final submission
     console.log("Form submitted:", data);
-    toast({
-      title: "Order Placed Successfully!",
-    });
-
-    // Reset form and go back to step 1
-    form.reset();
-    setStep(1);
+    
+    // Check for WordPress submission handler (from wp-bridge.js)
+    if ((window as any).submitToWordPress) {
+        (window as any).submitToWordPress(data)
+            .then(() => {
+                toast({
+                    title: "Order Placed Successfully!",
+                });
+                form.reset();
+                setStep(1);
+            })
+            .catch((error: any) => {
+                console.error("Submission error:", error);
+                toast({
+                    title: "Error: " + (error.message || "Unknown error"),
+                });
+            });
+    } else {
+        toast({
+            title: "Order Placed Successfully!",
+        });
+        // Reset form and go back to step 1
+        form.reset();
+        setStep(1);
+    }
   }
 
   return (
-    <div className="space-y-8 py-6">
+    <div className="space-y-8 py-6 relative">
+      {/* Custom Toast Notification */}
+      {active && (
+        <div className="fixed bottom-4 right-4 z-50 bg-teal-600 text-white px-6 py-3 rounded-lg shadow-xl animate-in slide-in-from-bottom-5 duration-300">
+          {message}
+        </div>
+      )}
+
       <div className="space-y-2">
         <h1 className="text-3xl font-bold tracking-tight">Scheda Clienti</h1>
         <p className="text-muted-foreground">

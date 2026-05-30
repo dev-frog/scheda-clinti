@@ -95,36 +95,68 @@ class Scheda_Clienti_Plugin {
         // Only load assets on pages containing our shortcode
         global $post;
         if (is_a($post, 'WP_Post') && has_shortcode($post->post_content, 'scheda_clienti')) {
+            
+            // Find the latest CSS and JS files dynamically (matches index.js or index-hash.js)
+            $css_file = $this->find_asset('assets/index*.css');
+            $js_file = $this->find_asset('assets/index*.js');
 
-            // Enqueue CSS (using hashed filename)
-            wp_enqueue_style(
-                'scheda-clienti-css',
-                SC_PLUGIN_URL . 'assets/index-CIiFNmIw.css',
-                [],
-                SC_VERSION
-            );
+            if ($css_file) {
+                wp_enqueue_style(
+                    'scheda-clienti-css',
+                    SC_PLUGIN_URL . $css_file,
+                    [],
+                    SC_VERSION
+                );
+            }
 
-            // Enqueue React app bundle (includes React bundled inside)
-            wp_enqueue_script(
-                'scheda-clienti-js',
-                SC_PLUGIN_URL . 'assets/index-CA0_JFqZ.js',
-                [],
-                SC_VERSION,
-                true
-            );
+            if ($js_file) {
+                // Enqueue bridge script first
+                wp_enqueue_script(
+                    'scheda-clienti-bridge',
+                    SC_PLUGIN_URL . 'assets/wp-bridge.js',
+                    [],
+                    SC_VERSION,
+                    true
+                );
 
-            // Localize script with AJAX URL and nonce
-            wp_localize_script('scheda-clienti-js', 'scPlugin', [
-                'ajaxUrl' => admin_url('admin-ajax.php'),
-                'nonce' => wp_create_nonce('sc_ajax_nonce'),
-                'adminEmail' => get_option('admin_email'),
-                'strings' => [
-                    'success' => __('Order placed successfully!', 'scheda-clienti'),
-                    'error' => __('Error submitting form. Please try again.', 'scheda-clienti'),
-                    'loading' => __('Submitting...', 'scheda-clienti')
-                ]
-            ]);
+                // Localize script with AJAX URL and nonce to the bridge script
+                wp_localize_script('scheda-clienti-bridge', 'scPlugin', [
+                    'ajaxUrl' => admin_url('admin-ajax.php'),
+                    'nonce' => wp_create_nonce('sc_ajax_nonce'),
+                    'adminEmail' => get_option('admin_email'),
+                    'strings' => [
+                        'success' => __('Order placed successfully!', 'scheda-clienti'),
+                        'error' => __('Error submitting form. Please try again.', 'scheda-clienti'),
+                        'loading' => __('Submitting...', 'scheda-clienti')
+                    ]
+                ]);
+
+                wp_enqueue_script(
+                    'scheda-clienti-js',
+                    SC_PLUGIN_URL . $js_file,
+                    ['scheda-clienti-bridge'], // Depend on bridge
+                    SC_VERSION,
+                    true // Load in footer
+                );
+            }
         }
+    }
+
+    /**
+     * Helper to find the latest asset matching a pattern
+     */
+    private function find_asset($pattern) {
+        $files = glob(SC_PLUGIN_DIR . $pattern);
+        if (!$files) {
+            return false;
+        }
+        
+        // Sort by modification time to get the latest
+        usort($files, function($a, $b) {
+            return filemtime($b) - filemtime($a);
+        });
+        
+        return str_replace(SC_PLUGIN_DIR, '', $files[0]);
     }
 
     /**
@@ -146,7 +178,14 @@ class Scheda_Clienti_Plugin {
              data-title="<?php echo esc_attr($atts['title']); ?>"
              data-description="<?php echo esc_attr($atts['description']); ?>">
             <!-- React app will mount here -->
-            <div class="sc-loading">
+            <div class="sc-loading" style="padding: 40px; text-align: center; color: #666; font-family: sans-serif;">
+                <div class="sc-spinner" style="margin-bottom: 10px;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="margin: 0 auto; animation: sc-spin 1s linear infinite;">
+                        <style>@keyframes sc-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }</style>
+                        <path d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z" opacity=".25"/>
+                        <path d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69,1.57,1.57,0,0,0,10.14,1.16Z"/>
+                    </svg>
+                </div>
                 <p><?php _e('Loading form...', 'scheda-clienti'); ?></p>
             </div>
         </div>

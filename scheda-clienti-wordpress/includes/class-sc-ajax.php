@@ -29,6 +29,7 @@ class SC_AJAX_Handler {
     public function handle_form_submission() {
         // Verify nonce
         if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'sc_ajax_nonce')) {
+            error_log('Scheda Clienti: Invalid nonce');
             wp_send_json_error([
                 'message' => __('Invalid security token.', 'scheda-clienti')
             ], 403);
@@ -36,6 +37,7 @@ class SC_AJAX_Handler {
 
         // Check if form data is present
         if (!isset($_POST['form_data'])) {
+            error_log('Scheda Clienti: No form data received');
             wp_send_json_error([
                 'message' => __('No form data received.', 'scheda-clienti')
             ], 400);
@@ -45,40 +47,69 @@ class SC_AJAX_Handler {
         $form_data = json_decode(stripslashes($_POST['form_data']), true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
+            error_log('Scheda Clienti: JSON decode error: ' . json_last_error_msg());
             wp_send_json_error([
                 'message' => __('Invalid form data format.', 'scheda-clienti')
             ], 400);
         }
 
+        // Normalize data structure (handle flat structure from React)
+        $normalized_data = $this->normalize_form_data($form_data);
+
         // Validate required fields
-        $validation_result = $this->validate_form_data($form_data);
+        $validation_result = $this->validate_form_data($normalized_data);
         if (is_wp_error($validation_result)) {
+            error_log('Scheda Clienti: Validation error: ' . $validation_result->get_error_message());
             wp_send_json_error([
                 'message' => $validation_result->get_error_message()
             ], 400);
         }
 
         // Sanitize data
-        $sanitized_data = $this->sanitize_form_data($form_data);
+        $sanitized_data = $this->sanitize_form_data($normalized_data);
 
-        // Save order
+        // Save order to database (backup)
         $order_id = $this->save_order($sanitized_data);
 
         if (is_wp_error($order_id)) {
-            wp_send_json_error([
-                'message' => $order_id->get_error_message()
-            ], 500);
+            error_log('Scheda Clienti: Save error: ' . $order_id->get_error_message());
+            // We still try to send email even if save fails
         }
 
-        // Send email notifications
-        $this->send_notifications($sanitized_data, $order_id);
+        // Send email notifications (Primary focus)
+        $this->send_notifications($sanitized_data, is_wp_error($order_id) ? 0 : $order_id);
 
         // Return success response
         wp_send_json_success([
             'message' => $this->get_success_message(),
-            'order_id' => $order_id,
-            'order_number' => $this->format_order_number($order_id)
+            'order_id' => is_wp_error($order_id) ? 0 : $order_id,
+            'order_number' => is_wp_error($order_id) ? 'N/A' : $this->format_order_number($order_id)
         ]);
+    }
+
+    /**
+     * Normalize form data to expected structure
+     */
+    private function normalize_form_data($data) {
+        // If data is already in customer_info format, return it
+        if (isset($data['customer_info']) && is_array($data['customer_info'])) {
+            return $data;
+        }
+
+        // Otherwise, move top-level customer fields into customer_info
+        $normalized = [
+            'customer_info' => [],
+            'products' => isset($data['products']) ? $data['products'] : []
+        ];
+
+        $customer_fields = ['name', 'email', 'telephone', 'city', 'address', 'additionalNotes'];
+        foreach ($customer_fields as $field) {
+            if (isset($data[$field])) {
+                $normalized['customer_info'][$field] = $data[$field];
+            }
+        }
+
+        return $normalized;
     }
 
     /**
@@ -86,6 +117,10 @@ class SC_AJAX_Handler {
      */
     private function validate_form_data($data) {
         // Check customer info
+        if (!isset($data['customer_info']) || !is_array($data['customer_info'])) {
+            return new WP_Error('missing_info', __('Customer information is missing.', 'scheda-clienti'));
+        }
+
         if (empty($data['customer_info']['name'])) {
             return new WP_Error('missing_name', __('Name is required.', 'scheda-clienti'));
         }
@@ -104,11 +139,6 @@ class SC_AJAX_Handler {
 
         if (empty($data['customer_info']['address'])) {
             return new WP_Error('missing_address', __('Address is required.', 'scheda-clienti'));
-        }
-
-        // Check products array
-        if (!isset($data['products']) || !is_array($data['products'])) {
-            return new WP_Error('invalid_products', __('Products data is invalid.', 'scheda-clienti'));
         }
 
         return true;
@@ -216,31 +246,43 @@ class SC_AJAX_Handler {
     private function send_notifications($data, $order_id) {
         // Check if notifications are enabled
         if (!get_option('sc_enable_notifications', '1')) {
+            error_log('Scheda Clienti: Notifications are disabled in settings');
             return;
         }
 
         $recipient = get_option('sc_email_recipient', get_option('admin_email'));
 
         if (empty($recipient)) {
+            error_log('Scheda Clienti: No recipient email configured');
             return;
         }
 
-        $subject = sprintf(__('New Order: %s', 'scheda-clienti'), $this->format_order_number($order_id));
+        $order_number = ($order_id > 0) ? $this->format_order_number($order_id) : 'N/A';
+        $subject = sprintf(__('New Order: %s', 'scheda-clienti'), $order_number);
         $message = $this->format_email_message($data, $order_id);
 
         $headers = [
             'Content-Type: text/html; charset=UTF-8',
-            'From: ' . get_bloginfo('name') . ' <' . get_option('admin_email') . '>'
+            'From: ' . get_bloginfo('name') . ' <' . get_option('admin_email') . '>',
+            'Reply-To: ' . $data['customer_info']['name'] . ' <' . $data['customer_info']['email'] . '>'
         ];
 
         // Send to admin
-        wp_mail($recipient, $subject, $message, $headers);
+        $admin_sent = wp_mail($recipient, $subject, $message, $headers);
+        if (!$admin_sent) {
+            error_log('Scheda Clienti: Failed to send admin notification to ' . $recipient);
+        } else {
+            error_log('Scheda Clienti: Admin notification sent successfully to ' . $recipient);
+        }
 
         // Send confirmation to customer
         if (!empty($data['customer_info']['email'])) {
             $customer_subject = __('Your Order Confirmation', 'scheda-clienti');
             $customer_message = $this->format_customer_confirmation($data, $order_id);
-            wp_mail($data['customer_info']['email'], $customer_subject, $customer_message, $headers);
+            $customer_sent = wp_mail($data['customer_info']['email'], $customer_subject, $customer_message, $headers);
+            if (!$customer_sent) {
+                error_log('Scheda Clienti: Failed to send customer confirmation to ' . $data['customer_info']['email']);
+            }
         }
     }
 

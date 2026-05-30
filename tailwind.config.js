@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
+  important: '#scheda-clienti-root',
   content: [
     './pages/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',

@@ -8,5 +8,18 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
+    dedupe: ['react', 'react-dom'],
   },
+  build: {
+    outDir: 'dist',
+    emptyOutDir: true,
+    rollupOptions: {
+      output: {
+        // Ensure that the output filenames are consistent
+        entryFileNames: `assets/[name].js`,
+        chunkFileNames: `assets/[name].js`,
+        assetFileNames: `assets/[name].[ext]`
+      }
+    }
+  }
 })
