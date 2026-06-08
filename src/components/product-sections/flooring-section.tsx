@@ -92,7 +92,7 @@ export default function FlooringSection({ form }: FlooringSectionProps) {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-medium">
-          Flooring ({flooringItems.length})
+          Pavimentazione ({flooringItems.length})
         </h3>
         <Button
           type="button"
@@ -102,7 +102,7 @@ export default function FlooringSection({ form }: FlooringSectionProps) {
           className="h-8"
         >
           <Plus className="mr-2 h-4 w-4" />
-          Add Flooring
+          Aggiungi Pavimentazione
         </Button>
       </div>
 
@@ -113,13 +113,13 @@ export default function FlooringSection({ form }: FlooringSectionProps) {
             className="border border-muted relative overflow-hidden"
           >
             <div className="absolute top-0 right-0 bg-muted px-3 py-1 text-xs font-medium rounded-bl-md">
-              Item {index + 1}
+              Articolo {index + 1}
             </div>
             <CardContent className="pt-8">
               <div className="grid gap-6 sm:grid-cols-2">
                 <div className="space-y-2">
                   <Label htmlFor={`flooring-type-${item.id}`}>
-                    Flooring Type
+                    Tipo di Pavimentazione
                   </Label>
                   <Select
                     value={item.type}
@@ -128,22 +128,22 @@ export default function FlooringSection({ form }: FlooringSectionProps) {
                     }
                   >
                     <SelectTrigger id={`flooring-type-${item.id}`}>
-                      <SelectValue placeholder="Select type" />
+                      <SelectValue placeholder="Seleziona tipo" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="Solid">Solid</SelectItem>
-                      <SelectItem value="Pre-finished">Pre-finished</SelectItem>
-                      <SelectItem value="Laminate">Laminate</SelectItem>
+                      <SelectItem value="Solid">Massiccio</SelectItem>
+                      <SelectItem value="Pre-finished">Prefinito</SelectItem>
+                      <SelectItem value="Laminate">Laminato</SelectItem>
                       <SelectItem value="SPC">SPC</SelectItem>
                       <SelectItem value="Outdoor Flooring">
-                        Outdoor Flooring
+                        Pavimento da Esterno
                       </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Installation Type</Label>
+                  <Label>Tipo di Installazione</Label>
                   <RadioGroup
                     value={item.installationType}
                     onValueChange={(value) =>
@@ -156,11 +156,11 @@ export default function FlooringSection({ form }: FlooringSectionProps) {
                         value="Floating"
                         id={`floating-${item.id}`}
                       />
-                      <Label htmlFor={`floating-${item.id}`}>Floating</Label>
+                      <Label htmlFor={`floating-${item.id}`}>Flottante</Label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="Glue" id={`glue-${item.id}`} />
-                      <Label htmlFor={`glue-${item.id}`}>Glue</Label>
+                      <Label htmlFor={`glue-${item.id}`}>Colla</Label>
                     </div>
                   </RadioGroup>
                 </div>
@@ -174,7 +174,7 @@ export default function FlooringSection({ form }: FlooringSectionProps) {
                   onClick={() => removeFlooringItem(item.id)}
                 >
                   <Trash2 className="mr-2 h-4 w-4" />
-                  Remove
+                  Rimuovi
                 </Button>
               )}
             </CardContent>
@@ -188,7 +188,7 @@ export default function FlooringSection({ form }: FlooringSectionProps) {
           className="w-full bg-muted/50 hover:bg-muted"
         >
           <Plus className="mr-2 h-4 w-4" />
-          Add Flooring
+          Aggiungi Pavimentazione
         </Button>
       </div>
     </div>

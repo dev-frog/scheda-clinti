@@ -40,7 +40,7 @@ export default function ProductSelection({ form }: ProductSelectionProps) {
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
       <p className="text-muted-foreground">
-        Select the products you&apos;d like to order. Add as many as you need!
+        Seleziona i prodotti che desideri ordinare. Aggiungine quanti ne vuoi!
       </p>
 
       <Accordion type="multiple" value={expandedSections} className="w-full">
@@ -53,7 +53,7 @@ export default function ProductSelection({ form }: ProductSelectionProps) {
             className="px-4 py-3 hover:no-underline bg-muted/30 hover:bg-muted/50"
           >
             <div className="flex items-center text-left">
-              <span className="text-lg font-medium">Package (Flooring)</span>
+              <span className="text-lg font-medium">Pacchetto (Pavimentazione)</span>
             </div>
             {expandedSections.includes("flooring") ? (
               <Minus className="h-5 w-5 text-muted-foreground" />
@@ -75,7 +75,7 @@ export default function ProductSelection({ form }: ProductSelectionProps) {
             className="px-4 py-3 hover:no-underline bg-muted/30 hover:bg-muted/50"
           >
             <div className="flex items-center text-left">
-              <span className="text-lg font-medium">Interior Doors</span>
+              <span className="text-lg font-medium">Porte Interne</span>
             </div>
             {expandedSections.includes("interiorDoors") ? (
               <Minus className="h-5 w-5 text-muted-foreground" />
@@ -97,7 +97,7 @@ export default function ProductSelection({ form }: ProductSelectionProps) {
             className="px-4 py-3 hover:no-underline bg-muted/30 hover:bg-muted/50"
           >
             <div className="flex items-center text-left">
-              <span className="text-lg font-medium">Armored Door</span>
+              <span className="text-lg font-medium">Porta Blindata</span>
             </div>
             {expandedSections.includes("armoredDoor") ? (
               <Minus className="h-5 w-5 text-muted-foreground" />
@@ -119,7 +119,7 @@ export default function ProductSelection({ form }: ProductSelectionProps) {
             className="px-4 py-3 hover:no-underline bg-muted/30 hover:bg-muted/50"
           >
             <div className="flex items-center text-left">
-              <span className="text-lg font-medium">Bathroom Furniture</span>
+              <span className="text-lg font-medium">Arredo Bagno</span>
             </div>
             {expandedSections.includes("bathroomFurniture") ? (
               <Minus className="h-5 w-5 text-muted-foreground" />
@@ -141,7 +141,7 @@ export default function ProductSelection({ form }: ProductSelectionProps) {
             className="px-4 py-3 hover:no-underline bg-muted/30 hover:bg-muted/50"
           >
             <div className="flex items-center text-left">
-              <span className="text-lg font-medium">Fixtures</span>
+              <span className="text-lg font-medium">Infissi</span>
             </div>
             {expandedSections.includes("fixtures") ? (
               <Minus className="h-5 w-5 text-muted-foreground" />
@@ -163,7 +163,7 @@ export default function ProductSelection({ form }: ProductSelectionProps) {
             className="px-4 py-3 hover:no-underline bg-muted/30 hover:bg-muted/50"
           >
             <div className="flex items-center text-left">
-              <span className="text-lg font-medium">Mattresses</span>
+              <span className="text-lg font-medium">Materassi</span>
             </div>
             {expandedSections.includes("mattresses") ? (
               <Minus className="h-5 w-5 text-muted-foreground" />
@@ -185,7 +185,7 @@ export default function ProductSelection({ form }: ProductSelectionProps) {
             className="px-4 py-3 hover:no-underline bg-muted/30 hover:bg-muted/50"
           >
             <div className="flex items-center text-left">
-              <span className="text-lg font-medium">Ceramics</span>
+              <span className="text-lg font-medium">Ceramiche</span>
             </div>
             {expandedSections.includes("ceramics") ? (
               <Minus className="h-5 w-5 text-muted-foreground" />
@@ -207,7 +207,7 @@ export default function ProductSelection({ form }: ProductSelectionProps) {
             className="px-4 py-3 hover:no-underline bg-muted/30 hover:bg-muted/50"
           >
             <div className="flex items-center text-left">
-              <span className="text-lg font-medium">Sofas</span>
+              <span className="text-lg font-medium">Divani</span>
             </div>
             {expandedSections.includes("sofas") ? (
               <Minus className="h-5 w-5 text-muted-foreground" />
@@ -230,7 +230,7 @@ export default function ProductSelection({ form }: ProductSelectionProps) {
           >
             <div className="flex items-center text-left">
               <span className="text-lg font-medium">
-                Children&apos;s Bedrooms
+                Camerette
               </span>
             </div>
             {expandedSections.includes("childrenBedrooms") ? (
@@ -247,7 +247,7 @@ export default function ProductSelection({ form }: ProductSelectionProps) {
 
       <Card className="mt-8">
         <CardContent className="pt-6">
-          <h3 className="text-lg font-medium mb-4">Order Summary</h3>
+          <h3 className="text-lg font-medium mb-4">Riepilogo Ordine</h3>
           <OrderSummary form={form} />
         </CardContent>
       </Card>
@@ -261,7 +261,7 @@ function OrderSummary({ form }: { form: UseFormReturn<FormValues> }) {
   if (products.length === 0) {
     return (
       <p className="text-muted-foreground">
-        No products selected yet. Expand the categories above to add products.
+        Nessun prodotto selezionato. Espandi le categorie sopra per aggiungere prodotti.
       </p>
     );
   }
@@ -287,7 +287,7 @@ function OrderSummary({ form }: { form: UseFormReturn<FormValues> }) {
             {items.map((product, index) => (
               <div key={index} className="bg-muted/50 p-3 rounded-md">
                 <div className="flex justify-between items-start">
-                  <span className="font-medium text-sm">Item {index + 1}</span>
+                  <span className="font-medium text-sm">Articolo {index + 1}</span>
                   <span className="text-xs bg-muted px-2 py-1 rounded-full">
                     {product.details.id}
                   </span>

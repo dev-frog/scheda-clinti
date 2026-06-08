@@ -90,7 +90,7 @@ export default function CeramicsSection({ form }: CeramicsSectionProps) {
             <div className="grid gap-4">
               <div className="space-y-2">
                 <Label htmlFor={`square-meters-${item.id}`}>
-                  Desired Square Meters
+                  Metri Quadri Desiderati
                 </Label>
                 <Input
                   id={`square-meters-${item.id}`}
@@ -100,17 +100,17 @@ export default function CeramicsSection({ form }: CeramicsSectionProps) {
                   onChange={(e) =>
                     updateItem(item.id, "squareMeters", e.target.value)
                   }
-                  placeholder="Enter desired square meters"
+                  placeholder="Inserisci i metri quadri desiderati"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor={`note-${item.id}`}>Note (Name/Code/Link)</Label>
+                <Label htmlFor={`note-${item.id}`}>Note (Nome/Codice/Link)</Label>
                 <Textarea
                   id={`note-${item.id}`}
                   value={item.note}
                   onChange={(e) => updateItem(item.id, "note", e.target.value)}
-                  placeholder="Enter product name, code, or link"
+                  placeholder="Inserisci il nome, il codice o il link del prodotto"
                 />
               </div>
             </div>
@@ -123,7 +123,7 @@ export default function CeramicsSection({ form }: CeramicsSectionProps) {
                 onClick={() => removeItem(item.id)}
               >
                 <Trash2 className="mr-2 h-4 w-4" />
-                Remove
+                Rimuovi
               </Button>
             )}
           </CardContent>
@@ -137,7 +137,7 @@ export default function CeramicsSection({ form }: CeramicsSectionProps) {
         className="w-full"
       >
         <Plus className="mr-2 h-4 w-4" />
-        Add Another Ceramic
+        Aggiungi un'altra Ceramica
       </Button>
     </div>
   );

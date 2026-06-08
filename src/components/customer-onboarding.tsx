@@ -23,10 +23,10 @@ export default function CustomerOnboarding({ form }: CustomerOnboardingProps) {
     <div className="space-y-6 animate-in fade-in duration-500">
       <div className="space-y-2">
         <h2 className="text-2xl font-bold">
-          Let&apos;s Get Started - Tell Us About You
+          Cominciamo - Raccontaci di Te
         </h2>
         <p className="text-muted-foreground">
-          Please provide your contact information so we can process your order.
+          Per favore fornisci i tuoi dati di contatto in modo da poter elaborare il tuo ordine.
         </p>
       </div>
 
@@ -36,9 +36,9 @@ export default function CustomerOnboarding({ form }: CustomerOnboardingProps) {
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Name</FormLabel>
+              <FormLabel>Nome</FormLabel>
               <FormControl>
-                <Input placeholder="Enter your full name" {...field} />
+                <Input placeholder="Inserisci il tuo nome completo" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -54,7 +54,7 @@ export default function CustomerOnboarding({ form }: CustomerOnboardingProps) {
               <FormControl>
                 <Input
                   type="email"
-                  placeholder="e.g., example@email.com"
+                  placeholder="es., esempio@email.com"
                   {...field}
                 />
               </FormControl>
@@ -68,9 +68,9 @@ export default function CustomerOnboarding({ form }: CustomerOnboardingProps) {
           name="telephone"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Telephone</FormLabel>
+              <FormLabel>Telefono</FormLabel>
               <FormControl>
-                <Input placeholder="e.g., +39 123 456 7890" {...field} />
+                <Input placeholder="es., +39 123 456 7890" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -82,9 +82,9 @@ export default function CustomerOnboarding({ form }: CustomerOnboardingProps) {
           name="city"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>City</FormLabel>
+              <FormLabel>Città</FormLabel>
               <FormControl>
-                <Input placeholder="e.g., Milan" {...field} />
+                <Input placeholder="es., Milano" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -97,9 +97,9 @@ export default function CustomerOnboarding({ form }: CustomerOnboardingProps) {
         name="address"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Indirizzo Completo (Full Address)</FormLabel>
+            <FormLabel>Indirizzo Completo</FormLabel>
             <FormControl>
-              <Textarea placeholder="Enter your complete address" {...field} />
+              <Textarea placeholder="Inserisci il tuo indirizzo completo" {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -111,16 +111,15 @@ export default function CustomerOnboarding({ form }: CustomerOnboardingProps) {
         name="additionalNotes"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Additional Notes (Optional)</FormLabel>
+            <FormLabel>Note Aggiuntive (Opzionale)</FormLabel>
             <FormControl>
               <Textarea
-                placeholder="Anything else we should know?"
+                placeholder="C'è qualcos'altro che dovremmo sapere?"
                 {...field}
               />
             </FormControl>
             <FormDescription>
-              Any special requirements or information that might help us serve
-              you better.
+              Eventuali requisiti speciali o informazioni che potrebbero aiutarci a servirti meglio.
             </FormDescription>
             <FormMessage />
           </FormItem>

@@ -98,7 +98,7 @@ export default function BathroomFurnitureSection({
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-medium">
-          Bathroom Furniture ({items.length})
+          Arredo Bagno ({items.length})
         </h3>
         <Button
           type="button"
@@ -108,7 +108,7 @@ export default function BathroomFurnitureSection({
           className="h-8"
         >
           <Plus className="mr-2 h-4 w-4" />
-          Add Item
+          Aggiungi Articolo
         </Button>
       </div>
 
@@ -119,25 +119,25 @@ export default function BathroomFurnitureSection({
             className="border border-muted relative overflow-hidden"
           >
             <div className="absolute top-0 right-0 bg-muted px-3 py-1 text-xs font-medium rounded-bl-md">
-              Item {index + 1}
+              Articolo {index + 1}
             </div>
             <CardContent className="pt-8">
               <div className="grid gap-6">
                 <div className="space-y-2">
-                  <Label htmlFor={`name-${item.id}`}>Name</Label>
+                  <Label htmlFor={`name-${item.id}`}>Nome</Label>
                   <Input
                     id={`name-${item.id}`}
                     value={item.name}
                     onChange={(e) =>
                       updateItem(item.id, "name", e.target.value)
                     }
-                    placeholder="Enter product name"
+                    placeholder="Inserisci il nome del prodotto"
                   />
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor={`product-code-${item.id}`}>
-                    Product Code
+                    Codice Prodotto
                   </Label>
                   <Input
                     id={`product-code-${item.id}`}
@@ -145,13 +145,13 @@ export default function BathroomFurnitureSection({
                     onChange={(e) =>
                       updateItem(item.id, "productCode", e.target.value)
                     }
-                    placeholder="Enter product code"
+                    placeholder="Inserisci il codice del prodotto"
                   />
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor={`product-link-${item.id}`}>
-                    Product Link
+                    Link Prodotto
                   </Label>
                   <Input
                     id={`product-link-${item.id}`}
@@ -159,12 +159,12 @@ export default function BathroomFurnitureSection({
                     onChange={(e) =>
                       updateItem(item.id, "productLink", e.target.value)
                     }
-                    placeholder="Enter product link"
+                    placeholder="Inserisci il link del prodotto"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Transport</Label>
+                  <Label>Trasporto</Label>
                   <RadioGroup
                     value={item.transport}
                     onValueChange={(value) =>
@@ -177,7 +177,7 @@ export default function BathroomFurnitureSection({
                         value="Yes"
                         id={`transport-yes-${item.id}`}
                       />
-                      <Label htmlFor={`transport-yes-${item.id}`}>Yes</Label>
+                      <Label htmlFor={`transport-yes-${item.id}`}>Sì</Label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem
@@ -198,7 +198,7 @@ export default function BathroomFurnitureSection({
                   onClick={() => removeItem(item.id)}
                 >
                   <Trash2 className="mr-2 h-4 w-4" />
-                  Remove
+                  Rimuovi
                 </Button>
               )}
             </CardContent>
@@ -212,7 +212,7 @@ export default function BathroomFurnitureSection({
           className="w-full bg-muted/50 hover:bg-muted"
         >
           <Plus className="mr-2 h-4 w-4" />
-          Add Another Item
+          Aggiungi un altro Articolo
         </Button>
       </div>
     </div>

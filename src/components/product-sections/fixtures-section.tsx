@@ -132,7 +132,7 @@ export default function FixturesSection({ form }: FixturesSectionProps) {
           <CardContent className="pt-6">
             <div className="grid gap-4">
               <div className="space-y-2">
-                <Label htmlFor={`material-${item.id}`}>Material</Label>
+                <Label htmlFor={`material-${item.id}`}>Materiale</Label>
                 <Select
                   value={item.material}
                   onValueChange={(value) =>
@@ -140,12 +140,12 @@ export default function FixturesSection({ form }: FixturesSectionProps) {
                   }
                 >
                   <SelectTrigger id={`material-${item.id}`}>
-                    <SelectValue placeholder="Select material" />
+                    <SelectValue placeholder="Seleziona materiale" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Wood">Wood</SelectItem>
+                    <SelectItem value="Wood">Legno</SelectItem>
                     <SelectItem value="PVC">PVC</SelectItem>
-                    <SelectItem value="Aluminum">Aluminum</SelectItem>
+                    <SelectItem value="Aluminum">Alluminio</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -153,7 +153,7 @@ export default function FixturesSection({ form }: FixturesSectionProps) {
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
                   <Label htmlFor={`number-of-windows-${item.id}`}>
-                    No. of Windows
+                    N. di Finestre
                   </Label>
                   <Input
                     id={`number-of-windows-${item.id}`}
@@ -168,7 +168,7 @@ export default function FixturesSection({ form }: FixturesSectionProps) {
 
                 <div className="space-y-2">
                   <Label htmlFor={`number-of-doors-${item.id}`}>
-                    No. of Doors
+                    N. di Porte
                   </Label>
                   <Input
                     id={`number-of-doors-${item.id}`}
@@ -185,7 +185,7 @@ export default function FixturesSection({ form }: FixturesSectionProps) {
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
                   <Label htmlFor={`interior-color-${item.id}`}>
-                    Interior Color
+                    Colore Interno
                   </Label>
                   <Input
                     id={`interior-color-${item.id}`}
@@ -193,13 +193,13 @@ export default function FixturesSection({ form }: FixturesSectionProps) {
                     onChange={(e) =>
                       updateItem(item.id, "interiorColor", e.target.value)
                     }
-                    placeholder="Enter interior color"
+                    placeholder="Inserisci il colore interno"
                   />
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor={`exterior-color-${item.id}`}>
-                    Exterior Color
+                    Colore Esterno
                   </Label>
                   <Input
                     id={`exterior-color-${item.id}`}
@@ -207,23 +207,23 @@ export default function FixturesSection({ form }: FixturesSectionProps) {
                     onChange={(e) =>
                       updateItem(item.id, "exteriorColor", e.target.value)
                     }
-                    placeholder="Enter exterior color"
+                    placeholder="Inserisci il colore esterno"
                   />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor={`notes-${item.id}`}>Notes (Measurements)</Label>
+                <Label htmlFor={`notes-${item.id}`}>Note (Misure)</Label>
                 <Textarea
                   id={`notes-${item.id}`}
                   value={item.notes}
                   onChange={(e) => updateItem(item.id, "notes", e.target.value)}
-                  placeholder="Enter measurements and other notes"
+                  placeholder="Inserisci le misure e altre note"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label>Extras</Label>
+                <Label>Extra</Label>
                 <div className="grid grid-cols-2 gap-2">
                   <div className="flex items-center space-x-2">
                     <Checkbox
@@ -231,7 +231,7 @@ export default function FixturesSection({ form }: FixturesSectionProps) {
                       checked={item.extras.includes("Shutters")}
                       onCheckedChange={() => toggleExtra(item.id, "Shutters")}
                     />
-                    <Label htmlFor={`shutters-${item.id}`}>Shutters</Label>
+                    <Label htmlFor={`shutters-${item.id}`}>Persiane</Label>
                   </div>
                   <div className="flex items-center space-x-2">
                     <Checkbox
@@ -239,7 +239,7 @@ export default function FixturesSection({ form }: FixturesSectionProps) {
                       checked={item.extras.includes("Blinds")}
                       onCheckedChange={() => toggleExtra(item.id, "Blinds")}
                     />
-                    <Label htmlFor={`blinds-${item.id}`}>Blinds</Label>
+                    <Label htmlFor={`blinds-${item.id}`}>Tapparelle</Label>
                   </div>
                   <div className="flex items-center space-x-2">
                     <Checkbox
@@ -250,14 +250,14 @@ export default function FixturesSection({ form }: FixturesSectionProps) {
                       }
                     />
                     <Label htmlFor={`mosquito-nets-${item.id}`}>
-                      Mosquito Nets
+                      Zanzariere
                     </Label>
                   </div>
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label>Pose</Label>
+                <Label>Posa</Label>
                 <RadioGroup
                   value={item.pose}
                   onValueChange={(value) => updateItem(item.id, "pose", value)}
@@ -265,7 +265,7 @@ export default function FixturesSection({ form }: FixturesSectionProps) {
                 >
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="Yes" id={`pose-yes-${item.id}`} />
-                    <Label htmlFor={`pose-yes-${item.id}`}>Yes</Label>
+                    <Label htmlFor={`pose-yes-${item.id}`}>Sì</Label>
                   </div>
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="No" id={`pose-no-${item.id}`} />
@@ -283,7 +283,7 @@ export default function FixturesSection({ form }: FixturesSectionProps) {
                 onClick={() => removeItem(item.id)}
               >
                 <Trash2 className="mr-2 h-4 w-4" />
-                Remove
+                Rimuovi
               </Button>
             )}
           </CardContent>
@@ -297,7 +297,7 @@ export default function FixturesSection({ form }: FixturesSectionProps) {
         className="w-full"
       >
         <Plus className="mr-2 h-4 w-4" />
-        Add Another Fixture
+        Aggiungi un altro Infisso
       </Button>
     </div>
   );

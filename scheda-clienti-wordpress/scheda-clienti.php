@@ -125,9 +125,9 @@ class Scheda_Clienti_Plugin {
                     'nonce' => wp_create_nonce('sc_ajax_nonce'),
                     'adminEmail' => get_option('admin_email'),
                     'strings' => [
-                        'success' => __('Order placed successfully!', 'scheda-clienti'),
-                        'error' => __('Error submitting form. Please try again.', 'scheda-clienti'),
-                        'loading' => __('Submitting...', 'scheda-clienti')
+                        'success' => __('Ordine inviato con successo!', 'scheda-clienti'),
+                        'error' => __('Errore durante l\'invio del modulo. Riprova.', 'scheda-clienti'),
+                        'loading' => __('Invio in corso...', 'scheda-clienti')
                     ]
                 ]);
 
@@ -168,7 +168,7 @@ class Scheda_Clienti_Plugin {
     public function render_shortcode($atts) {
         $atts = shortcode_atts([
             'title' => __('Scheda Clienti', 'scheda-clienti'),
-            'description' => __('Complete the form below to place your furniture order.', 'scheda-clienti'),
+            'description' => __('Completa il modulo sottostante per effettuare il tuo ordine di mobili.', 'scheda-clienti'),
             'class' => ''
         ], $atts, 'scheda_clienti');
 
@@ -186,7 +186,7 @@ class Scheda_Clienti_Plugin {
                         <path d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69,1.57,1.57,0,0,0,10.14,1.16Z"/>
                     </svg>
                 </div>
-                <p><?php _e('Loading form...', 'scheda-clienti'); ?></p>
+                <p><?php _e('Caricamento modulo...', 'scheda-clienti'); ?></p>
             </div>
         </div>
         <?php
@@ -229,7 +229,7 @@ class Scheda_Clienti_Plugin {
     private function set_default_options() {
         $defaults = [
             'sc_email_recipient' => get_option('admin_email'),
-            'sc_success_message' => __('Thank you! Your order has been placed successfully. We will contact you shortly.', 'scheda-clienti'),
+            'sc_success_message' => __('Grazie! Il tuo ordine è stato inviato con successo. Ti contatteremo al più presto.', 'scheda-clienti'),
             'sc_enable_notifications' => '1'
         ];
 
@@ -265,24 +265,24 @@ register_activation_hook(__FILE__, function() {
     // Register post type during activation
     if (!post_type_exists('scheda_order')) {
         $labels = [
-            'name' => __('Orders', 'scheda-clienti'),
-            'singular_name' => __('Order', 'scheda-clienti'),
-            'menu_name' => __('Orders', 'scheda-clienti'),
-            'add_new' => __('Add New', 'scheda-clienti'),
-            'add_new_item' => __('Add New Order', 'scheda-clienti'),
-            'edit' => __('Edit', 'scheda-clienti'),
-            'edit_item' => __('Edit Order', 'scheda-clienti'),
-            'new_item' => __('New Order', 'scheda-clienti'),
-            'view' => __('View Order', 'scheda-clienti'),
-            'view_item' => __('View Order', 'scheda-clienti'),
-            'search_items' => __('Search Orders', 'scheda-clienti'),
-            'not_found' => __('No orders found', 'scheda-clienti'),
-            'not_found_in_trash' => __('No orders found in trash', 'scheda-clienti'),
+            'name' => __('Ordini', 'scheda-clienti'),
+            'singular_name' => __('Ordine', 'scheda-clienti'),
+            'menu_name' => __('Ordini', 'scheda-clienti'),
+            'add_new' => __('Aggiungi Nuovo', 'scheda-clienti'),
+            'add_new_item' => __('Aggiungi Nuovo Ordine', 'scheda-clienti'),
+            'edit' => __('Modifica', 'scheda-clienti'),
+            'edit_item' => __('Modifica Ordine', 'scheda-clienti'),
+            'new_item' => __('Nuovo Ordine', 'scheda-clienti'),
+            'view' => __('Visualizza Ordine', 'scheda-clienti'),
+            'view_item' => __('Visualizza Ordine', 'scheda-clienti'),
+            'search_items' => __('Cerca Ordini', 'scheda-clienti'),
+            'not_found' => __('Nessun ordine trovato', 'scheda-clienti'),
+            'not_found_in_trash' => __('Nessun ordine trovato nel cestino', 'scheda-clienti'),
         ];
 
         $args = [
             'labels' => $labels,
-            'description' => __('Furniture orders', 'scheda-clienti'),
+            'description' => __('Ordini mobili', 'scheda-clienti'),
             'public' => false,
             'show_ui' => true,
             'show_in_menu' => true,

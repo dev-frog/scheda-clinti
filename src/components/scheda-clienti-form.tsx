@@ -15,15 +15,15 @@ import { useToast } from "@/hooks/use-toast";
 // Define the form schema
 const formSchema = z.object({
   // Customer information
-  name: z.string().min(2, { message: "Name must be at least 2 characters" }),
-  email: z.string().email({ message: "Please enter a valid email address" }),
+  name: z.string().min(2, { message: "Il nome deve essere di almeno 2 caratteri" }),
+  email: z.string().email({ message: "Inserisci un indirizzo email valido" }),
   telephone: z
     .string()
-    .min(5, { message: "Please enter a valid phone number" }),
-  city: z.string().min(2, { message: "City must be at least 2 characters" }),
+    .min(5, { message: "Inserisci un numero di telefono valido" }),
+  city: z.string().min(2, { message: "La città deve essere di almeno 2 caratteri" }),
   address: z
     .string()
-    .min(5, { message: "Address must be at least 5 characters" }),
+    .min(5, { message: "L'indirizzo deve essere di almeno 5 caratteri" }),
   additionalNotes: z.string().optional(),
 
   // Product selections
@@ -70,7 +70,7 @@ export default function SchedaClientiForm() {
         (window as any).submitToWordPress(data)
             .then(() => {
                 toast({
-                    title: "Order Placed Successfully!",
+                    title: "Ordine Inviato con Successo!",
                 });
                 form.reset();
                 setStep(1);
@@ -78,12 +78,12 @@ export default function SchedaClientiForm() {
             .catch((error: any) => {
                 console.error("Submission error:", error);
                 toast({
-                    title: "Error: " + (error.message || "Unknown error"),
+                    title: "Errore: " + (error.message || "Errore sconosciuto"),
                 });
             });
     } else {
         toast({
-            title: "Order Placed Successfully!",
+            title: "Ordine Inviato con Successo!",
         });
         // Reset form and go back to step 1
         form.reset();
@@ -103,15 +103,15 @@ export default function SchedaClientiForm() {
       <div className="space-y-2">
         <h1 className="text-3xl font-bold tracking-tight">Scheda Clienti</h1>
         <p className="text-muted-foreground">
-          Complete the form below to place your furniture order.
+          Completa il modulo sottostante per effettuare il tuo ordine di mobili.
         </p>
       </div>
 
       {/* Progress bar */}
       <div className="space-y-2">
         <div className="flex items-center justify-between text-sm">
-          <span className="font-medium">Progress</span>
-          <span className="text-muted-foreground">Step {step} of 2</span>
+          <span className="font-medium">Progresso</span>
+          <span className="text-muted-foreground">Passaggio {step} di 2</span>
         </div>
         <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
           <div
@@ -135,9 +135,9 @@ export default function SchedaClientiForm() {
                   onClick={() => setStep(1)}
                 >
                   <ChevronLeft className="mr-1 h-4 w-4" />
-                  Back
+                  Indietro
                 </Button>
-                <h2 className="text-2xl font-bold">Choose Your Products</h2>
+                <h2 className="text-2xl font-bold">Scegli i Tuoi Prodotti</h2>
               </div>
               <ProductSelection form={form} />
             </>
@@ -148,7 +148,7 @@ export default function SchedaClientiForm() {
             className="w-full bg-teal-600 hover:bg-teal-700 mt-8 py-6 text-lg font-medium"
             size="lg"
           >
-            {step === 1 ? "Next: Select Your Products" : "Place Your Order"}
+            {step === 1 ? "Avanti: Seleziona i Tuoi Prodotti" : "Invia il Tuo Ordine"}
           </Button>
         </form>
       </Form>

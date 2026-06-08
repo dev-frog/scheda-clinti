@@ -31,7 +31,7 @@ class SC_AJAX_Handler {
         if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'sc_ajax_nonce')) {
             error_log('Scheda Clienti: Invalid nonce');
             wp_send_json_error([
-                'message' => __('Invalid security token.', 'scheda-clienti')
+                'message' => __('Token di sicurezza non valido.', 'scheda-clienti')
             ], 403);
         }
 
@@ -39,7 +39,7 @@ class SC_AJAX_Handler {
         if (!isset($_POST['form_data'])) {
             error_log('Scheda Clienti: No form data received');
             wp_send_json_error([
-                'message' => __('No form data received.', 'scheda-clienti')
+                'message' => __('Nessun dato del modulo ricevuto.', 'scheda-clienti')
             ], 400);
         }
 
@@ -49,7 +49,7 @@ class SC_AJAX_Handler {
         if (json_last_error() !== JSON_ERROR_NONE) {
             error_log('Scheda Clienti: JSON decode error: ' . json_last_error_msg());
             wp_send_json_error([
-                'message' => __('Invalid form data format.', 'scheda-clienti')
+                'message' => __('Formato dati del modulo non valido.', 'scheda-clienti')
             ], 400);
         }
 
@@ -118,27 +118,27 @@ class SC_AJAX_Handler {
     private function validate_form_data($data) {
         // Check customer info
         if (!isset($data['customer_info']) || !is_array($data['customer_info'])) {
-            return new WP_Error('missing_info', __('Customer information is missing.', 'scheda-clienti'));
+            return new WP_Error('missing_info', __('Informazioni cliente mancanti.', 'scheda-clienti'));
         }
 
         if (empty($data['customer_info']['name'])) {
-            return new WP_Error('missing_name', __('Name is required.', 'scheda-clienti'));
+            return new WP_Error('missing_name', __('Il nome è obbligatorio.', 'scheda-clienti'));
         }
 
         if (empty($data['customer_info']['email']) || !is_email($data['customer_info']['email'])) {
-            return new WP_Error('invalid_email', __('Valid email is required.', 'scheda-clienti'));
+            return new WP_Error('invalid_email', __('È richiesta un\'email valida.', 'scheda-clienti'));
         }
 
         if (empty($data['customer_info']['telephone'])) {
-            return new WP_Error('missing_phone', __('Telephone is required.', 'scheda-clienti'));
+            return new WP_Error('missing_phone', __('Il telefono è obbligatorio.', 'scheda-clienti'));
         }
 
         if (empty($data['customer_info']['city'])) {
-            return new WP_Error('missing_city', __('City is required.', 'scheda-clienti'));
+            return new WP_Error('missing_city', __('La città è obbligatoria.', 'scheda-clienti'));
         }
 
         if (empty($data['customer_info']['address'])) {
-            return new WP_Error('missing_address', __('Address is required.', 'scheda-clienti'));
+            return new WP_Error('missing_address', __('L\'indirizzo è obbligatorio.', 'scheda-clienti'));
         }
 
         return true;
@@ -205,7 +205,7 @@ class SC_AJAX_Handler {
 
         // Create post
         $post_data = [
-            'post_title' => sprintf(__('Order from %s', 'scheda-clienti'), $customer_name),
+            'post_title' => sprintf(__('Ordine da %s', 'scheda-clienti'), $customer_name),
             'post_type' => 'scheda_order',
             'post_status' => 'private',
             'post_author' => 1,
@@ -258,7 +258,7 @@ class SC_AJAX_Handler {
         }
 
         $order_number = ($order_id > 0) ? $this->format_order_number($order_id) : 'N/A';
-        $subject = sprintf(__('New Order: %s', 'scheda-clienti'), $order_number);
+        $subject = sprintf(__('Nuovo Ordine: %s', 'scheda-clienti'), $order_number);
         $message = $this->format_email_message($data, $order_id);
 
         $headers = [
@@ -277,7 +277,7 @@ class SC_AJAX_Handler {
 
         // Send confirmation to customer
         if (!empty($data['customer_info']['email'])) {
-            $customer_subject = __('Your Order Confirmation', 'scheda-clienti');
+            $customer_subject = __('Conferma del tuo ordine', 'scheda-clienti');
             $customer_message = $this->format_customer_confirmation($data, $order_id);
             $customer_sent = wp_mail($data['customer_info']['email'], $customer_subject, $customer_message, $headers);
             if (!$customer_sent) {
@@ -299,24 +299,24 @@ class SC_AJAX_Handler {
 <html>
 <head>
     <meta charset="UTF-8">
-    <title><?php printf(__('New Order: %s', 'scheda-clienti'), $order_number); ?></title>
+    <title><?php printf(__('Nuovo Ordine: %s', 'scheda-clienti'), $order_number); ?></title>
 </head>
 <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
     <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
-        <h2 style="color: #14b8a6;"><?php _e('New Order Received', 'scheda-clienti'); ?></h2>
+        <h2 style="color: #14b8a6;"><?php _e('Nuovo Ordine Ricevuto', 'scheda-clienti'); ?></h2>
 
         <table style="width: 100%; border-collapse: collapse;">
             <tr>
-                <td style="padding: 10px; border-bottom: 1px solid #ddd;"><strong><?php _e('Order Number:', 'scheda-clienti'); ?></strong></td>
+                <td style="padding: 10px; border-bottom: 1px solid #ddd;"><strong><?php _e('Numero Ordine:', 'scheda-clienti'); ?></strong></td>
                 <td style="padding: 10px; border-bottom: 1px solid #ddd;"><?php echo esc_html($order_number); ?></td>
             </tr>
             <tr>
-                <td style="padding: 10px; border-bottom: 1px solid #ddd;"><strong><?php _e('Date:', 'scheda-clienti'); ?></strong></td>
+                <td style="padding: 10px; border-bottom: 1px solid #ddd;"><strong><?php _e('Data:', 'scheda-clienti'); ?></strong></td>
                 <td style="padding: 10px; border-bottom: 1px solid #ddd;"><?php echo current_time('Y-m-d H:i'); ?></td>
             </tr>
         </table>
 
-        <h3 style="color: #14b8a6; margin-top: 20px;"><?php _e('Customer Information', 'scheda-clienti'); ?></h3>
+        <h3 style="color: #14b8a6; margin-top: 20px;"><?php _e('Informazioni Cliente', 'scheda-clienti'); ?></h3>
         <table style="width: 100%; border-collapse: collapse;">
             <?php foreach ($data['customer_info'] as $key => $value): ?>
                 <?php if ($value): ?>
@@ -328,7 +328,7 @@ class SC_AJAX_Handler {
             <?php endforeach; ?>
         </table>
 
-        <h3 style="color: #14b8a6; margin-top: 20px;"><?php _e('Order Items', 'scheda-clienti'); ?></h3>
+        <h3 style="color: #14b8a6; margin-top: 20px;"><?php _e('Articoli Ordine', 'scheda-clienti'); ?></h3>
         <?php if (!empty($data['products'])): ?>
             <?php
             $grouped = [];
@@ -343,7 +343,7 @@ class SC_AJAX_Handler {
                 <h4 style="margin-top: 15px;"><?php echo esc_html($type); ?> (<?php echo count($items); ?>)</h4>
                 <?php foreach ($items as $index => $item): ?>
                     <div style="background: #f9f9f9; padding: 15px; margin: 10px 0; border-left: 3px solid #14b8a6;">
-                        <h5 style="margin: 0 0 10px 0;"><?php printf(__('Item %d', 'scheda-clienti'), $index + 1); ?></h5>
+                        <h5 style="margin: 0 0 10px 0;"><?php printf(__('Articolo %d', 'scheda-clienti'), $index + 1); ?></h5>
                         <?php foreach ($item['details'] as $key => $value): ?>
                             <?php if ($key !== 'id' && $value): ?>
                                 <p style="margin: 5px 0;">
@@ -356,12 +356,12 @@ class SC_AJAX_Handler {
                 <?php endforeach; ?>
             <?php endforeach; ?>
         <?php else: ?>
-            <p><?php _e('No products selected.', 'scheda-clienti'); ?></p>
+            <p><?php _e('Nessun prodotto selezionato.', 'scheda-clienti'); ?></p>
         <?php endif; ?>
 
         <p style="margin-top: 30px; padding: 15px; background: #f3f4f6; border-radius: 5px;">
             <a href="<?php echo admin_url('post.php?post=' . $order_id . '&action=edit'); ?>" style="background: #14b8a6; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">
-                <?php _e('View Order in Admin', 'scheda-clienti'); ?>
+                <?php _e('Visualizza Ordine in Admin', 'scheda-clienti'); ?>
             </a>
         </p>
     </div>
@@ -384,26 +384,26 @@ class SC_AJAX_Handler {
 <html>
 <head>
     <meta charset="UTF-8">
-    <title><?php _e('Order Confirmation', 'scheda-clienti'); ?></title>
+    <title><?php _e('Conferma Ordine', 'scheda-clienti'); ?></title>
 </head>
 <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
     <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
-        <h1 style="color: #14b8a6;"><?php printf(__('Thank you for your order!', 'scheda-clienti')); ?></h1>
+        <h1 style="color: #14b8a6;"><?php printf(__('Grazie per il tuo ordine!', 'scheda-clienti')); ?></h1>
 
-        <p><?php printf(__('We have received your order and will contact you shortly.', 'scheda-clienti')); ?></p>
+        <p><?php printf(__('Abbiamo ricevuto il tuo ordine e ti contatteremo al più presto.', 'scheda-clienti')); ?></p>
 
         <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
             <tr>
-                <td style="padding: 10px; border-bottom: 1px solid #ddd;"><strong><?php _e('Order Number:', 'scheda-clienti'); ?></strong></td>
+                <td style="padding: 10px; border-bottom: 1px solid #ddd;"><strong><?php _e('Numero Ordine:', 'scheda-clienti'); ?></strong></td>
                 <td style="padding: 10px; border-bottom: 1px solid #ddd;"><?php echo esc_html($order_number); ?></td>
             </tr>
             <tr>
-                <td style="padding: 10px; border-bottom: 1px solid #ddd;"><strong><?php _e('Name:', 'scheda-clienti'); ?></strong></td>
+                <td style="padding: 10px; border-bottom: 1px solid #ddd;"><strong><?php _e('Nome:', 'scheda-clienti'); ?></strong></td>
                 <td style="padding: 10px; border-bottom: 1px solid #ddd;"><?php echo esc_html($data['customer_info']['name']); ?></td>
             </tr>
         </table>
 
-        <h3 style="color: #14b8a6;"><?php _e('Order Summary', 'scheda-clienti'); ?></h3>
+        <h3 style="color: #14b8a6;"><?php _e('Riepilogo Ordine', 'scheda-clienti'); ?></h3>
         <ul>
             <?php foreach ($data['products'] as $product): ?>
                 <li><?php echo esc_html($product['type']); ?></li>
@@ -411,7 +411,7 @@ class SC_AJAX_Handler {
         </ul>
 
         <p style="margin-top: 30px;">
-            <?php _e('If you have any questions, please contact us.', 'scheda-clienti'); ?>
+            <?php _e('Se hai domande, non esitare a contattarci.', 'scheda-clienti'); ?>
         </p>
 
         <p style="font-size: 12px; color: #999;">
@@ -436,7 +436,7 @@ class SC_AJAX_Handler {
      */
     private function get_success_message() {
         return get_option('sc_success_message',
-            __('Thank you! Your order has been placed successfully. We will contact you shortly.', 'scheda-clienti')
+            __('Grazie! Il tuo ordine è stato inviato con successo. Ti contatteremo al più presto.', 'scheda-clienti')
         );
     }
 
@@ -447,7 +447,7 @@ class SC_AJAX_Handler {
         // Check user permissions
         if (!current_user_can('manage_options')) {
             wp_send_json_error([
-                'message' => __('Unauthorized', 'scheda-clienti')
+                'message' => __('Non autorizzato', 'scheda-clienti')
             ], 403);
         }
 

@@ -93,36 +93,36 @@ export default function ChildrenBedroomsSection({
           <CardContent className="pt-6">
             <div className="grid gap-4">
               <div className="space-y-2">
-                <Label htmlFor={`name-${item.id}`}>Name</Label>
+                <Label htmlFor={`name-${item.id}`}>Nome</Label>
                 <Input
                   id={`name-${item.id}`}
                   value={item.name}
                   onChange={(e) => updateItem(item.id, "name", e.target.value)}
-                  placeholder="Enter bedroom name"
+                  placeholder="Inserisci il nome della cameretta"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor={`product-code-${item.id}`}>Product Code</Label>
+                <Label htmlFor={`product-code-${item.id}`}>Codice Prodotto</Label>
                 <Input
                   id={`product-code-${item.id}`}
                   value={item.productCode}
                   onChange={(e) =>
                     updateItem(item.id, "productCode", e.target.value)
                   }
-                  placeholder="Enter product code"
+                  placeholder="Inserisci il codice del prodotto"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor={`product-link-${item.id}`}>Product Link</Label>
+                <Label htmlFor={`product-link-${item.id}`}>Link Prodotto</Label>
                 <Input
                   id={`product-link-${item.id}`}
                   value={item.productLink}
                   onChange={(e) =>
                     updateItem(item.id, "productLink", e.target.value)
                   }
-                  placeholder="Enter product link"
+                  placeholder="Inserisci il link del prodotto"
                 />
               </div>
             </div>
@@ -135,7 +135,7 @@ export default function ChildrenBedroomsSection({
                 onClick={() => removeItem(item.id)}
               >
                 <Trash2 className="mr-2 h-4 w-4" />
-                Remove
+                Rimuovi
               </Button>
             )}
           </CardContent>
@@ -149,7 +149,7 @@ export default function ChildrenBedroomsSection({
         className="w-full"
       >
         <Plus className="mr-2 h-4 w-4" />
-        Add Another Bedroom
+        Aggiungi un'altra Cameretta
       </Button>
     </div>
   );

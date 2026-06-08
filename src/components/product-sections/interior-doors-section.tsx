@@ -123,7 +123,7 @@ export default function InteriorDoorsSection({
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-medium">
-          Interior Doors ({doorItems.length})
+          Porte Interne ({doorItems.length})
         </h3>
         <Button
           type="button"
@@ -133,7 +133,7 @@ export default function InteriorDoorsSection({
           className="h-8"
         >
           <Plus className="mr-2 h-4 w-4" />
-          Add Door
+          Aggiungi Porta
         </Button>
       </div>
 
@@ -144,12 +144,12 @@ export default function InteriorDoorsSection({
             className="border border-muted relative overflow-hidden"
           >
             <div className="absolute top-0 right-0 bg-muted px-3 py-1 text-xs font-medium rounded-bl-md">
-              Door {index + 1}
+              Porta {index + 1}
             </div>
             <CardContent className="pt-8">
               <div className="grid gap-6">
                 <div className="space-y-2">
-                  <Label>Sense of Opening</Label>
+                  <Label>Senso di Apertura</Label>
                   <RadioGroup
                     value={item.senseOfOpening}
                     onValueChange={(value) =>
@@ -159,18 +159,18 @@ export default function InteriorDoorsSection({
                   >
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="Holy" id={`holy-${item.id}`} />
-                      <Label htmlFor={`holy-${item.id}`}>Holy</Label>
+                      <Label htmlFor={`holy-${item.id}`}>Sinistra</Label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="Right" id={`right-${item.id}`} />
-                      <Label htmlFor={`right-${item.id}`}>Right</Label>
+                      <Label htmlFor={`right-${item.id}`}>Destra</Label>
                     </div>
                   </RadioGroup>
                 </div>
 
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div className="space-y-2">
-                    <Label htmlFor={`length-${item.id}`}>Length</Label>
+                    <Label htmlFor={`length-${item.id}`}>Larghezza</Label>
                     <Select
                       value={item.length}
                       onValueChange={(value) =>
@@ -178,7 +178,7 @@ export default function InteriorDoorsSection({
                       }
                     >
                       <SelectTrigger id={`length-${item.id}`}>
-                        <SelectValue placeholder="Select length" />
+                        <SelectValue placeholder="Seleziona larghezza" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="60">60</SelectItem>
@@ -186,7 +186,7 @@ export default function InteriorDoorsSection({
                         <SelectItem value="80">80</SelectItem>
                         <SelectItem value="90">90</SelectItem>
                         <SelectItem value="Out of Measure">
-                          Out of Measure
+                          Fuori Misura
                         </SelectItem>
                       </SelectContent>
                     </Select>
@@ -195,7 +195,7 @@ export default function InteriorDoorsSection({
                   {item.length === "Out of Measure" && (
                     <div className="space-y-2">
                       <Label htmlFor={`custom-length-${item.id}`}>
-                        Custom Length
+                        Larghezza Personalizzata
                       </Label>
                       <Input
                         id={`custom-length-${item.id}`}
@@ -207,14 +207,14 @@ export default function InteriorDoorsSection({
                             e.target.value
                           )
                         }
-                        placeholder="Enter custom length"
+                        placeholder="Inserisci larghezza personalizzata"
                       />
                     </div>
                   )}
 
                   <div className="space-y-2">
                     <Label htmlFor={`number-of-doors-${item.id}`}>
-                      No. of Doors
+                      N. di Ante
                     </Label>
                     <Input
                       id={`number-of-doors-${item.id}`}
@@ -230,7 +230,7 @@ export default function InteriorDoorsSection({
 
                 <div className="space-y-2">
                   <Label htmlFor={`dimensions-${item.id}`}>
-                    Write the Dimensions
+                    Scrivi le Dimensioni
                   </Label>
                   <Textarea
                     id={`dimensions-${item.id}`}
@@ -238,13 +238,13 @@ export default function InteriorDoorsSection({
                     onChange={(e) =>
                       updateDoorItem(item.id, "dimensions", e.target.value)
                     }
-                    placeholder="Enter dimensions details"
+                    placeholder="Inserisci i dettagli delle dimensioni"
                   />
                 </div>
 
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div className="space-y-2">
-                    <Label htmlFor={`height-${item.id}`}>Height</Label>
+                    <Label htmlFor={`height-${item.id}`}>Altezza</Label>
                     <Select
                       value={item.height}
                       onValueChange={(value) =>
@@ -252,12 +252,12 @@ export default function InteriorDoorsSection({
                       }
                     >
                       <SelectTrigger id={`height-${item.id}`}>
-                        <SelectValue placeholder="Select height" />
+                        <SelectValue placeholder="Seleziona altezza" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="210">210</SelectItem>
                         <SelectItem value="Out of Measure">
-                          Out of Measure
+                          Fuori Misura
                         </SelectItem>
                       </SelectContent>
                     </Select>
@@ -266,7 +266,7 @@ export default function InteriorDoorsSection({
                   {item.height === "Out of Measure" && (
                     <div className="space-y-2">
                       <Label htmlFor={`custom-height-${item.id}`}>
-                        Custom Height
+                        Altezza Personalizzata
                       </Label>
                       <Input
                         id={`custom-height-${item.id}`}
@@ -278,14 +278,14 @@ export default function InteriorDoorsSection({
                             e.target.value
                           )
                         }
-                        placeholder="Enter custom height"
+                        placeholder="Inserisci altezza personalizzata"
                       />
                     </div>
                   )}
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Handle</Label>
+                  <Label>Maniglia</Label>
                   <RadioGroup
                     value={item.handle}
                     onValueChange={(value) =>
@@ -298,7 +298,7 @@ export default function InteriorDoorsSection({
                         value="Yes"
                         id={`handle-yes-${item.id}`}
                       />
-                      <Label htmlFor={`handle-yes-${item.id}`}>Yes</Label>
+                      <Label htmlFor={`handle-yes-${item.id}`}>Sì</Label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="No" id={`handle-no-${item.id}`} />
@@ -310,7 +310,7 @@ export default function InteriorDoorsSection({
                 {item.handle === "Yes" && (
                   <div className="space-y-2">
                     <Label htmlFor={`handle-name-${item.id}`}>
-                      Handle Name
+                      Nome Maniglia
                     </Label>
                     <Input
                       id={`handle-name-${item.id}`}
@@ -318,13 +318,13 @@ export default function InteriorDoorsSection({
                       onChange={(e) =>
                         updateDoorItem(item.id, "handleName", e.target.value)
                       }
-                      placeholder="Enter handle name"
+                      placeholder="Inserisci il nome della maniglia"
                     />
                   </div>
                 )}
 
                 <div className="space-y-2">
-                  <Label>Pose</Label>
+                  <Label>Posa</Label>
                   <RadioGroup
                     value={item.pose}
                     onValueChange={(value) =>
@@ -334,7 +334,7 @@ export default function InteriorDoorsSection({
                   >
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="Yes" id={`pose-yes-${item.id}`} />
-                      <Label htmlFor={`pose-yes-${item.id}`}>Yes</Label>
+                      <Label htmlFor={`pose-yes-${item.id}`}>Sì</Label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="No" id={`pose-no-${item.id}`} />
@@ -344,7 +344,7 @@ export default function InteriorDoorsSection({
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Installation Type</Label>
+                  <Label>Tipo di Installazione</Label>
                   <RadioGroup
                     value={item.installationType}
                     onValueChange={(value) =>
@@ -358,7 +358,7 @@ export default function InteriorDoorsSection({
                         id={`installation-floating-${item.id}`}
                       />
                       <Label htmlFor={`installation-floating-${item.id}`}>
-                        Floating
+                        Flottante
                       </Label>
                     </div>
                     <div className="flex items-center space-x-2">
@@ -367,7 +367,7 @@ export default function InteriorDoorsSection({
                         id={`installation-glue-${item.id}`}
                       />
                       <Label htmlFor={`installation-glue-${item.id}`}>
-                        Glue
+                        Colla
                       </Label>
                     </div>
                   </RadioGroup>
@@ -382,7 +382,7 @@ export default function InteriorDoorsSection({
                   onClick={() => removeDoorItem(item.id)}
                 >
                   <Trash2 className="mr-2 h-4 w-4" />
-                  Remove Door
+                  Rimuovi Porta
                 </Button>
               )}
             </CardContent>
@@ -396,7 +396,7 @@ export default function InteriorDoorsSection({
           className="w-full bg-muted/50 hover:bg-muted"
         >
           <Plus className="mr-2 h-4 w-4" />
-          Add Another Door
+          Aggiungi un'altra Porta
         </Button>
       </div>
     </div>

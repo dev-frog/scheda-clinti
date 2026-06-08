@@ -105,26 +105,26 @@ export default function MattressesSection({ form }: MattressesSectionProps) {
           <CardContent className="pt-6">
             <div className="grid gap-4">
               <div className="space-y-2">
-                <Label htmlFor={`type-${item.id}`}>Type</Label>
+                <Label htmlFor={`type-${item.id}`}>Tipo</Label>
                 <Select
                   value={item.type}
                   onValueChange={(value) => updateItem(item.id, "type", value)}
                 >
                   <SelectTrigger id={`type-${item.id}`}>
-                    <SelectValue placeholder="Select type" />
+                    <SelectValue placeholder="Seleziona tipo" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Single">Single</SelectItem>
-                    <SelectItem value="Double">Double</SelectItem>
+                    <SelectItem value="Single">Singolo</SelectItem>
+                    <SelectItem value="Double">Matrimoniale</SelectItem>
                     <SelectItem value="Children & Teens">
-                      Children & Teens
+                      Bambini e Ragazzi
                     </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div className="space-y-2">
-                <Label>Senses of Opening</Label>
+                <Label>Tipologia</Label>
                 <RadioGroup
                   value={item.senseOfOpening}
                   onValueChange={(value) =>
@@ -134,7 +134,7 @@ export default function MattressesSection({ form }: MattressesSectionProps) {
                 >
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="Mole" id={`mole-${item.id}`} />
-                    <Label htmlFor={`mole-${item.id}`}>Mole</Label>
+                    <Label htmlFor={`mole-${item.id}`}>Molle</Label>
                   </div>
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="Memory" id={`memory-${item.id}`} />
@@ -145,7 +145,7 @@ export default function MattressesSection({ form }: MattressesSectionProps) {
 
               <div className="space-y-2">
                 <Label htmlFor={`additional-notes-${item.id}`}>
-                  Additional Notes
+                  Note Aggiuntive
                 </Label>
                 <Textarea
                   id={`additional-notes-${item.id}`}
@@ -153,12 +153,12 @@ export default function MattressesSection({ form }: MattressesSectionProps) {
                   onChange={(e) =>
                     updateItem(item.id, "additionalNotes", e.target.value)
                   }
-                  placeholder="Enter any additional notes"
+                  placeholder="Inserisci eventuali note aggiuntive"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label>Pose</Label>
+                <Label>Posa</Label>
                 <RadioGroup
                   value={item.pose}
                   onValueChange={(value) => updateItem(item.id, "pose", value)}
@@ -166,7 +166,7 @@ export default function MattressesSection({ form }: MattressesSectionProps) {
                 >
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="Yes" id={`pose-yes-${item.id}`} />
-                    <Label htmlFor={`pose-yes-${item.id}`}>Yes</Label>
+                    <Label htmlFor={`pose-yes-${item.id}`}>Sì</Label>
                   </div>
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="No" id={`pose-no-${item.id}`} />
@@ -176,7 +176,7 @@ export default function MattressesSection({ form }: MattressesSectionProps) {
               </div>
 
               <div className="space-y-2">
-                <Label>Installation Type</Label>
+                <Label>Tipo di Installazione</Label>
                 <RadioGroup
                   value={item.installationType}
                   onValueChange={(value) =>
@@ -190,7 +190,7 @@ export default function MattressesSection({ form }: MattressesSectionProps) {
                       id={`installation-floating-${item.id}`}
                     />
                     <Label htmlFor={`installation-floating-${item.id}`}>
-                      Floating
+                      Flottante
                     </Label>
                   </div>
                   <div className="flex items-center space-x-2">
@@ -198,7 +198,7 @@ export default function MattressesSection({ form }: MattressesSectionProps) {
                       value="Glue"
                       id={`installation-glue-${item.id}`}
                     />
-                    <Label htmlFor={`installation-glue-${item.id}`}>Glue</Label>
+                    <Label htmlFor={`installation-glue-${item.id}`}>Colla</Label>
                   </div>
                 </RadioGroup>
               </div>
@@ -212,7 +212,7 @@ export default function MattressesSection({ form }: MattressesSectionProps) {
                 onClick={() => removeItem(item.id)}
               >
                 <Trash2 className="mr-2 h-4 w-4" />
-                Remove
+                Rimuovi
               </Button>
             )}
           </CardContent>
@@ -226,7 +226,7 @@ export default function MattressesSection({ form }: MattressesSectionProps) {
         className="w-full"
       >
         <Plus className="mr-2 h-4 w-4" />
-        Add Another Mattress
+        Aggiungi un altro Materasso
       </Button>
     </div>
   );
