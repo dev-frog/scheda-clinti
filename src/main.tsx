@@ -17,21 +17,26 @@ const init = () => {
       const root = ReactDOM.createRoot(rootElement);
       root.render(<App />);
 
-      // Hide loading message as soon as possible
+      // Hide loading state and show content immediately
       const hideLoading = () => {
-        const loadingElement = rootElement.querySelector(".sc-loading");
-        if (loadingElement && loadingElement instanceof HTMLElement) {
-          console.log("Scheda Clienti: Hiding loading message");
-          loadingElement.style.display = "none";
+        const loadingState = document.getElementById('sc-loading-state');
+        if (loadingState && loadingState instanceof HTMLElement) {
+          console.log("Scheda Clienti: Hiding loading state");
+          loadingState.style.display = "none";
         }
+
+        // Add loaded class to show content
+        rootElement.classList.add('loaded');
       };
 
-      // Attempt to hide immediately, and also on next tick to be sure
+      // Hide loading immediately and on next tick to be sure
       hideLoading();
       setTimeout(hideLoading, 0);
 
-      // Dispatch event for any other listeners
-      window.dispatchEvent(new CustomEvent("scAppMounted"));
+      // Dispatch event for any other listeners (WordPress bridge, etc.)
+      setTimeout(() => {
+        window.dispatchEvent(new CustomEvent("scAppMounted"));
+      }, 50);
     } catch (error) {
       console.error("Scheda Clienti: Error mounting React app:", error);
     }

@@ -124,9 +124,17 @@
 
         // Remove loading message once React app mounts
         window.addEventListener('scAppMounted', function() {
-            const loadingDiv = rootElement.querySelector('.sc-loading');
-            if (loadingDiv) {
-                loadingDiv.style.display = 'none';
+            console.log('Scheda Clienti: App mounted, removing loading state');
+
+            // Remove loading state
+            const loadingState = document.getElementById('sc-loading-state');
+            if (loadingState) {
+                loadingState.style.display = 'none';
+            }
+
+            // Show the app content
+            if (rootElement) {
+                rootElement.classList.add('loaded');
             }
         });
     });

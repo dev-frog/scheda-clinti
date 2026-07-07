@@ -76,6 +76,7 @@ class Scheda_Clienti_Plugin {
     private function includes() {
         require_once SC_PLUGIN_DIR . 'includes/class-sc-ajax.php';
         require_once SC_PLUGIN_DIR . 'includes/class-sc-data.php';
+        require_once SC_PLUGIN_DIR . 'includes/class-sc-optimization.php';
     }
 
     /**
@@ -86,6 +87,8 @@ class Scheda_Clienti_Plugin {
         new SC_AJAX_Handler();
         // Initialize data handler
         new SC_Data_Handler();
+        // Initialize CSS optimization
+        new SC_CSS_Optimization();
     }
 
     /**
@@ -183,22 +186,28 @@ class Scheda_Clienti_Plugin {
         ], $atts, 'scheda_clienti');
 
         ob_start();
+
+        // Trigger action for loading state
+        do_action('scheda_clienti_before_render');
+
         ?>
         <div id="scheda-clienti-root" class="scheda-clienti-wrapper <?php echo esc_attr($atts['class']); ?>"
              data-title="<?php echo esc_attr($atts['title']); ?>"
              data-description="<?php echo esc_attr($atts['description']); ?>">
             <!-- React app will mount here -->
-            <div class="sc-loading" style="padding: 40px; text-align: center; color: #666; font-family: sans-serif;">
-                <div class="sc-spinner" style="margin-bottom: 10px;">
-                    <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="margin: 0 auto; animation: sc-spin 1s linear infinite;">
-                        <style>@keyframes sc-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }</style>
-                        <path d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z" opacity=".25"/>
-                        <path d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69,1.57,1.57,0,0,0,10.14,1.16Z"/>
-                    </svg>
-                </div>
-                <p><?php _e('Caricamento modulo...', 'scheda-clienti'); ?></p>
-            </div>
         </div>
+        <script>
+            // Fallback: hide loading state if no app mounts after 5 seconds
+            setTimeout(function() {
+                const loadingState = document.getElementById('sc-loading-state');
+                const rootElement = document.getElementById('scheda-clienti-root');
+                if (loadingState && !rootElement.classList.contains('loaded')) {
+                    console.warn('Scheda Clienti: App did not load in time, hiding loading state');
+                    loadingState.style.display = 'none';
+                    rootElement.classList.add('loaded');
+                }
+            }, 5000);
+        </script>
         <?php
         return ob_get_clean();
     }
