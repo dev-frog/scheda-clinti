@@ -28,6 +28,7 @@ interface ProductSelectionProps {
 
 export default function ProductSelection({ form }: ProductSelectionProps) {
   const [expandedSections, setExpandedSections] = useState<string[]>([]);
+  const products = form.watch("products") || [];
 
   const toggleSection = (value: string) => {
     setExpandedSections((prev) =>
@@ -39,11 +40,25 @@ export default function ProductSelection({ form }: ProductSelectionProps) {
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
-      <p className="text-muted-foreground">
-        Seleziona i prodotti che desideri ordinare. Aggiungine quanti ne vuoi!
-      </p>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <p className="text-muted-foreground">
+          Seleziona i prodotti che desideri ordinare. Aggiungine quanti ne vuoi!
+        </p>
 
-      <Accordion type="multiple" value={expandedSections} className="w-full">
+        {/* Mobile order count indicator */}
+        <div className="md:hidden flex items-center gap-2 px-4 py-2 bg-teal-500 text-white rounded-lg self-start">
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+          <span className="font-medium">{products.length} Articoli</span>
+        </div>
+      </div>
+
+      {/* 50/50 Layout: Products on left, Summary on right */}
+      <div className="grid grid-cols-1 md:grid-cols-[1fr_400px] lg:grid-cols-2 gap-6 lg:gap-8 items-start">
+        {/* Left: Product Accordion */}
+        <div className="space-y-4 min-h-0">
+          <Accordion type="multiple" value={expandedSections} className="w-full">
         <AccordionItem
           value="flooring"
           className="border rounded-lg mb-4 overflow-hidden"
@@ -244,13 +259,28 @@ export default function ProductSelection({ form }: ProductSelectionProps) {
           </AccordionContent>
         </AccordionItem>
       </Accordion>
+        </div>
 
-      <Card className="mt-8">
-        <CardContent className="pt-6">
-          <h3 className="text-lg font-medium mb-4">Riepilogo Ordine</h3>
-          <OrderSummary form={form} />
-        </CardContent>
-      </Card>
+        {/* Right: Sticky Order Summary */}
+        <div className="md:sticky md:top-6 h-fit md:self-start max-h-[calc(100vh-8rem)] overflow-y-auto">
+          <Card className="border-2 border-teal-100 bg-gradient-to-br from-white to-teal-50/30 shadow-lg">
+            <CardContent className="pt-6">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="p-2 bg-teal-500 rounded-lg">
+                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-teal-900">Riepilogo Ordine</h3>
+                  <p className="text-sm text-muted-foreground">I tuoi prodotti selezionati</p>
+                </div>
+              </div>
+              <OrderSummary form={form} />
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 }
@@ -260,9 +290,16 @@ function OrderSummary({ form }: { form: UseFormReturn<FormValues> }) {
 
   if (products.length === 0) {
     return (
-      <p className="text-muted-foreground">
-        Nessun prodotto selezionato. Espandi le categorie sopra per aggiungere prodotti.
-      </p>
+      <div className="text-center py-8 px-4">
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-muted/50 mb-4">
+          <svg className="w-8 h-8 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 1H5l1-1z" />
+          </svg>
+        </div>
+        <p className="text-muted-foreground text-sm">
+          Nessun prodotto selezionato. Espandi le categorie per aggiungere prodotti.
+        </p>
+      </div>
     );
   }
 
@@ -277,30 +314,42 @@ function OrderSummary({ form }: { form: UseFormReturn<FormValues> }) {
   }, {} as Record<string, typeof products>);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
+      {/* Total count badge */}
+      <div className="flex items-center justify-between px-4 py-2 bg-teal-500 text-white rounded-lg">
+        <span className="font-medium">Totale Articoli</span>
+        <span className="font-bold text-xl">{products.length}</span>
+      </div>
+
       {Object.entries(groupedProducts).map(([type, items]) => (
-        <div key={type} className="space-y-3">
-          <h4 className="font-medium text-lg border-b pb-2">
-            {type} ({items.length})
-          </h4>
-          <div className="grid gap-3">
+        <div key={type} className="space-y-2">
+          <div className="flex items-center justify-between px-3 py-2 bg-teal-100 text-teal-800 rounded-lg font-medium text-sm">
+            <span>{type}</span>
+            <span className="bg-teal-500 text-white px-2 py-0.5 rounded-full text-xs">
+              {items.length}
+            </span>
+          </div>
+          <div className="space-y-2 pl-2">
             {items.map((product, index) => (
-              <div key={index} className="bg-muted/50 p-3 rounded-md">
-                <div className="flex justify-between items-start">
-                  <span className="font-medium text-sm">Articolo {index + 1}</span>
-                  <span className="text-xs bg-muted px-2 py-1 rounded-full">
+              <div key={index} className="bg-white border border-teal-100 p-3 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="flex-shrink-0 w-6 h-6 bg-teal-500 text-white rounded-full flex items-center justify-center text-xs font-bold">
+                    {index + 1}
+                  </div>
+                  <span className="text-xs text-muted-foreground font-mono">
                     {product.details.id}
                   </span>
                 </div>
-                <div className="text-sm mt-2 grid gap-1">
+                <div className="text-sm space-y-1">
                   {Object.entries(product.details)
                     .filter(([key]) => key !== "id")
+                    .slice(0, 3) // Show only first 3 details to keep it compact
                     .map(([key, value]) => (
-                      <div key={key} className="grid grid-cols-2">
-                        <span className="font-medium capitalize">
-                          {key.replace(/([A-Z])/g, " $1").trim()}:{" "}
+                      <div key={key} className="flex justify-between gap-2">
+                        <span className="text-muted-foreground text-xs capitalize">
+                          {key.replace(/([A-Z])/g, " $1").trim()}:
                         </span>
-                        <span className="truncate">
+                        <span className="font-medium text-xs text-right truncate max-w-[120px]">
                           {Array.isArray(value)
                             ? value.join(", ")
                             : value?.toString()}

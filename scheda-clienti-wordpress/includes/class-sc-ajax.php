@@ -207,7 +207,7 @@ class SC_AJAX_Handler {
         $post_data = [
             'post_title' => sprintf(__('Ordine da %s', 'scheda-clienti'), $customer_name),
             'post_type' => 'scheda_order',
-            'post_status' => 'private',
+            'post_status' => 'draft', // Changed from 'private' to 'draft' for better visibility
             'post_author' => 1,
         ];
 

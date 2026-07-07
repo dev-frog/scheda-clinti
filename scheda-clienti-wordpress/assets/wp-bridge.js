@@ -13,17 +13,29 @@
         // Check if root element exists
         const rootElement = document.getElementById('scheda-clienti-root');
         if (!rootElement) {
+            console.warn('Scheda Clienti: Root element not found, waiting for initialization...');
+            // Retry after a delay
+            setTimeout(function() {
+                if (document.getElementById('scheda-clienti-root')) {
+                    console.log('Scheda Clienti: Root element found, initializing...');
+                    initBridge();
+                }
+            }, 500);
             return;
         }
 
-        // Get WordPress config from data attributes
-        const config = {
-            title: rootElement.getAttribute('data-title') || 'Scheda Clienti',
-            description: rootElement.getAttribute('data-description') || 'Completa il modulo sottostante per effettuare il tuo ordine di mobili.'
-        };
+        function initBridge() {
+            // Get WordPress config from data attributes
+            const config = {
+                title: rootElement.getAttribute('data-title') || 'Scheda Clienti',
+                description: rootElement.getAttribute('data-description') || 'Completa il modulo sottostante per effettuare il tuo ordine di mobili.'
+            };
 
-        // Inject WordPress AJAX handler into window for React app
-        window.wordpressConfig = config;
+            // Inject WordPress AJAX handler into window for React app
+            window.wordpressConfig = config;
+        }
+
+        initBridge();
 
         /**
          * WordPress Form Submission Handler
@@ -32,6 +44,7 @@
             return new Promise((resolve, reject) => {
                 // Check if scPlugin is available (localized from WordPress)
                 if (typeof scPlugin === 'undefined') {
+                    console.error('Scheda Clienti: WordPress plugin not initialized');
                     reject(new Error('WordPress plugin not initialized'));
                     return;
                 }
@@ -48,18 +61,18 @@
                             if (response.success) {
                                 resolve(response.data);
                             } else {
-                                reject(new Error(response.data.message || 'Submission failed'));
+                                reject(new Error(response.data.message || 'Invio fallito'));
                             }
                         } catch (e) {
-                            reject(new Error('Invalid response from server'));
+                            reject(new Error('Risposta non valida dal server'));
                         }
                     } else {
-                        reject(new Error('Server error: ' + xhr.status));
+                        reject(new Error('Errore del server: ' + xhr.status));
                     }
                 };
 
                 xhr.onerror = function() {
-                    reject(new Error('Network error'));
+                    reject(new Error('Errore di rete'));
                 };
 
                 // Prepare form data
@@ -68,6 +81,7 @@
                 params.append('nonce', scPlugin.nonce);
                 params.append('form_data', JSON.stringify(formData));
 
+                console.log('Scheda Clienti: Submitting form to WordPress...');
                 xhr.send(params.toString());
             });
         };

@@ -57,7 +57,7 @@ export default function CeramicsSection({ form }: CeramicsSectionProps) {
     items.forEach((item) => {
       if (item.id === id) {
         const existingProductIndex = products.findIndex(
-          (p) => p.type === "Ceramic" && p.details.id === id
+          (p) => p.type === "Ceramica" && p.details.id === id
         );
 
         const updatedItem = {
@@ -67,12 +67,12 @@ export default function CeramicsSection({ form }: CeramicsSectionProps) {
 
         if (existingProductIndex >= 0) {
           updatedProducts[existingProductIndex] = {
-            type: "Ceramic",
+            type: "Ceramica",
             details: updatedItem,
           };
         } else {
           updatedProducts.push({
-            type: "Ceramic",
+            type: "Ceramica",
             details: updatedItem,
           });
         }

@@ -29,7 +29,7 @@ interface FlooringSectionProps {
 
 export default function FlooringSection({ form }: FlooringSectionProps) {
   const [flooringItems, setFlooringItems] = useState<FlooringItem[]>([
-    { id: "flooring-1", type: "", installationType: "Floating" },
+    { id: "flooring-1", type: "", installationType: "Flottante" },
   ]);
 
   const addFlooringItem = () => {
@@ -38,7 +38,7 @@ export default function FlooringSection({ form }: FlooringSectionProps) {
       {
         id: `flooring-${prev.length + 1}`,
         type: "",
-        installationType: "Floating",
+        installationType: "Flottante",
       },
     ]);
   };
@@ -130,12 +130,12 @@ export default function FlooringSection({ form }: FlooringSectionProps) {
                     <SelectTrigger id={`flooring-type-${item.id}`}>
                       <SelectValue placeholder="Seleziona tipo" />
                     </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Solid">Massiccio</SelectItem>
-                      <SelectItem value="Pre-finished">Prefinito</SelectItem>
-                      <SelectItem value="Laminate">Laminato</SelectItem>
+                                    <SelectContent>
+                      <SelectItem value="Massiccio">Massiccio</SelectItem>
+                      <SelectItem value="Prefinito">Prefinito</SelectItem>
+                      <SelectItem value="Laminato">Laminato</SelectItem>
                       <SelectItem value="SPC">SPC</SelectItem>
-                      <SelectItem value="Outdoor Flooring">
+                      <SelectItem value="Pavimento da Esterno">
                         Pavimento da Esterno
                       </SelectItem>
                     </SelectContent>
@@ -153,13 +153,13 @@ export default function FlooringSection({ form }: FlooringSectionProps) {
                   >
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem
-                        value="Floating"
+                        value="Flottante"
                         id={`floating-${item.id}`}
                       />
                       <Label htmlFor={`floating-${item.id}`}>Flottante</Label>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="Glue" id={`glue-${item.id}`} />
+                      <RadioGroupItem value="Colla" id={`glue-${item.id}`} />
                       <Label htmlFor={`glue-${item.id}`}>Colla</Label>
                     </div>
                   </RadioGroup>

@@ -61,7 +61,7 @@ export default function ChildrenBedroomsSection({
     items.forEach((item) => {
       if (item.id === id) {
         const existingProductIndex = products.findIndex(
-          (p) => p.type === "Children's Bedroom" && p.details.id === id
+          (p) => p.type === "Cameretta" && p.details.id === id
         );
 
         const updatedItem = {
@@ -71,12 +71,12 @@ export default function ChildrenBedroomsSection({
 
         if (existingProductIndex >= 0) {
           updatedProducts[existingProductIndex] = {
-            type: "Children's Bedroom",
+            type: "Cameretta",
             details: updatedItem,
           };
         } else {
           updatedProducts.push({
-            type: "Children's Bedroom",
+            type: "Cameretta",
             details: updatedItem,
           });
         }

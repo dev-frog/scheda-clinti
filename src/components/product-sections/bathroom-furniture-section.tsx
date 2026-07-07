@@ -69,7 +69,7 @@ export default function BathroomFurnitureSection({
     items.forEach((item) => {
       if (item.id === id) {
         const existingProductIndex = products.findIndex(
-          (p) => p.type === "Bathroom Furniture" && p.details.id === id
+          (p) => p.type === "Arredo Bagno" && p.details.id === id
         );
 
         const updatedItem = {
@@ -79,12 +79,12 @@ export default function BathroomFurnitureSection({
 
         if (existingProductIndex >= 0) {
           updatedProducts[existingProductIndex] = {
-            type: "Bathroom Furniture",
+            type: "Arredo Bagno",
             details: updatedItem,
           };
         } else {
           updatedProducts.push({
-            type: "Bathroom Furniture",
+            type: "Arredo Bagno",
             details: updatedItem,
           });
         }
@@ -174,7 +174,7 @@ export default function BathroomFurnitureSection({
                   >
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem
-                        value="Yes"
+                        value="Sì"
                         id={`transport-yes-${item.id}`}
                       />
                       <Label htmlFor={`transport-yes-${item.id}`}>Sì</Label>

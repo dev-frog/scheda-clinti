@@ -42,7 +42,7 @@ export default function ArmoredDoorSection({ form }: ArmoredDoorSectionProps) {
   const [doorItems, setDoorItems] = useState<ArmoredDoorItem[]>([
     {
       id: "armored-door-1",
-      senseOfOpening: "Holy",
+      senseOfOpening: "Sinistra",
       length: "80",
       customLength: "",
       numberOfDoors: "1",
@@ -52,7 +52,7 @@ export default function ArmoredDoorSection({ form }: ArmoredDoorSectionProps) {
       handle: "No",
       handleName: "",
       pose: "No",
-      installationType: "Floating",
+      installationType: "Flottante",
     },
   ]);
 
@@ -61,7 +61,7 @@ export default function ArmoredDoorSection({ form }: ArmoredDoorSectionProps) {
       ...prev,
       {
         id: `armored-door-${prev.length + 1}`,
-        senseOfOpening: "Holy",
+        senseOfOpening: "Sinistra",
         length: "80",
         customLength: "",
         numberOfDoors: "1",
@@ -71,7 +71,7 @@ export default function ArmoredDoorSection({ form }: ArmoredDoorSectionProps) {
         handle: "No",
         handleName: "",
         pose: "No",
-        installationType: "Floating",
+        installationType: "Flottante",
       },
     ]);
   };
@@ -160,11 +160,11 @@ export default function ArmoredDoorSection({ form }: ArmoredDoorSectionProps) {
                     className="flex gap-4"
                   >
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="Holy" id={`holy-${item.id}`} />
+                      <RadioGroupItem value="Sinistra" id={`holy-${item.id}`} />
                       <Label htmlFor={`holy-${item.id}`}>Sinistra</Label>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="Right" id={`right-${item.id}`} />
+                      <RadioGroupItem value="Destra" id={`right-${item.id}`} />
                       <Label htmlFor={`right-${item.id}`}>Destra</Label>
                     </div>
                   </RadioGroup>
@@ -187,7 +187,7 @@ export default function ArmoredDoorSection({ form }: ArmoredDoorSectionProps) {
                         <SelectItem value="70">70</SelectItem>
                         <SelectItem value="80">80</SelectItem>
                         <SelectItem value="90">90</SelectItem>
-                        <SelectItem value="Out of Measure">
+                        <SelectItem value="Fuori Misura">
                           Fuori Misura
                         </SelectItem>
                       </SelectContent>
@@ -258,7 +258,7 @@ export default function ArmoredDoorSection({ form }: ArmoredDoorSectionProps) {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="210">210</SelectItem>
-                        <SelectItem value="Out of Measure">
+                        <SelectItem value="Fuori Misura">
                           Fuori Misura
                         </SelectItem>
                       </SelectContent>
@@ -297,7 +297,7 @@ export default function ArmoredDoorSection({ form }: ArmoredDoorSectionProps) {
                   >
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem
-                        value="Yes"
+                        value="Sì"
                         id={`handle-yes-${item.id}`}
                       />
                       <Label htmlFor={`handle-yes-${item.id}`}>Sì</Label>
@@ -309,7 +309,7 @@ export default function ArmoredDoorSection({ form }: ArmoredDoorSectionProps) {
                   </RadioGroup>
                 </div>
 
-                {item.handle === "Yes" && (
+                {item.handle === "Sì" && (
                   <div className="space-y-2">
                     <Label htmlFor={`handle-name-${item.id}`}>
                       Nome Maniglia
@@ -335,7 +335,7 @@ export default function ArmoredDoorSection({ form }: ArmoredDoorSectionProps) {
                     className="flex gap-4"
                   >
                     <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="Yes" id={`pose-yes-${item.id}`} />
+                      <RadioGroupItem value="Sì" id={`pose-yes-${item.id}`} />
                       <Label htmlFor={`pose-yes-${item.id}`}>Sì</Label>
                     </div>
                     <div className="flex items-center space-x-2">
@@ -356,7 +356,7 @@ export default function ArmoredDoorSection({ form }: ArmoredDoorSectionProps) {
                   >
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem
-                        value="Floating"
+                        value="Flottante"
                         id={`installation-floating-${item.id}`}
                       />
                       <Label htmlFor={`installation-floating-${item.id}`}>
@@ -365,7 +365,7 @@ export default function ArmoredDoorSection({ form }: ArmoredDoorSectionProps) {
                     </div>
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem
-                        value="Glue"
+                        value="Colla"
                         id={`installation-glue-${item.id}`}
                       />
                       <Label htmlFor={`installation-glue-${item.id}`}>

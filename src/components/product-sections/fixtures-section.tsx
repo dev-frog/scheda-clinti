@@ -40,7 +40,7 @@ export default function FixturesSection({ form }: FixturesSectionProps) {
   const [items, setItems] = useState<FixtureItem[]>([
     {
       id: "fixture-1",
-      material: "Wood",
+      material: "Legno",
       numberOfWindows: "1",
       numberOfDoors: "1",
       interiorColor: "",
@@ -56,7 +56,7 @@ export default function FixturesSection({ form }: FixturesSectionProps) {
       ...prev,
       {
         id: `fixture-${prev.length + 1}`,
-        material: "Wood",
+        material: "Legno",
         numberOfWindows: "1",
         numberOfDoors: "1",
         interiorColor: "",
@@ -143,9 +143,9 @@ export default function FixturesSection({ form }: FixturesSectionProps) {
                     <SelectValue placeholder="Seleziona materiale" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Wood">Legno</SelectItem>
+                    <SelectItem value="Legno">Legno</SelectItem>
                     <SelectItem value="PVC">PVC</SelectItem>
-                    <SelectItem value="Aluminum">Alluminio</SelectItem>
+                    <SelectItem value="Alluminio">Alluminio</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -228,25 +228,25 @@ export default function FixturesSection({ form }: FixturesSectionProps) {
                   <div className="flex items-center space-x-2">
                     <Checkbox
                       id={`shutters-${item.id}`}
-                      checked={item.extras.includes("Shutters")}
-                      onCheckedChange={() => toggleExtra(item.id, "Shutters")}
+                      checked={item.extras.includes("Persiane")}
+                      onCheckedChange={() => toggleExtra(item.id, "Persiane")}
                     />
                     <Label htmlFor={`shutters-${item.id}`}>Persiane</Label>
                   </div>
                   <div className="flex items-center space-x-2">
                     <Checkbox
                       id={`blinds-${item.id}`}
-                      checked={item.extras.includes("Blinds")}
-                      onCheckedChange={() => toggleExtra(item.id, "Blinds")}
+                      checked={item.extras.includes("Tapparelle")}
+                      onCheckedChange={() => toggleExtra(item.id, "Tapparelle")}
                     />
                     <Label htmlFor={`blinds-${item.id}`}>Tapparelle</Label>
                   </div>
                   <div className="flex items-center space-x-2">
                     <Checkbox
                       id={`mosquito-nets-${item.id}`}
-                      checked={item.extras.includes("Mosquito Nets")}
+                      checked={item.extras.includes("Zanzariere")}
                       onCheckedChange={() =>
-                        toggleExtra(item.id, "Mosquito Nets")
+                        toggleExtra(item.id, "Zanzariere")
                       }
                     />
                     <Label htmlFor={`mosquito-nets-${item.id}`}>
@@ -264,7 +264,7 @@ export default function FixturesSection({ form }: FixturesSectionProps) {
                   className="flex gap-4"
                 >
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="Yes" id={`pose-yes-${item.id}`} />
+                    <RadioGroupItem value="Sì" id={`pose-yes-${item.id}`} />
                     <Label htmlFor={`pose-yes-${item.id}`}>Sì</Label>
                   </div>
                   <div className="flex items-center space-x-2">

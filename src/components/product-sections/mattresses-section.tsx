@@ -35,11 +35,11 @@ export default function MattressesSection({ form }: MattressesSectionProps) {
   const [items, setItems] = useState<MattressItem[]>([
     {
       id: "mattress-1",
-      type: "Single",
-      senseOfOpening: "Mole",
+      type: "Singolo",
+      senseOfOpening: "Molle",
       additionalNotes: "",
       pose: "No",
-      installationType: "Floating",
+      installationType: "Flottante",
     },
   ]);
 
@@ -48,11 +48,11 @@ export default function MattressesSection({ form }: MattressesSectionProps) {
       ...prev,
       {
         id: `mattress-${prev.length + 1}`,
-        type: "Single",
-        senseOfOpening: "Mole",
+        type: "Singolo",
+        senseOfOpening: "Molle",
         additionalNotes: "",
         pose: "No",
-        installationType: "Floating",
+        installationType: "Flottante",
       },
     ]);
   };
@@ -114,9 +114,9 @@ export default function MattressesSection({ form }: MattressesSectionProps) {
                     <SelectValue placeholder="Seleziona tipo" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Single">Singolo</SelectItem>
-                    <SelectItem value="Double">Matrimoniale</SelectItem>
-                    <SelectItem value="Children & Teens">
+                    <SelectItem value="Singolo">Singolo</SelectItem>
+                    <SelectItem value="Matrimoniale">Matrimoniale</SelectItem>
+                    <SelectItem value="Bambini e Ragazzi">
                       Bambini e Ragazzi
                     </SelectItem>
                   </SelectContent>
@@ -165,7 +165,7 @@ export default function MattressesSection({ form }: MattressesSectionProps) {
                   className="flex gap-4"
                 >
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="Yes" id={`pose-yes-${item.id}`} />
+                    <RadioGroupItem value="Sì" id={`pose-yes-${item.id}`} />
                     <Label htmlFor={`pose-yes-${item.id}`}>Sì</Label>
                   </div>
                   <div className="flex items-center space-x-2">
@@ -186,7 +186,7 @@ export default function MattressesSection({ form }: MattressesSectionProps) {
                 >
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem
-                      value="Floating"
+                      value="Flottante"
                       id={`installation-floating-${item.id}`}
                     />
                     <Label htmlFor={`installation-floating-${item.id}`}>
@@ -195,7 +195,7 @@ export default function MattressesSection({ form }: MattressesSectionProps) {
                   </div>
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem
-                      value="Glue"
+                      value="Colla"
                       id={`installation-glue-${item.id}`}
                     />
                     <Label htmlFor={`installation-glue-${item.id}`}>Colla</Label>

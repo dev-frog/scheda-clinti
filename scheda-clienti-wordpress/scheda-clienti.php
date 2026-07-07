@@ -3,7 +3,7 @@
  * Plugin Name: Scheda Clienti - Furniture Order Form
  * Plugin URI: https://github.com/dev-frog/scheda-clinti
  * Description: A modern furniture ordering form plugin for WordPress. Display the form with shortcode [scheda_clienti]
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: dev-frog
  * Author URI: https://dev-frog.github.io/blog
  * License: GPL v2 or later
@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Plugin constants
-define('SC_VERSION', '1.0.0');
+define('SC_VERSION', '1.0.1');
 define('SC_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('SC_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('SC_PLUGIN_BASENAME', plugin_basename(__FILE__));
@@ -95,7 +95,7 @@ class Scheda_Clienti_Plugin {
         // Only load assets on pages containing our shortcode
         global $post;
         if (is_a($post, 'WP_Post') && has_shortcode($post->post_content, 'scheda_clienti')) {
-            
+
             // Find the latest CSS and JS files dynamically (matches index.js or index-hash.js)
             $css_file = $this->find_asset('assets/index*.css');
             $js_file = $this->find_asset('assets/index*.js');
@@ -138,6 +138,16 @@ class Scheda_Clienti_Plugin {
                     SC_VERSION,
                     true // Load in footer
                 );
+
+                // Add inline script to ensure proper initialization
+                wp_add_inline_script('scheda-clienti-bridge', '
+                    console.log("Scheda Clienti: Bridge script loaded");
+                    if (typeof scPlugin !== "undefined") {
+                        console.log("Scheda Clienti: WordPress config initialized", scPlugin);
+                    } else {
+                        console.error("Scheda Clienti: scPlugin not available");
+                    }
+                ', 'after');
             }
         }
     }
