@@ -14,17 +14,39 @@ import { useToast } from "@/hooks/use-toast";
 
 // Define the form schema
 const formSchema = z.object({
-  // Customer information
+  // Customer Anagrafica Information
   name: z.string().min(2, { message: "Il nome deve essere di almeno 2 caratteri" }),
-  email: z.string().email({ message: "Inserisci un indirizzo email valido" }),
+  taxId: z.string().min(5, { message: "Il Codice Fiscale/P.IVA deve essere di almeno 5 caratteri" }),
   telephone: z
     .string()
     .min(5, { message: "Inserisci un numero di telefono valido" }),
+  email: z.string().email({ message: "Inserisci un indirizzo email valido" }),
+
+  // Installation Address
+  addressStreet: z.string().min(2, { message: "Via/Piazza è obbligatoria" }),
+  addressNumber: z.string().min(1, { message: "Il civico è obbligatorio" }),
+  zipCode: z.string().min(5, { message: "Il CAP deve essere di almeno 5 caratteri" }),
   city: z.string().min(2, { message: "La città deve essere di almeno 2 caratteri" }),
-  address: z
-    .string()
-    .min(5, { message: "L'indirizzo deve essere di almeno 5 caratteri" }),
+  province: z.string().min(2, { message: "La provincia è obbligatoria" }),
+
+  // Logistical Site Details
+  floor: z.string().optional(),
+  stairInternal: z.string().optional(),
+  hasElevator: z.boolean().optional(),
+  accessNotes: z.string().optional(),
+
+  // General notes
   additionalNotes: z.string().optional(),
+
+  // Technical Parquet Fields
+  productType: z.string().optional(),
+  surfaceArea: z.string().optional(),
+  subfloorCondition: z.string().optional(),
+  installationType: z.string().optional(),
+  underlayNeeded: z.string().optional(),
+  skirtingType: z.string().optional(),
+  skirtingMeters: z.string().optional(),
+  timing: z.string().optional(),
 
   // Product selections
   products: z
@@ -49,11 +71,27 @@ export default function SchedaClientiForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      email: "",
+      taxId: "",
       telephone: "",
+      email: "",
+      addressStreet: "",
+      addressNumber: "",
+      zipCode: "",
       city: "",
-      address: "",
+      province: "",
+      floor: "",
+      stairInternal: "",
+      hasElevator: false,
+      accessNotes: "",
       additionalNotes: "",
+      productType: "",
+      surfaceArea: "",
+      subfloorCondition: "",
+      installationType: "",
+      underlayNeeded: "",
+      skirtingType: "",
+      skirtingMeters: "",
+      timing: "",
       products: [],
     },
   });

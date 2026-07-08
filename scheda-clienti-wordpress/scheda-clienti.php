@@ -3,7 +3,7 @@
  * Plugin Name: Scheda Clienti - Furniture Order Form
  * Plugin URI: https://github.com/dev-frog/scheda-clinti
  * Description: A modern furniture ordering form plugin for WordPress. Display the form with shortcode [scheda_clienti]
- * Version: 1.0.1
+ * Version: 1.0.5
  * Author: dev-frog
  * Author URI: https://dev-frog.github.io/blog
  * License: GPL v2 or later
@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Plugin constants
-define('SC_VERSION', '1.0.1');
+define('SC_VERSION', '1.0.5');
 define('SC_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('SC_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('SC_PLUGIN_BASENAME', plugin_basename(__FILE__));
@@ -77,6 +77,7 @@ class Scheda_Clienti_Plugin {
         require_once SC_PLUGIN_DIR . 'includes/class-sc-ajax.php';
         require_once SC_PLUGIN_DIR . 'includes/class-sc-data.php';
         require_once SC_PLUGIN_DIR . 'includes/class-sc-optimization.php';
+        require_once SC_PLUGIN_DIR . 'includes/class-sc-settings.php';
     }
 
     /**
@@ -89,6 +90,8 @@ class Scheda_Clienti_Plugin {
         new SC_Data_Handler();
         // Initialize CSS optimization
         new SC_CSS_Optimization();
+        // Initialize settings page
+        SC_Settings_Page::get_instance();
     }
 
     /**
@@ -127,6 +130,8 @@ class Scheda_Clienti_Plugin {
                     'ajaxUrl' => admin_url('admin-ajax.php'),
                     'nonce' => wp_create_nonce('sc_ajax_nonce'),
                     'adminEmail' => get_option('admin_email'),
+                    'salesEmails' => get_option('sc_sales_emails', [get_option('admin_email')]),
+                    'companyName' => get_option('sc_company_name', get_bloginfo('name')),
                     'strings' => [
                         'success' => __('Ordine inviato con successo!', 'scheda-clienti'),
                         'error' => __('Errore durante l\'invio del modulo. Riprova.', 'scheda-clienti'),
@@ -249,7 +254,14 @@ class Scheda_Clienti_Plugin {
         $defaults = [
             'sc_email_recipient' => get_option('admin_email'),
             'sc_success_message' => __('Grazie! Il tuo ordine è stato inviato con successo. Ti contatteremo al più presto.', 'scheda-clienti'),
-            'sc_enable_notifications' => '1'
+            'sc_enable_notifications' => '1',
+            'sc_sales_emails' => [get_option('admin_email')],
+            'sc_email_from_name' => get_bloginfo('name'),
+            'sc_email_from_address' => get_option('admin_email'),
+            'sc_company_name' => get_bloginfo('name'),
+            'sc_company_address' => '',
+            'sc_company_phone' => '',
+            'sc_company_vat' => ''
         ];
 
         foreach ($defaults as $key => $value) {

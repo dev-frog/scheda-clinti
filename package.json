@@ -1,7 +1,7 @@
 {
   "name": "vite-shadcn-boilerplate",
   "private": true,
-  "version": "1.0.1",
+  "version": "1.0.5",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -25,12 +25,14 @@
     "react-hook-form": "^7.57.0",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
+    "uuid": "^14.0.1",
     "zod": "^3.25.47"
   },
   "devDependencies": {
     "@types/node": "^20.11.14",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
+    "@types/uuid": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "^6.14.0",
     "@typescript-eslint/parser": "^6.14.0",
     "@vitejs/plugin-react": "^4.2.1",

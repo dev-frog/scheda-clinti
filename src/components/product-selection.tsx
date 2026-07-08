@@ -21,6 +21,7 @@ import MattressesSection from "./product-sections/mattresses-section";
 import CeramicsSection from "./product-sections/ceramics-section";
 import SofasSection from "./product-sections/sofas-section";
 import ChildrenBedroomsSection from "./product-sections/children-bedrooms-section";
+import ParquetTechnicalSection from "./product-sections/parquet-technical-section";
 
 interface ProductSelectionProps {
   form: UseFormReturn<FormValues>;
@@ -59,6 +60,31 @@ export default function ProductSelection({ form }: ProductSelectionProps) {
         {/* Left: Product Accordion */}
         <div className="space-y-4 min-h-0">
           <Accordion type="multiple" value={expandedSections} className="w-full">
+        <AccordionItem
+          value="parquetTechnical"
+          className="border rounded-lg mb-4 overflow-hidden bg-gradient-to-r from-teal-50 to-white"
+        >
+          <AccordionTrigger
+            onClick={() => toggleSection("parquetTechnical")}
+            className="px-4 py-3 hover:no-underline bg-muted/30 hover:bg-muted/50"
+          >
+            <div className="flex items-center text-left">
+              <div className="flex items-center gap-2">
+                <span className="text-lg font-semibold text-teal-700">🔧 Sezione Tecnica: Parquet</span>
+                <span className="text-xs bg-teal-500 text-white px-2 py-0.5 rounded-full">Dettagli</span>
+              </div>
+            </div>
+            {expandedSections.includes("parquetTechnical") ? (
+              <Minus className="h-5 w-5 text-muted-foreground" />
+            ) : (
+              <Plus className="h-5 w-5 text-muted-foreground" />
+            )}
+          </AccordionTrigger>
+          <AccordionContent className="px-4 pt-4 pb-6 border-t">
+            <ParquetTechnicalSection form={form} />
+          </AccordionContent>
+        </AccordionItem>
+
         <AccordionItem
           value="flooring"
           className="border rounded-lg mb-4 overflow-hidden"
