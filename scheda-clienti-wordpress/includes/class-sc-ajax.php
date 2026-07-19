@@ -287,7 +287,7 @@ class SC_AJAX_Handler {
         }
 
         $order_number = ($order_id > 0) ? $this->format_order_number($order_id) : 'N/A';
-        $subject = sprintf(__('Nuovo Ordine: %s', 'scheda-clienti'), $order_number);
+        $subject = sprintf(__('Nuovo Preventivo: %s', 'scheda-clienti'), $order_number);
         $message = $this->format_email_message($data, $order_id);
 
         // Get email configuration
@@ -321,7 +321,7 @@ class SC_AJAX_Handler {
 
         // Send confirmation to customer
         if (!empty($data['customer_info']['email'])) {
-            $customer_subject = __('Conferma del tuo ordine', 'scheda-clienti');
+            $customer_subject = __('Conferma del tuo preventivo', 'scheda-clienti');
             $customer_message = $this->format_customer_confirmation($data, $order_id);
             $customer_sent = wp_mail($data['customer_info']['email'], $customer_subject, $customer_message, $headers);
             if (!$customer_sent) {
@@ -351,7 +351,7 @@ class SC_AJAX_Handler {
 <html>
 <head>
     <meta charset="UTF-8">
-    <title><?php printf(__('Fattura Ordine: %s', 'scheda-clienti'), $order_number); ?></title>
+    <title><?php printf(__('Preventivo: %s', 'scheda-clienti'), $order_number); ?></title>
     <style>
         .invoice-container { max-width: 700px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif; }
         .invoice-header { background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%); color: white; padding: 30px; border-radius: 10px 10px 0 0; }
@@ -375,7 +375,7 @@ class SC_AJAX_Handler {
     <div class="invoice-container">
         <!-- Invoice Header -->
         <div class="invoice-header">
-            <h1 style="margin: 0; font-size: 24px;"><?php _e('FATTURA ORDINE', 'scheda-clienti'); ?></h1>
+            <h1 style="margin: 0; font-size: 24px;"><?php _e('PREVENTIVO', 'scheda-clienti'); ?></h1>
             <p style="margin: 10px 0 0 0; opacity: 0.9; font-size: 16px;"><?php echo esc_html($order_number); ?></p>
             <p style="margin: 5px 0 0 0; opacity: 0.8; font-size: 14px;"><?php echo current_time('d/m/Y H:i'); ?></p>
         </div>
@@ -406,7 +406,7 @@ class SC_AJAX_Handler {
                     </div>
                     <div style="text-align: right;">
                         <p style="margin: 0; color: #6b7280; font-size: 12px;">
-                            <strong><?php _e('Data Ordine:', 'scheda-clienti'); ?></strong><br>
+                            <strong><?php _e('Data Preventivo:', 'scheda-clienti'); ?></strong><br>
                             <span style="font-size: 16px; color: #14b8a6;"><?php echo current_time('d/m/Y'); ?></span>
                         </p>
                     </div>
@@ -515,7 +515,7 @@ class SC_AJAX_Handler {
             <!-- Products Section -->
             <div class="product-section">
                 <div class="section-title">
-                    <?php _e('ARTICOLI ORDINATI', 'scheda-clienti'); ?>
+                    <?php _e('ARTICOLI RICHIESTI', 'scheda-clienti'); ?>
                 </div>
 
                 <?php if (!empty($data['products'])): ?>
@@ -628,7 +628,7 @@ class SC_AJAX_Handler {
 <html>
 <head>
     <meta charset="UTF-8">
-    <title><?php _e('Conferma Ordine', 'scheda-clienti'); ?></title>
+    <title><?php _e('Conferma Preventivo', 'scheda-clienti'); ?></title>
     <style>
         .confirm-container { max-width: 600px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif; }
         .confirm-header { background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%); color: white; padding: 30px; border-radius: 10px 10px 0 0; text-align: center; }
@@ -651,7 +651,7 @@ class SC_AJAX_Handler {
         <div class="confirm-header">
             <div class="success-icon">✓</div>
             <h1 style="margin: 10px 0; font-size: 24px;">
-                <?php _e('GRAZIE PER IL TUO ORDINE!', 'scheda-clienti'); ?>
+                <?php _e('GRAZIE PER IL TUO PREVENTIVO!', 'scheda-clienti'); ?>
             </h1>
             <p style="margin: 10px 0 0 0; opacity: 0.9;">
                 <?php echo esc_html($order_number); ?>
@@ -661,17 +661,17 @@ class SC_AJAX_Handler {
         <!-- Body -->
         <div class="confirm-body">
             <p style="font-size: 16px; color: #374151; text-align: center; margin: 20px 0;">
-                <?php _e('Abbiamo ricevuto il tuo ordine con successo. Ti contatteremo al più presto per confermare i dettagli e procedere con la consegna.', 'scheda-clienti'); ?>
+                <?php _e('Abbiamo ricevuto il tuo preventivo con successo. Ti contatteremo al più presto per confermare i dettagli e procedere con la consegna.', 'scheda-clienti'); ?>
             </p>
 
             <!-- Order Summary -->
             <div class="order-summary">
                 <h3 style="margin: 0 0 15px 0; color: #14b8a6; text-align: center;">
-                    <?php _e('RIEPILOGO ORDINE', 'scheda-clienti'); ?>
+                    <?php _e('RIEPILOGO PREVENTIVO', 'scheda-clienti'); ?>
                 </h3>
 
                 <div class="info-row">
-                    <span class="info-label"><?php _e('Numero Ordine:', 'scheda-clienti'); ?></span>
+                    <span class="info-label"><?php _e('Numero Preventivo:', 'scheda-clienti'); ?></span>
                     <span class="info-value"><?php echo esc_html($order_number); ?></span>
                 </div>
                 <div class="info-row">

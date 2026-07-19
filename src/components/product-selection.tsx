@@ -43,7 +43,7 @@ export default function ProductSelection({ form }: ProductSelectionProps) {
     <div className="space-y-6 animate-in fade-in duration-500">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <p className="text-muted-foreground">
-          Seleziona i prodotti che desideri ordinare. Aggiungine quanti ne vuoi!
+          Seleziona i prodotti che desideri preventivare. Aggiungine quanti ne vuoi!
         </p>
 
         {/* Mobile order count indicator */}
@@ -298,7 +298,7 @@ export default function ProductSelection({ form }: ProductSelectionProps) {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-teal-900">Riepilogo Ordine</h3>
+                  <h3 className="text-xl font-bold text-teal-900">Riepilogo Preventivo</h3>
                   <p className="text-sm text-muted-foreground">I tuoi prodotti selezionati</p>
                 </div>
               </div>

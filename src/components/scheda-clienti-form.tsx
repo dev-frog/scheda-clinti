@@ -114,7 +114,7 @@ export default function SchedaClientiForm() {
                 setSubmittedData(data);
                 setShowThankYou(true);
                 toast({
-                    title: "Ordine Inviato con Successo!",
+                    title: "Preventivo Inviato con Successo!",
                 });
             })
             .catch((error: any) => {
@@ -128,7 +128,7 @@ export default function SchedaClientiForm() {
         setSubmittedData(data);
         setShowThankYou(true);
         toast({
-            title: "Ordine Inviato con Successo!",
+            title: "Preventivo Inviato con Successo!",
         });
     }
 
@@ -163,7 +163,7 @@ export default function SchedaClientiForm() {
           <div className="space-y-2">
             <h1 className="text-3xl font-bold tracking-tight">Scheda Clienti</h1>
             <p className="text-muted-foreground">
-              Completa il modulo sottostante per effettuare il tuo ordine di mobili.
+              Completa il modulo sottostante per effettuare il tuo preventivo di mobili.
             </p>
           </div>
 
@@ -217,7 +217,7 @@ export default function SchedaClientiForm() {
             className="w-full bg-teal-600 hover:bg-teal-700 mt-8 py-6 text-lg font-medium"
             size="lg"
           >
-            {step === 1 ? "Avanti: Seleziona i Tuoi Prodotti" : "Invia il Tuo Ordine"}
+            {step === 1 ? "Avanti: Seleziona i Tuoi Prodotti" : "Invia il Tuo Preventivo"}
           </Button>
         </form>
       </Form>
@@ -254,10 +254,10 @@ function ThankYouMessage({
           <CheckCircle className="w-12 h-12 text-teal-600" />
         </div>
         <h2 className="text-3xl font-bold text-teal-900">
-          Grazie per il tuo ordine!
+          Grazie per il tuo preventivo!
         </h2>
         <p className="text-muted-foreground max-w-2xl mx-auto">
-          Abbiamo ricevuto il tuo ordine con successo. Ti contatteremo al più presto per confermare i dettagli e procedere con la consegna.
+          Abbiamo ricevuto il tuo preventivo con successo. Ti contatteremo al più presto per confermare i dettagli e procedere con la consegna.
         </p>
       </div>
 
@@ -265,7 +265,7 @@ function ThankYouMessage({
       <div className="bg-gradient-to-br from-teal-50 to-white border-2 border-teal-200 rounded-lg p-6 space-y-6">
         <div className="flex items-center justify-between border-b border-teal-200 pb-4">
           <div>
-            <h3 className="text-lg font-semibold text-teal-900">Riepilogo Ordine</h3>
+            <h3 className="text-lg font-semibold text-teal-900">Riepilogo Preventivo</h3>
             <p className="text-sm text-muted-foreground">Conferma dei tuoi prodotti selezionati</p>
           </div>
           <div className="text-right">
@@ -361,7 +361,7 @@ function ThankYouMessage({
           className="bg-teal-600 hover:bg-teal-700 px-8 py-6 text-lg"
           size="lg"
         >
-          Inizia Nuovo Ordine
+          Inizia Nuovo Preventivo
         </Button>
       </div>
     </div>

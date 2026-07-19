@@ -1,9 +1,9 @@
 <?php
 /**
- * Plugin Name: Scheda Clienti - Furniture Order Form
+ * Plugin Name: Scheda Clienti - Furniture Quote Form
  * Plugin URI: https://github.com/dev-frog/scheda-clinti
- * Description: A modern furniture ordering form plugin for WordPress. Display the form with shortcode [scheda_clienti]
- * Version: 1.0.5
+ * Description: A modern furniture quote form plugin for WordPress. Display the form with shortcode [scheda_clienti]
+ * Version: 1.0.6
  * Author: dev-frog
  * Author URI: https://dev-frog.github.io/blog
  * License: GPL v2 or later
@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Plugin constants
-define('SC_VERSION', '1.0.5');
+define('SC_VERSION', '1.0.6');
 define('SC_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('SC_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('SC_PLUGIN_BASENAME', plugin_basename(__FILE__));
@@ -133,7 +133,7 @@ class Scheda_Clienti_Plugin {
                     'salesEmails' => get_option('sc_sales_emails', [get_option('admin_email')]),
                     'companyName' => get_option('sc_company_name', get_bloginfo('name')),
                     'strings' => [
-                        'success' => __('Ordine inviato con successo!', 'scheda-clienti'),
+                        'success' => __('Preventivo inviato con successo!', 'scheda-clienti'),
                         'error' => __('Errore durante l\'invio del modulo. Riprova.', 'scheda-clienti'),
                         'loading' => __('Invio in corso...', 'scheda-clienti')
                     ]
@@ -186,7 +186,7 @@ class Scheda_Clienti_Plugin {
     public function render_shortcode($atts) {
         $atts = shortcode_atts([
             'title' => __('Scheda Clienti', 'scheda-clienti'),
-            'description' => __('Completa il modulo sottostante per effettuare il tuo ordine di mobili.', 'scheda-clienti'),
+            'description' => __('Completa il modulo sottostante per effettuare il tuo preventivo di mobili.', 'scheda-clienti'),
             'class' => ''
         ], $atts, 'scheda_clienti');
 
@@ -253,7 +253,7 @@ class Scheda_Clienti_Plugin {
     private function set_default_options() {
         $defaults = [
             'sc_email_recipient' => get_option('admin_email'),
-            'sc_success_message' => __('Grazie! Il tuo ordine è stato inviato con successo. Ti contatteremo al più presto.', 'scheda-clienti'),
+            'sc_success_message' => __('Grazie! Il tuo preventivo è stato inviato con successo. Ti contatteremo al più presto.', 'scheda-clienti'),
             'sc_enable_notifications' => '1',
             'sc_sales_emails' => [get_option('admin_email')],
             'sc_email_from_name' => get_bloginfo('name'),
@@ -296,24 +296,24 @@ register_activation_hook(__FILE__, function() {
     // Register post type during activation
     if (!post_type_exists('scheda_order')) {
         $labels = [
-            'name' => __('Ordini', 'scheda-clienti'),
-            'singular_name' => __('Ordine', 'scheda-clienti'),
-            'menu_name' => __('Ordini', 'scheda-clienti'),
+            'name' => __('Preventivi', 'scheda-clienti'),
+            'singular_name' => __('Preventivo', 'scheda-clienti'),
+            'menu_name' => __('Preventivi', 'scheda-clienti'),
             'add_new' => __('Aggiungi Nuovo', 'scheda-clienti'),
-            'add_new_item' => __('Aggiungi Nuovo Ordine', 'scheda-clienti'),
+            'add_new_item' => __('Aggiungi Nuovo Preventivo', 'scheda-clienti'),
             'edit' => __('Modifica', 'scheda-clienti'),
-            'edit_item' => __('Modifica Ordine', 'scheda-clienti'),
-            'new_item' => __('Nuovo Ordine', 'scheda-clienti'),
-            'view' => __('Visualizza Ordine', 'scheda-clienti'),
-            'view_item' => __('Visualizza Ordine', 'scheda-clienti'),
-            'search_items' => __('Cerca Ordini', 'scheda-clienti'),
-            'not_found' => __('Nessun ordine trovato', 'scheda-clienti'),
-            'not_found_in_trash' => __('Nessun ordine trovato nel cestino', 'scheda-clienti'),
+            'edit_item' => __('Modifica Preventivo', 'scheda-clienti'),
+            'new_item' => __('Nuovo Preventivo', 'scheda-clienti'),
+            'view' => __('Visualizza Preventivo', 'scheda-clienti'),
+            'view_item' => __('Visualizza Preventivo', 'scheda-clienti'),
+            'search_items' => __('Cerca Preventivi', 'scheda-clienti'),
+            'not_found' => __('Nessun preventivo trovato', 'scheda-clienti'),
+            'not_found_in_trash' => __('Nessun preventivo trovato nel cestino', 'scheda-clienti'),
         ];
 
         $args = [
             'labels' => $labels,
-            'description' => __('Ordini mobili', 'scheda-clienti'),
+            'description' => __('Preventivi mobili', 'scheda-clienti'),
             'public' => false,
             'show_ui' => true,
             'show_in_menu' => true,

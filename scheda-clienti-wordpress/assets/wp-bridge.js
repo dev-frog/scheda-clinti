@@ -28,7 +28,7 @@
             // Get WordPress config from data attributes
             const config = {
                 title: rootElement.getAttribute('data-title') || 'Scheda Clienti',
-                description: rootElement.getAttribute('data-description') || 'Completa il modulo sottostante per effettuare il tuo ordine di mobili.'
+                description: rootElement.getAttribute('data-description') || 'Completa il modulo sottostante per effettuare il tuo preventivo di mobili.'
             };
 
             // Inject WordPress AJAX handler into window for React app
@@ -100,7 +100,7 @@
                 margin-top: 20px;
                 text-align: center;
             `;
-            successDiv.textContent = scPlugin?.strings?.success || 'Ordine inviato con successo!';
+            successDiv.textContent = scPlugin?.strings?.success || 'Preventivo inviato con successo!';
 
             // Hide loading message
             const loadingDiv = rootElement.querySelector('.sc-loading');

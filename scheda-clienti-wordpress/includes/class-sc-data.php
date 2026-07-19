@@ -30,25 +30,25 @@ class SC_Data_Handler {
      */
     public function register_order_post_type() {
         $labels = [
-            'name' => __('Ordini', 'scheda-clienti'),
-            'singular_name' => __('Ordine', 'scheda-clienti'),
-            'menu_name' => __('Ordini Scheda', 'scheda-clienti'),
-            'name_admin_bar' => __('Ordine', 'scheda-clienti'),
+            'name' => __('Preventivi', 'scheda-clienti'),
+            'singular_name' => __('Preventivo', 'scheda-clienti'),
+            'menu_name' => __('Preventivi Scheda', 'scheda-clienti'),
+            'name_admin_bar' => __('Preventivo', 'scheda-clienti'),
             'add_new' => __('Aggiungi Nuovo', 'scheda-clienti'),
-            'add_new_item' => __('Aggiungi Nuovo Ordine', 'scheda-clienti'),
-            'edit_item' => __('Modifica Ordine', 'scheda-clienti'),
-            'new_item' => __('Nuovo Ordine', 'scheda-clienti'),
-            'view_item' => __('Visualizza Ordine', 'scheda-clienti'),
-            'view_items' => __('Visualizza Ordini', 'scheda-clienti'),
-            'search_items' => __('Cerca Ordini', 'scheda-clienti'),
-            'not_found' => __('Nessun ordine trovato', 'scheda-clienti'),
-            'not_found_in_trash' => __('Nessun ordine trovato nel cestino', 'scheda-clienti'),
-            'all_items' => __('Tutti gli ordini', 'scheda-clienti'),
+            'add_new_item' => __('Aggiungi Nuovo Preventivo', 'scheda-clienti'),
+            'edit_item' => __('Modifica Preventivo', 'scheda-clienti'),
+            'new_item' => __('Nuovo Preventivo', 'scheda-clienti'),
+            'view_item' => __('Visualizza Preventivo', 'scheda-clienti'),
+            'view_items' => __('Visualizza Preventivi', 'scheda-clienti'),
+            'search_items' => __('Cerca Preventivi', 'scheda-clienti'),
+            'not_found' => __('Nessun preventivo trovato', 'scheda-clienti'),
+            'not_found_in_trash' => __('Nessun preventivo trovato nel cestino', 'scheda-clienti'),
+            'all_items' => __('Tutti i preventivi', 'scheda-clienti'),
         ];
 
         $args = [
             'labels' => $labels,
-            'description' => __('Ordini di arredamento inviati tramite il modulo', 'scheda-clienti'),
+            'description' => __('Preventivi di arredamento inviati tramite il modulo', 'scheda-clienti'),
             'public' => false,
             'show_ui' => true,
             'show_in_menu' => true,
@@ -80,7 +80,7 @@ class SC_Data_Handler {
 
         add_meta_box(
             'sc_order_details',
-            __('Dettagli Ordine', 'scheda-clienti'),
+            __('Dettagli Preventivo', 'scheda-clienti'),
             [$this, 'render_order_meta_box'],
             'scheda_order',
             'normal',
@@ -89,7 +89,7 @@ class SC_Data_Handler {
 
         add_meta_box(
             'sc_order_status',
-            __('Stato Ordine', 'scheda-clienti'),
+            __('Stato Preventivo', 'scheda-clienti'),
             [$this, 'render_status_meta_box'],
             'scheda_order',
             'side',
@@ -132,7 +132,7 @@ class SC_Data_Handler {
         $products = get_post_meta($post->ID, 'order_products', true);
 
         if (empty($products)) {
-            echo '<p>' . __('Nessun prodotto in questo ordine.', 'scheda-clienti') . '</p>';
+            echo '<p>' . __('Nessun prodotto in questo preventivo.', 'scheda-clienti') . '</p>';
             return;
         }
 
@@ -194,7 +194,7 @@ class SC_Data_Handler {
         echo '</select>';
 
         echo '<p class="description">';
-        _e('Aggiorna lo stato di questo ordine.', 'scheda-clienti');
+        _e('Aggiorna lo stato di questo preventivo.', 'scheda-clienti');
         echo '</p>';
     }
 
@@ -206,7 +206,7 @@ class SC_Data_Handler {
 
         foreach ($columns as $key => $value) {
             if ($key === 'title') {
-                $new_columns['order_number'] = __('Ordine #', 'scheda-clienti');
+                $new_columns['order_number'] = __('Preventivo #', 'scheda-clienti');
             }
             $new_columns[$key] = $value;
         }
@@ -305,7 +305,7 @@ class SC_Data_Handler {
                                    value="<?php echo esc_attr(get_option('sc_email_recipient', get_option('admin_email'))); ?>"
                                    class="regular-text">
                             <p class="description">
-                                <?php _e('Indirizzo email per ricevere le notifiche dei nuovi ordini.', 'scheda-clienti'); ?>
+                                <?php _e('Indirizzo email per ricevere le notifiche dei nuovi preventivi.', 'scheda-clienti'); ?>
                             </p>
                         </td>
                     </tr>
@@ -321,7 +321,7 @@ class SC_Data_Handler {
                                       name="sc_success_message"
                                       rows="4"
                                       class="large-text"><?php echo esc_textarea(get_option('sc_success_message',
-                                __('Grazie! Il tuo ordine è stato inviato con successo. Ti contatteremo al più presto.', 'scheda-clienti')
+                                __('Grazie! Il tuo preventivo è stato inviato con successo. Ti contatteremo al più presto.', 'scheda-clienti')
                             )); ?></textarea>
                             <p class="description">
                                 <?php _e('Messaggio mostrato ai clienti dopo l\'invio del modulo.', 'scheda-clienti'); ?>
@@ -339,7 +339,7 @@ class SC_Data_Handler {
                                        name="sc_enable_notifications"
                                        value="1"
                                     <?php checked(get_option('sc_enable_notifications', '1'), '1'); ?>>
-                                <?php _e('Abilita le notifiche email per i nuovi ordini', 'scheda-clienti'); ?>
+                                <?php _e('Abilita le notifiche email per i nuovi preventivi', 'scheda-clienti'); ?>
                             </label>
                         </td>
                     </tr>

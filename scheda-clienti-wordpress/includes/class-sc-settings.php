@@ -178,7 +178,7 @@ class SC_Settings_Page {
                                            name="sc_enable_notifications"
                                            value="1"
                                            <?php checked($enable_notifications, '1'); ?> />
-                                    <p class="description"><?php _e('Invia notifiche email quando viene ricevuto un nuovo ordine.', 'scheda-clienti'); ?></p>
+                                    <p class="description"><?php _e('Invia notifiche email quando viene ricevuto un nuovo preventivo.', 'scheda-clienti'); ?></p>
                                 </td>
                             </tr>
 
@@ -218,7 +218,7 @@ class SC_Settings_Page {
                                         <?php _e('Aggiungi Email', 'scheda-clienti'); ?>
                                     </button>
                                     <p class="description">
-                                        <?php _e('Aggiungi gli indirizzi email che devono ricevere le notifiche dei nuovi ordini. Puoi aggiungere più indirizzi (es. Gmail, Outlook, ecc.).', 'scheda-clienti'); ?>
+                                        <?php _e('Aggiungi gli indirizzi email che devono ricevere le notifiche dei nuovi preventivi. Puoi aggiungere più indirizzi (es. Gmail, Outlook, ecc.).', 'scheda-clienti'); ?>
                                     </p>
                                 </td>
                             </tr>
