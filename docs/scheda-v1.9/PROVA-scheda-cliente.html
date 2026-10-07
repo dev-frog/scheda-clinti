@@ -1,0 +1,2035 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scheda cliente — prova</title>
+<meta name="robots" content="noindex,nofollow">
+<!--
+  ============================================================================
+  Disegnarecasa — Scheda cliente · file di prova
+  Workstream J · v1.2 · 28 agosto 2026 · v1.4 · 30 settembre 2026 (due pagine)
+
+  UN FILE SOLO. Doppio clic e funziona: niente cartelle accanto, niente
+  server, niente internet. Puoi spostarlo, mandarlo per e-mail, metterlo
+  su una chiavetta.
+
+  Dentro c'è esattamente lo stesso CSS, la stessa configurazione e lo stesso
+  motore che vanno in produzione — incollati qui dentro invece che in tre
+  file separati. Quindi quello che vedi è quello che vedra' il cliente.
+
+  Il pulsante di invio non manda niente: mostra il JSON che avrebbe inviato.
+  ============================================================================
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* ---- pagina di prova ---- */
+body{
+  margin:0;background:#FBF9F8;
+  font-family:"Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  color:#1B1614;
+}
+.prova-bar{
+  background:#1B1614;color:#F4EEEA;padding:11px 20px;
+  font:600 12px/1.5 ui-monospace,Menlo,monospace;letter-spacing:.04em;
+  display:flex;gap:14px;align-items:center;flex-wrap:wrap;
+}
+.prova-bar b{color:#fff}
+.prova-bar .sp{flex:1}
+.prova-bar button{
+  background:none;border:1px solid rgba(255,255,255,.35);color:#F4EEEA;
+  border-radius:6px;padding:5px 11px;font:inherit;cursor:pointer;
+}
+.prova-wrap{padding:36px 20px 90px}
+.prova-note{
+  max-width:760px;margin:0 auto 28px;padding:15px 17px;background:#fff;
+  border:1px solid #E6DFDA;border-left:3px solid #d80612;font-size:13.5px;
+  color:#5F5651;line-height:1.6;
+}
+.prova-note b{color:#1B1614}
+.prova-note p{margin:0 0 8px}
+.prova-note p:last-child{margin:0}
+
+/* ---- il modulo, identico a quello di produzione ---- */
+/* ============================================================================
+   Disegnarecasa — Scheda cliente
+   Workstream J · v1.0 · 2026-08-28
+   ----------------------------------------------------------------------------
+   Standalone. No framework, no build step, no dependencies.
+   Everything is prefixed .dcs- and scoped under #dc-scheda, so it cannot
+   collide with the theme, with Elementor or with anything else on the page.
+   ============================================================================ */
+
+#dc-scheda{
+  /* one red only */
+  --dcs-red:#d80612;
+  --dcs-red-press:#a8040e;
+  --dcs-ink:#1B1614;
+  --dcs-muted:#5F5651;
+  --dcs-faint:#8C817B;
+  --dcs-line:#E6DFDA;
+  --dcs-line-2:#D6CCC5;
+  --dcs-cream:#F6F1EC;
+  --dcs-white:#fff;
+  --dcs-ok:#177245;
+  --dcs-wood:#9A6B3C;
+  --dcs-amber:#FFFBF0;
+  --dcs-amber-line:#EEE0BC;
+
+  --dcs-sans:"Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --dcs-serif:"Fraunces",Georgia,"Times New Roman",serif;
+  --dcs-mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,monospace;
+
+  max-width:760px;
+  margin:0 auto;
+  font-family:var(--dcs-sans);
+  color:var(--dcs-ink);
+  font-size:16px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+#dc-scheda *{box-sizing:border-box}
+#dc-scheda button{font-family:inherit}
+#dc-scheda :focus-visible{outline:2px solid var(--dcs-red);outline-offset:2px}
+
+/* ---------------- intestazione e avanzamento ---------------- */
+.dcs-head{margin-bottom:22px}
+.dcs-title{
+  font-family:var(--dcs-serif);font-size:clamp(26px,4.2vw,34px);font-weight:600;
+  letter-spacing:-.02em;line-height:1.1;margin:0 0 8px;color:var(--dcs-ink);
+}
+.dcs-sub{font-size:15px;color:var(--dcs-muted);margin:0 0 18px;max-width:60ch}
+.dcs-steps{display:flex;gap:6px;align-items:center;margin-bottom:8px}
+.dcs-step{flex:1;height:4px;border-radius:2px;background:var(--dcs-line);overflow:hidden}
+.dcs-step i{display:block;height:100%;width:0;background:var(--dcs-red);transition:width .3s ease}
+.dcs-step.is-on i{width:100%}
+.dcs-stepTxt{
+  font-family:var(--dcs-mono);font-size:11px;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--dcs-faint);margin:0;
+}
+.dcs-stepTxt b{color:var(--dcs-ink)}
+
+/* ---------------- blocco "scheda fatta da" ---------------- */
+/* Neutro come tutto il resto: la scheda è pubblica e uguale per tutti.
+   Si colora solo quando si sceglie l'agente, e serve a far vedere a chi
+   compila che la scelta è registrata. */
+.dcs-by{
+  background:var(--dcs-white);border:1px solid var(--dcs-line);border-radius:10px;
+  padding:13px 14px;margin-bottom:22px;transition:background .15s ease,border-color .15s ease;
+}
+.dcs-by.is-agente{background:var(--dcs-amber);border-color:var(--dcs-amber-line)}
+.dcs-by .dcs-lab{margin-bottom:7px}
+.dcs-by .dcs-mini{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+@media (max-width:540px){.dcs-by .dcs-mini{grid-template-columns:1fr}}
+.dcs-by .dcs-mini label{display:block;font-size:11.5px;font-weight:700;color:#6B5720;margin-bottom:4px}
+.dcs-by .dcs-in{height:42px;font-size:15px}
+.dcs-by.is-agente .dcs-in{border-color:#DCCB9E}
+.dcs-by .dcs-note{background:transparent;border:0;padding:0;font-size:12px;color:#8C7A48;margin:11px 0 0;line-height:1.5}
+.dcs-by .dcs-note b{color:#6B5720}
+.dcs-by.is-agente .dcs-opt.is-on{border-color:#B5843F;background:rgba(181,132,63,.12);color:#6B5720}
+
+/* ---------------- domande ---------------- */
+.dcs-q{margin-bottom:20px}
+.dcs-lab{display:block;font-size:14.5px;font-weight:700;color:var(--dcs-ink);margin-bottom:3px}
+.dcs-lab i{font-style:normal;color:var(--dcs-red)}
+.dcs-help{font-size:12.5px;color:var(--dcs-faint);margin:0 0 9px;line-height:1.45;max-width:58ch}
+/* nota gentile SOTTO un campo: non chiede, spiega perché conviene */
+.dcs-hint{font-size:12.5px;color:var(--dcs-faint);margin:6px 0 0;line-height:1.45;max-width:58ch}
+/* «solo l'e-mail è obbligatoria»: nel rosso del marchio, una volta per passo.
+   Non è un errore, quindi non urla: è un fondo tenue e un filo rosso a sinistra. */
+.dcs-solo{display:flex;gap:9px;align-items:flex-start;margin:0 0 18px;padding:11px 13px;
+  border-left:3px solid var(--dcs-red);border-radius:0 8px 8px 0;
+  background:rgba(216,6,18,.055);color:var(--dcs-red);
+  font-size:13.5px;line-height:1.5;max-width:62ch}
+.dcs-solo svg{flex:0 0 auto;margin-top:2px}
+.dcs-solo b{font-weight:700}
+.dcs-solo span{color:var(--dcs-ink)}
+.dcs-solo b{color:var(--dcs-red)}
+.dcs-in{
+  width:100%;height:46px;padding:0 13px;
+  border:1.5px solid var(--dcs-line-2);border-radius:9px;
+  font:400 16px/1 var(--dcs-sans);color:var(--dcs-ink);background:var(--dcs-white);
+}
+.dcs-in:focus{outline:none;border-color:var(--dcs-red)}
+textarea.dcs-in{height:96px;padding:12px 13px;line-height:1.55;resize:vertical}
+.dcs-opts{display:flex;flex-wrap:wrap;gap:8px}
+.dcs-opt{
+  font-size:13.5px;font-weight:600;padding:10px 14px;min-height:42px;
+  border:1.5px solid var(--dcs-line);border-radius:9px;
+  background:var(--dcs-white);color:var(--dcs-ink);cursor:pointer;
+}
+.dcs-opt:hover{border-color:var(--dcs-line-2)}
+.dcs-opt.is-on{border-color:var(--dcs-red);background:rgba(216,6,18,.06);color:var(--dcs-red)}
+.dcs-opt.is-soft{border-style:dashed;color:var(--dcs-faint)}
+.dcs-opt.is-soft.is-on{border-style:solid;border-color:var(--dcs-red);color:var(--dcs-red)}
+.dcs-numrow{display:flex;align-items:center;gap:10px}
+.dcs-numrow .dcs-in{flex:1;min-width:0}
+.dcs-suf{font-family:var(--dcs-mono);font-size:13px;color:var(--dcs-faint);flex:0 0 auto;white-space:nowrap}
+.dcs-pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.dcs-pair label{display:block;font-size:12px;font-weight:700;color:var(--dcs-muted);margin-bottom:5px}
+.dcs-altro{margin-top:10px}
+.dcs-grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:600px){.dcs-grid2{grid-template-columns:1fr;gap:0}}
+
+/* ---------------- famiglie di prodotto ---------------- */
+.dcs-cat{
+  border:1px solid var(--dcs-line);border-radius:12px;margin-bottom:10px;
+  overflow:hidden;background:var(--dcs-white);
+}
+.dcs-catHead{
+  display:flex;align-items:center;gap:13px;padding:15px;width:100%;
+  background:none;border:0;text-align:left;font:inherit;cursor:pointer;
+}
+.dcs-catHead .dcs-ic{width:32px;height:32px;flex:0 0 auto;color:var(--dcs-wood)}
+.dcs-catHead .dcs-ic svg{width:32px;height:32px;display:block}
+.dcs-catHead b{flex:1;font-size:15px;font-weight:700}
+.dcs-check{
+  width:24px;height:24px;flex:0 0 auto;border:1.5px solid var(--dcs-line-2);border-radius:6px;
+  display:grid;place-items:center;color:#fff;
+}
+.dcs-check svg{width:15px;height:15px;opacity:0}
+.dcs-cat.is-on{border-color:var(--dcs-line-2)}
+.dcs-cat.is-on .dcs-check{background:var(--dcs-red);border-color:var(--dcs-red)}
+.dcs-cat.is-on .dcs-check svg{opacity:1}
+.dcs-catBody{display:none;padding:0 15px 16px;border-top:1px solid var(--dcs-cream)}
+.dcs-cat.is-on .dcs-catBody{display:block}
+.dcs-qty{display:flex;gap:10px;align-items:flex-end;margin-top:13px}
+.dcs-qty>div{flex:1}
+.dcs-sfrido{
+  margin-top:11px;padding:11px 13px;background:var(--dcs-cream);border:1px solid var(--dcs-line);
+  border-radius:9px;font-size:13px;color:var(--dcs-muted);line-height:1.5;
+}
+.dcs-sfrido b{color:var(--dcs-ink)}
+.dcs-sfrido.is-hidden{display:none}
+
+/* ---------------- gruppi al passo 3 ---------------- */
+.dcs-fam{
+  display:flex;align-items:center;gap:10px;margin:32px 0 16px;padding-bottom:8px;
+  border-bottom:1px solid var(--dcs-line);
+  font-family:var(--dcs-mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--dcs-faint);
+}
+.dcs-fam:first-child{margin-top:0}
+.dcs-fam span{color:var(--dcs-wood);display:block}
+.dcs-fam span svg{width:20px;height:20px;display:block}
+
+/* ---------------- avvisi ---------------- */
+.dcs-note{
+  margin:0 0 20px;padding:13px 15px;border-radius:10px;
+  background:#FFF6F6;border:1px solid #F3D5D7;
+  font-size:13.5px;color:var(--dcs-muted);line-height:1.55;
+}
+.dcs-note b{color:var(--dcs-red)}
+.dcs-note.is-ok{background:#F1F8F3;border-color:#CBE4D4}
+.dcs-note.is-ok b{color:var(--dcs-ok)}
+
+/* ---------------- riepilogo ---------------- */
+.dcs-sum{margin-top:26px;border:1px solid var(--dcs-line);border-radius:12px;overflow:hidden}
+.dcs-sumHead{
+  padding:13px 15px;background:var(--dcs-cream);border-bottom:1px solid var(--dcs-line);
+  font-size:13px;font-weight:700;
+}
+.dcs-sumBody{padding:13px 15px;font-size:13.5px;color:var(--dcs-muted)}
+.dcs-sumRow{display:flex;justify-content:space-between;gap:14px;padding:6px 0}
+.dcs-sumRow b{color:var(--dcs-ink);font-weight:700}
+.dcs-sumRow span{font-family:var(--dcs-mono);white-space:nowrap;text-align:right}
+
+/* ---------------- pulsanti ---------------- */
+.dcs-foot{
+  display:flex;gap:10px;align-items:center;margin-top:28px;
+  padding-top:20px;border-top:1px solid var(--dcs-line);
+}
+.dcs-btn{
+  flex:1;min-height:50px;padding:0 20px;border:0;border-radius:10px;
+  background:var(--dcs-red);color:#fff;font:800 15px/1 var(--dcs-sans);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;
+}
+.dcs-btn:hover{background:var(--dcs-red-press)}
+.dcs-btn[disabled]{opacity:.4;cursor:not-allowed}
+.dcs-btn svg{width:17px;height:17px}
+.dcs-btn.is-ghost{
+  flex:0 0 auto;background:var(--dcs-white);color:var(--dcs-ink);
+  border:1.5px solid var(--dcs-line-2);padding:0 18px;
+}
+.dcs-btn.is-ghost:hover{background:var(--dcs-cream)}
+.dcs-priv{font-size:12px;color:var(--dcs-faint);margin:18px 0 0;line-height:1.5}
+.dcs-priv b{color:var(--dcs-muted)}
+
+/* ---------------- schermata finale ---------------- */
+.dcs-done{padding:48px 20px;text-align:center}
+.dcs-done .dcs-tick{
+  width:64px;height:64px;border-radius:50%;background:var(--dcs-ok);color:#fff;
+  display:grid;place-items:center;margin:0 auto 20px;
+}
+.dcs-done .dcs-tick svg{width:32px;height:32px}
+.dcs-done h3{font-family:var(--dcs-serif);font-size:26px;font-weight:600;margin:0 0 12px}
+.dcs-done p{font-size:15px;color:var(--dcs-muted);margin:0 0 14px;line-height:1.6}
+.dcs-done code{
+  font-family:var(--dcs-mono);font-size:13px;background:var(--dcs-cream);
+  padding:2px 6px;border-radius:4px;
+}
+.dcs-debug{
+  margin-top:26px;text-align:left;background:var(--dcs-cream);border:1px solid var(--dcs-line);
+  border-radius:10px;padding:14px;font-family:var(--dcs-mono);font-size:11.5px;
+  color:var(--dcs-muted);white-space:pre-wrap;word-break:break-word;max-height:340px;overflow:auto;
+}
+.dcs-debug b{color:var(--dcs-ink);display:block;margin-bottom:8px;font-family:var(--dcs-sans);font-size:12px}
+
+/* ---------------- errore ---------------- */
+.dcs-err{
+  margin:0 0 18px;padding:13px 15px;border-radius:10px;
+  background:#FFF1F1;border:1px solid #F0C9CB;color:#8A1116;font-size:13.5px;
+}
+.dcs-err.is-hidden{display:none}
+
+
+/* v1.4 · 30/9/2026 — domande che compaiono solo nella Scheda agente */
+.dcs-q.is-ag{border-left:3px solid #B5843F;padding-left:12px}
+.dcs-q.is-ag > .dcs-lab::after{content:"agente";margin-left:8px;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#B5843F;border:1px solid #B5843F;border-radius:50px;padding:1px 7px;vertical-align:middle}
+.prova-modo a{display:inline-block;margin:0 6px 6px 0;padding:8px 14px;border-radius:50px;border:1px solid #D6CCC5;color:inherit;text-decoration:none;font-weight:700}
+.prova-modo a.on{background:#d80612;border-color:#d80612;color:#fff}
+
+/* v1.5 · gruppi e sezioni chiusi, più prodotti per famiglia */
+.dcs-grp,.dcs-sec{border:1px solid var(--dcs-line);border-radius:14px;background:var(--dcs-white);margin-bottom:10px;overflow:hidden}
+.dcs-grpHead,.dcs-secHead{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:12px;width:100%;min-height:56px;padding:12px 15px;cursor:pointer}
+.dcs-grpHead .dcs-ic,.dcs-secHead .dcs-ic{width:32px;height:32px;flex:0 0 auto;color:var(--dcs-wood);display:flex;align-items:center;justify-content:center}
+.dcs-grpHead b,.dcs-secHead b{flex:1;font-size:15px;font-weight:700}
+.dcs-chev{display:flex;color:var(--dcs-faint);transition:transform .2s}
+.is-open > .dcs-grpHead .dcs-chev,.is-open > .dcs-secHead .dcs-chev{transform:rotate(90deg)}
+.dcs-grpHead:focus-visible,.dcs-secHead:focus-visible{outline:2px solid var(--dcs-red);outline-offset:-2px}
+.dcs-grpBody{padding:0 10px 4px;border-top:1px solid var(--dcs-cream)}
+.dcs-grpBody .dcs-cat{margin:10px 0}
+.dcs-secBody{padding:4px 15px 16px;border-top:1px solid var(--dcs-cream)}
+.dcs-badge{min-width:22px;height:22px;border-radius:50px;background:var(--dcs-red);color:#fff;font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;padding:0 6px}
+.dcs-item{border:1px dashed var(--dcs-line-2);border-radius:12px;padding:10px 12px;margin:14px 0}
+.dcs-itemHead{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.dcs-del{all:unset;cursor:pointer;color:var(--dcs-muted);font-size:13px;text-decoration:underline;padding:6px}
+.dcs-add{all:unset;box-sizing:border-box;cursor:pointer;display:block;width:100%;text-align:center;margin-top:12px;padding:12px;border:1px dashed var(--dcs-red);border-radius:50px;color:var(--dcs-red);font-weight:700;font-size:14px}
+
+
+.dcs-multi{margin:-2px 0 8px;font-style:italic}
+
+
+/* v1.9b · 30/9 — BUG: con il telefono in modalità scura il nome del prodotto
+   diventava bianco su bianco (i pulsanti prendono il colore del sistema).
+   Colori fissati e modulo sempre chiaro, anche per calendario e campi. */
+#dc-scheda{color-scheme:light;color:var(--dcs-ink)}
+#dc-scheda button,#dc-scheda input,#dc-scheda select,#dc-scheda textarea{color:var(--dcs-ink)}
+#dc-scheda .dcs-btn{color:#fff}
+#dc-scheda .dcs-btn.is-ghost{color:var(--dcs-ink)}
+#dc-scheda .dcs-add{color:var(--dcs-red)}
+#dc-scheda .dcs-del{color:var(--dcs-muted)}
+#dc-scheda .dcs-badge{color:#fff}
+
+.dcs-rias{display:block;font-weight:500;font-size:12.5px;color:var(--dcs-muted);margin-top:2px}
+.dcs-consigliato{display:inline-block;margin-left:6px;font-size:11px;font-weight:700;color:#fff;background:var(--dcs-red);border-radius:50px;padding:2px 8px;vertical-align:middle}
+</style>
+</head>
+<body>
+
+<div class="prova-bar">
+  <b>PROVA</b> scheda cliente / agente &middot; v1.9 &middot; un file solo
+  <span class="sp"></span>
+  <button id="p-reset">azzera e ricomincia</button>
+</div>
+
+<div class="prova-wrap">
+  <div class="prova-note">
+    <p class="prova-modo"><a id="m-cli" href="#cliente">Scheda cliente (pubblica)</a><a id="m-ag" href="#agente">Scheda agente (interna)</a></p>
+    <p><b>v1.6 · due pagine, gruppi chiusi, più prodotti, scelta multipla.</b> La <b>Scheda cliente</b> va sul sito e porta il gclid: di obbligatorio c'&egrave; solo l'e-mail.
+    La <b>Scheda agente</b> &egrave; interna: nome e <b>codice agente</b> obbligatori, senza codice giusto non parte, niente gclid,
+    e mostra in pi&ugrave; le domande tecniche segnate &laquo;agente&raquo; (verso DX/SX, cilindri, pannelli, misure&hellip;).
+    In questa prova i codici validi sono 1101&ndash;1111; in WordPress li controlla il server.</p>
+    <p><b>Il pulsante di invio non manda niente:</b> ti mostra il JSON che sarebbe stato inviato.</p>
+  </div>
+  <script>document.getElementById((/modo=agente/.test(location.search)||location.hash==='#agente')?'m-ag':'m-cli').className='on';window.addEventListener('hashchange',function(){location.reload();});</script>
+
+  <!-- QUESTO &Egrave; TUTTO QUELLO CHE SERVE NELLA PAGINA.
+       In WordPress lo produce lo shortcode [scheda_cliente]. -->
+  <div id="dc-scheda"></div>
+</div>
+
+<script>
+document.getElementById('p-reset').onclick = function(){
+  try { localStorage.removeItem('dc_scheda_bozza_v1'); localStorage.removeItem('dc_scheda_bozza_v1_agente'); } catch(e){}
+  location.reload();
+};
+</script>
+
+<!-- ---- le domande ---- -->
+<script>
+/* ============================================================================
+   Disegnarecasa — Scheda cliente e Scheda agente: LE DOMANDE
+   Workstream J · v1.0 · 2026-08-28 · v1.4 e v1.5 · 2026-09-30
+   ----------------------------------------------------------------------------
+   QUESTO È IL FILE DA MODIFICARE per cambiare le domande.
+   Non serve toccare dc-scheda.js: qui c'è solo il contenuto.
+
+   Tipi di domanda:
+     (niente)      pulsanti da scegliere
+     t:'num'       campo libero numerico, con suf: 'unità'
+     t:'text'      campo libero di testo
+     t:'pair'      due numeri affiancati (larghezza × altezza)
+     t:'grid'      più numeri affiancati, per quantità divise
+     t:'date'      data con il calendario del telefono
+     t:'money'     budget libero: una cifra + l'unità (u:['€/m²','€ in tutto'])
+     altro:true    aggiunge il pulsante "Altro…" che apre un campo libero
+     if: fn(t)     la domanda appare solo se la funzione è vera
+     ag:true       la domanda compare SOLO nella Scheda agente [scheda_agente]
+     uno:true      sempre scelta singola (di norma le domande dei prodotti
+                   sono a scelta multipla: si possono chiedere più preventivi)
+     cl:true       la domanda compare SOLO nella Scheda cliente (l'agente ha la sua versione tecnica)
+     def: fn(c)    valore proposto in automatico (c.qta = quantità della famiglia);
+                   resta automatico finché non lo si cambia a mano
+     una:true      chiesta una volta sola per famiglia, anche se si aggiungono
+                   più prodotti (es. il riscaldamento a pavimento è della casa)
+
+   Famiglie:
+     multi:false   niente pulsante «Aggiungi un altro prodotto»
+     noQty:true    niente quantità al passo 1
+
+   gruppi: come si presentano le famiglie al passo 1. Tutti CHIUSI: si apre
+   solo quello che il cliente tocca (decisione di Diego, 30/9/2026).
+   L'ordine conta: il parquet in legno è il 90% delle vendite e sta in cima.
+
+   Regola: un campo lasciato vuoto vale "non lo so". Non si obbliga
+   nessuno a indovinare. L'unico campo obbligatorio è l'e-mail.
+   ============================================================================ */
+(function (w) {
+  'use strict';
+
+  var DUNNO = 'Non lo so';
+  var CONS  = 'Consigliatemi voi';
+  var VAL   = 'Da valutare, dipende dal prezzo';
+
+  /* Il budget, uguale ovunque: una cifra libera e l'unità. */
+  function budget(u) {
+    return { id:'budget', t:'money', l:'Budget indicativo', u: u || ['€/m²','€ in tutto'],
+             h:'Anche una cifra tonda, al metro quadro o in tutto. Serve a non proporti cose fuori bersaglio.' };
+  }
+  /* Il prodotto visto sul sito: codice, nome o link (idea presa dalla scheda di Miju). */
+  function prodotto() {
+    return { id:'prodotto', t:'text', l:'Codice, nome o link del prodotto',
+             h:'Se l\'hai visto sul sito o in showroom. Va bene anche «quello rovere chiaro».' };
+  }
+  /* Battiscopa e soglie: per tutti i pavimenti, solo nella Scheda agente. */
+  function finiture() {
+    return [
+      { id:'battiscopa', ag:true, una:true, t:'num', suf:'m lineari', l:'Battiscopa',
+        h:'Proposto in automatico: m² del pavimento + 10% di sfrido. Correggilo se serve.',
+        def:function(c){ return c.qta ? Math.ceil(c.qta * 1.10) : ''; } },
+      { id:'battiscopaCol', ag:true, una:true, l:'Colore del battiscopa',
+        o:['In tinta con il pavimento','Bianco','Da scegliere'], altro:true },
+      { id:'soglieScivolo', ag:true, una:true, t:'num', suf:'m lineari', l:'Soglie a scivolo' },
+      { id:'soglieT', ag:true, una:true, t:'num', suf:'m lineari', l:'Soglie a T' },
+      { id:'soglieCol', ag:true, una:true, l:'Colore delle soglie',
+        o:['In tinta con il pavimento','Argento','Oro','Da scegliere'], altro:true }
+    ];
+  }
+
+  var DA_POSARE = ['pav','spc','laminati','esterni','ceramiche','porte','blind','infissi',
+                   'chiusure','bagno','doccia','vasche','saune','idro','accessori','altro'];
+
+  w.DC_SCHEDA_CONFIG = {
+
+    testi: {
+      titolo:        'Richiedi il preventivo',
+      titoloAgente:  'Scheda agente',
+      telefono:      '02 3910 0466',
+      telefonoTel:   '+390239100466',
+      privacy:       'Li usiamo per prepararti il preventivo e risponderti, niente altro. Nessuna newsletter se non la chiedi.'
+    },
+
+    /* Solo per il file di prova: in WordPress i nomi arrivano da Schede cliente → Persone. */
+    agenti: ['Il primo disponibile', 'Serena', 'Alex', 'Giselle', 'Iri',
+             'Diego S', 'Diego J', 'Rosaria', 'Aldrin', 'Ferdinando',
+             'Ferrari', 'Aldo'],
+
+    /* --- i gruppi del passo 1, nell'ordine in cui si vedono --------------- */
+    gruppi: [
+      { n:'Parquet in legno',                        f:['pav'] },
+      { n:'Porte interne',                           f:['porte'] },
+      { n:'Porte blindate',                          f:['blind'] },
+      { n:'Decking da esterno: WPC e legno',         f:['esterni'] },
+      { n:'Parquet finto legno: SPC, LVT, laminati', f:['spc','laminati'], ic:'lvt' },
+      { n:'Pavimenti in ceramica',                   f:['ceramiche'] },
+      { n:'Arredo bagno: docce, vasche, mobili',     f:['doccia','vasche','bagno'], ic:'bagno' },
+      { n:'Wellness: saune, bagno turco, minipiscine e jacuzzi', f:['saune','idro'], ic:'idro' },
+      { n:'Materassi',                               f:['materassi'] },
+      { n:'Infissi, tapparelle, zanzariere, garage', f:['infissi','chiusure'], ic:'infissi' },
+      { n:'Arredo casa: divani, poltrone, camerette, letti, tavoli', f:['divani','camerette','arredo'], ic:'divani' },
+      { n:'Edilizia, accessori e altro',             f:['accessori','altro'], ic:'altro' }
+    ],
+
+    /* --- LEAD PREDITTIVO: chi è il cliente e come ci ha trovato -----------
+       Sono le variabili del documento per il Claude di Cataldo (§ 7.2, § 9.1):
+       il modello le usa per stimare la probabilità di vendita e quindi il
+       «Valore Predittivo Lead Qualificato» da mandare a Google. Tutte
+       facoltative. Sezione a sé, chiusa come le altre. -------------------- */
+    profilo: [
+      { id:'fonte', l:'Come ci hai conosciuto?', multi:true,
+        o:['Google','Sito Disegnarecasa','Showroom','Passaparola / amici','Facebook / Instagram','YouTube','Sono già cliente','Me l\'ha consigliato il posatore o l\'architetto'], altro:true },
+      /* v1.9 · dalla ricerca: fase del progetto e motivo sono fra le variabili più predittive */
+      { id:'fase', l:'A che punto sei?', o:['Casa appena comprata / rogito a breve','Lavori già iniziati','Lavori da iniziare entro 3 mesi','Sto progettando, oltre 3 mesi','Sto solo guardando'] },
+      { id:'motivo', l:'Perché fai il lavoro?', multi:true, o:['Casa nuova / trasloco','Ristrutturazione','Pavimento rovinato o danno (anche infiltrazione)','Voglio cambiare stile','Casa da affittare o vendere'], altro:true },
+      { id:'nAmbienti', t:'num', suf:'ambienti', l:'Quanti ambienti in tutto?' },
+      { id:'showroom', l:'Sei già stato in uno dei nostri showroom?', o:['Sì, a Milano','Sì, a Roma','No, non ancora','Vorrei venire'] },
+      { id:'campioni', l:'Hai già ricevuto i nostri campioni?', o:['Sì','No','Li vorrei ricevere'] },
+      { id:'tipoCliente', l:'Il lavoro è per', o:['Casa mia (privato)','Un\'impresa edile','Un posatore','Un architetto o progettista','Un negozio o ufficio'] },
+      { id:'eta', ag:true, l:'Fascia d\'età (stima dell\'agente)', h:'Facoltativa: ci aiuta a capire che proposte fare.',
+        o:['Meno di 35','35-50','50-65','Oltre 65'], if:function(t){ return !t.tipoCliente || t.tipoCliente==='Casa mia (privato)'; } },
+      { id:'altriPrev', ag:true, l:'Ha chiesto preventivi anche ad altri?', o:['No, solo a voi','Sì, a 1-2 negozi','Sì, a più di 2','Preferisco non dirlo'] },
+      { id:'detrazione', l:'Userai una detrazione o un bonus?', multi:true, o:['Bonus casa (ristrutturazione)','Ecobonus (risparmio energetico)','Dispositivo medico 19% (materassi)','Nessuna',DUNNO] },
+
+      /* --- solo Scheda agente --- */
+      { id:'primoContatto', ag:true, t:'date', breve:'Primo contatto', l:'Data del primo contatto' },
+      { id:'tipoContatto', ag:true, multi:true, l:'Come è avvenuto il contatto', o:['Di presenza in showroom','Telefono','E-mail','WhatsApp','Chat del sito','Modulo del sito'] },
+      { id:'natoDa', ag:true, l:'Il preventivo nasce', o:['Dopo una visita in showroom','Dopo la spedizione dei campioni','Solo al telefono','Solo per e-mail / WhatsApp','Dopo un sopralluogo'] },
+      { id:'puntoVendita', ag:true, l:'Punto vendita', o:['Milano','Roma','Online'] },
+      { id:'giaCliente', ag:true, l:'Già cliente?', o:['Nuovo cliente','Ha già comprato da noi'] },
+      { id:'iva', ag:true, l:'Regime IVA', o:['10% (con la nostra posa)','22% (solo materiale)','Art. 17 (impresa)','4% (solo costruzione della prima casa)',DUNNO] },
+      { id:'beniSign', ag:true, l:'Ci sono «beni significativi» (porte, infissi, sanitari)?', h:'Al 10% solo fino al valore della manodopera, il resto al 22%: la fattura va divisa.', o:['Sì','No',DUNNO] },
+      { id:'concorrente', ag:true, t:'text', l:'Concorrenti nominati e prezzo che gli hanno fatto', h:'Es. «Kaoss 30,90 €/m², Leroy Merlin». Ci serve per capire dove siamo forti.' },
+      { id:'budgetTot', ag:true, t:'money', u:['€ in tutto'], l:'Budget totale dichiarato' },
+      { id:'cantiere', ag:true, l:'Il cantiere è', o:['Casa abitata','Casa vuota / ristrutturazione','Nuova costruzione','Locale commerciale',DUNNO] },
+      { id:'decide', ag:true, l:'Chi decide', o:['Il cliente da solo','La coppia / la famiglia','Impresa o architetto','Non chiaro'] },
+      { id:'impressione', ag:true, l:'Impressione dell\'agente', o:['Caldo: vuole comprare','Tiepido: sta confrontando','Freddo: sta solo guardando'] },
+      /* voto 1-10 chiesto da Diego: numerico, quindi utile al modello predittivo.
+         Nota per Cataldo: usarlo solo se compilato PRIMA di mandare il valore a Google. */
+      { id:'voto', ag:true, uno:true, l:'Interesse del cliente, voto da 1 a 10', h:'1 = nessun interesse, 10 = compra subito.', o:['1','2','3','4','5','6','7','8','9','10'] },
+      { id:'prezzoConc', ag:true, t:'num', suf:'€/m² o € totali', l:'Prezzo fatto dal concorrente (numero)' },
+      { id:'prevInviato', ag:true, t:'date', breve:'Preventivo inviato', l:'Data invio del preventivo' },
+      { id:'impressioneNote', ag:true, t:'text', l:'Impressioni dell\'agente', h:'Com\'è sembrato il cliente, cosa lo frena, cosa gli piace, che fretta ha.' }
+    ],
+
+    /* --- domande comuni, chieste una volta sola --------------------------- */
+    comuni: [
+      { id:'posa', l:'Serve la posa?', h:'È il bivio più grosso del preventivo.',
+        o:['La posate voi','Ho già il mio posatore','La faccio io',VAL,DUNNO],
+        if:function(t, sel){ return DA_POSARE.some(function(k){ return sel && sel[k]; }); } },
+      { id:'piano', t:'num', suf:'piano', l:'A che piano?',
+        h:'Scrivi il numero: 0 per il piano terra. Anche 11, se è l\'undicesimo.' },
+      { id:'ascensore', l:'C\'è l\'ascensore?', o:['Sì','No',DUNNO],
+        if:function(t){ return t.piano && String(t.piano).trim()!=='' && String(t.piano).trim()!=='0'; } },
+      { id:'facchinaggio', l:'Serve il facchinaggio?',
+        h:'Cioè: portiamo la merce su noi, oppure lo scarico a terra va bene.',
+        o:['Sì, portate su voi','No, scarico a terra va bene',VAL,DUNNO] },
+      { id:'sopralluogo', l:'Serve un sopralluogo?',
+        h:'Veniamo noi a misurare. Se hai già le misure si salta.',
+        o:['Sì, meglio','Forse, da valutare','No, ho già le misure',DUNNO] },
+      { id:'fotoVideo', l:'Vuoi ricevere foto e video dei prodotti che ti interessano?',
+        h:'Ti mandiamo foto vere e brevi video dei prodotti, anche posati, per vederli prima di decidere.',
+        o:['Sì, su WhatsApp','Sì, per e-mail','No, grazie'], multi:true },
+      /* v1.6 · PROMEMORIA per il venditore: cosa mandare e di quali prodotti.
+         Finisce in cima alla mail, subito sotto «Contattalo via…». */
+      { id:'daMandare', ag:true, multi:true, l:'Promemoria: cosa mandare al cliente',
+        o:['Foto','Video','Foto dei prodotti posati','Campioni','Scheda tecnica','Listino'], altro:true },
+      { id:'daMandareCosa', ag:true, t:'text', l:'Di quali prodotti (nomi o codici)',
+        h:'Es. «Rovere 3 strip naturale e plancia miele, blindata classe 3 bianca».' },
+      { id:'daMandareCome', ag:true, multi:true, l:'Come mandarle', o:['WhatsApp','E-mail'] },
+      /* v1.6 · date vere con il calendario, al posto delle fasce «entro il mese…» */
+      { id:'dataIdeale', t:'date', breve:'Data ideale', l:'Data ideale di consegna o di posa',
+        h:'Tocca il campo e scegli sul calendario. Se non hai una data, lascia vuoto.' },
+      { id:'dataMax', t:'date', breve:'Data massima', l:'Data massima: oltre questa data non ti va più bene' },
+      { id:'fretta', l:'Se non hai date', o:['Sto solo valutando','Nessuna fretta'],
+        if:function(t){ return !t.dataIdeale && !t.dataMax; } },
+
+      /* --- solo Scheda agente --- */
+      { id:'accessoMezzi', ag:true, l:'Accesso per lo scarico', h:'ZTL, parcheggio, strada stretta: cambia il trasporto.', o:['Nessun problema','ZTL','Parcheggio difficile','Serve argano / piattaforma',DUNNO] },
+      { id:'ascensoreMis', ag:true, t:'pair', l:'Ascensore: misure interne', pair:[{id:'larg',l:'Larghezza',suf:'cm'},{id:'prof',l:'Profondità',suf:'cm'}] },
+      { id:'scalaLarg', ag:true, t:'num', suf:'cm', l:'Larghezza della scala' },
+      { id:'camion', ag:true, l:'Il camion resta a più di 20 m dal portone?', o:['Sì','No',DUNNO] },
+      { id:'colli', ag:true, l:'Colli più lunghi di 230 cm o più pesanti di 70 kg?', h:'Plance lunghe, lastre, vetri doccia, divani.', o:['Sì','No',DUNNO] },
+      { id:'smaltimento', ag:true, l:'Smaltimento del vecchio', o:['Sì, a carico nostro','No, ci pensa il cliente','Non serve',DUNNO],
+        if:function(t, sel){ return DA_POSARE.some(function(k){ return sel && sel[k]; }); } },
+
+      /* Dati per ordine e fattura: SOLO agente e SOLO a preventivo accettato.
+         Al cliente non si chiedono mai (decisione del 28/8: fanno scappare). */
+      { id:'accettato', ag:true, l:'Il cliente ha accettato il preventivo?', o:['Sì','Non ancora'] },
+      { id:'cfpiva', ag:true, t:'text', l:'Codice fiscale o partita IVA', if:function(t){ return t.accettato==='Sì'; } },
+      { id:'ragione', ag:true, t:'text', l:'Intestazione fattura (nome o ragione sociale)', if:function(t){ return t.accettato==='Sì'; } },
+      { id:'indirizzo', ag:true, t:'text', l:'Indirizzo del cantiere (via e civico)', if:function(t){ return t.accettato==='Sì'; } },
+      { id:'capCitta', ag:true, t:'text', l:'CAP, città e provincia', if:function(t){ return t.accettato==='Sì'; } },
+      { id:'scala', ag:true, t:'text', l:'Scala / interno', if:function(t){ return t.accettato==='Sì'; } },
+      { id:'noteAccesso', ag:true, t:'text', l:'Note per l\'accesso', h:'Citofono, orari del condominio, chiavi.', if:function(t){ return t.accettato==='Sì'; } }
+    ],
+
+    famiglie: [
+
+      /* ================= PARQUET IN LEGNO (90% delle vendite) ================ */
+      { k:'pav', itemTxt:'Parquet', n:'Parquet in legno', u:'m²', ic:'pav',
+        qty:'Quanti metri quadri, più o meno?',
+        hint:'Anche a occhio: la superficie della stanza. Lo sfrido lo calcoliamo noi.',
+        sfrido:true, addTxt:'Aggiungi un altro parquet da preventivare', Q:[
+        { id:'famiglia', l:'Che tipo di parquet', o:['Parquet massello tradizionale','Parquet prefinito','Parquet massello prefinito','Massello bamboo',CONS] },
+        { id:'formato', l:'Formato', o:['Listone','Plancia intera','3 strip','Spina italiana','Spina ungherese','Tavolato',CONS], altro:true },
+        { id:'essenza', l:'Essenza', o:['Rovere','Teak','Doussié','Iroko','Noce','Faggio','Bamboo',CONS], altro:true },
+        { id:'colore', l:'Colorazione', o:['Naturale','Chiaro o sbiancato','Miele','Grigio','Scuro',CONS], altro:true },
+        { id:'aspetto', cl:true, l:'Aspetto del legno', o:['Senza nodi','Con nodi piccoli','Con nodi anche grandi','Rustica nodata',CONS] },
+        { id:'posa', l:'Tipo di posa', o:['Flottante','Flottante con materassino','Incollata',CONS] },
+        prodotto(),
+        { id:'risc', una:true, l:'C\'è il riscaldamento a pavimento?',
+          h:'Cambia la colla, la posa e metà del catalogo. Con il raffrescamento serve la posa incollata.', o:['No','Solo riscaldamento','Riscaldamento e raffrescamento',DUNNO] },
+        { id:'gradini', una:true, t:'num', suf:'gradini', l:'Ci sono gradini da rivestire?', h:'Le scale si fanno a pezzo. Lascia vuoto se non ci sono.' },
+        { id:'gradiniTipo', una:true, l:'Gradini', o:['Solo pedate','Pedate e alzate'], if:function(t){ return t.gradini && t.gradini!=='0'; } },
+        { id:'esistente', una:true, l:'Dove si posa?', o:['Su massetto nuovo','Su massetto vecchio','Sopra il pavimento esistente','Da togliere il pavimento esistente',DUNNO] },
+        { id:'altezza', una:true, t:'num', suf:'mm', l:'Quanta altezza hai a disposizione?',
+          h:'Dal pavimento attuale al filo inferiore della porta. Se non lo sai lascia vuoto.',
+          if:function(t){ return t.esistente==='Sopra il pavimento esistente'; } },
+        { id:'ambienti', una:true, l:'Quali ambienti', o:['Tutta casa','Zona giorno','Camere','Un ambiente solo',DUNNO], altro:true },
+        budget(),
+        /* --- solo Scheda agente --- */
+        { id:'spessore', ag:true, l:'Spessore totale', o:['10-11 mm','14-15 mm','19-22 mm',CONS], altro:true },
+        { id:'nobile', ag:true, l:'Strato nobile', h:'Quante levigature regge nel tempo.', o:['2,5-3 mm','4 mm','6 mm',CONS] },
+        { id:'scelta', ag:true, l:'Selezione del legno', o:['AB Top Excelsior','ABC Top Esclusive','ABCD Select','ABCD Standard','BCD Natura','CD Rustica','CDE Extra Rustica',CONS] },
+        /* più voci insieme: un listone può essere spazzolato E piallato E oliato */
+        { id:'lavorazione', ag:true, l:'Lavorazione della superficie', o:['Liscio','Spazzolato','Piallato a mano','Segato','Anticato / invecchiato',CONS] },
+        { id:'finituraPav', ag:true, l:'Finitura', o:['Verniciato opaco','Verniciato satinato','Oliato','Olio-cera','Grezzo da finire in opera',CONS] },
+        { id:'bagniPav', ag:true, una:true, t:'num', suf:'n.', l:'Quanti bagni col parquet?' },
+        { id:'porteRifilare', ag:true, una:true, t:'num', suf:'porte', l:'Porte da rifilare dopo la posa' },
+        { id:'levigatura', ag:true, una:true, l:'Levigatura e verniciatura in opera', o:['Sì','No',DUNNO] },
+        { id:'schemaPosa', ag:true, l:'Schema di posa (listone e plancia)', o:['Dritta','Diagonale',CONS] }
+      ].concat(finiture()) },
+
+      /* ================= PAVIMENTI SPC E LAMINATI ============================ */
+      { k:'spc', itemTxt:'SPC / LVT', n:'SPC e LVT (vinilici)', u:'m²', ic:'lvt', qty:'Quanti metri quadri?', sfrido:true, Q:[
+        { id:'quale', l:'Quale ti interessa', h:'L\'SPC è rigido, stabile e non teme l\'acqua.',
+          o:['SPC a click','LVT vinilico a click','LVT vinilico a colla',CONS] },
+        { id:'formato', l:'Formato', o:['Doga standard','Plancia larga','Spina','Piastra effetto pietra',CONS], altro:true },
+        { id:'effetto', l:'Effetto', o:['Legno','Pietra','Cemento',CONS], altro:true },
+        { id:'colore', l:'Colorazione', o:['Chiaro','Naturale','Grigio','Scuro',CONS], altro:true },
+        prodotto(),
+        { id:'uso', una:true, l:'Dove va posato', o:['Casa','Negozio o ufficio','Locale pubblico',DUNNO] },
+        { id:'risc', una:true, l:'C\'è il riscaldamento a pavimento?', o:['Sì','No',DUNNO] },
+        { id:'esistente', una:true, l:'Dove si posa?', o:['Su massetto','Sopra il pavimento esistente','Da togliere il pavimento esistente',DUNNO] },
+        { id:'sole', una:true, l:'Prende sole diretto (vetrate a terra, veranda)?', h:'Il vinilico al sole forte può scolorire.', o:['Sì','No',DUNNO] },
+        { id:'lungo15', ag:true, una:true, l:'Ambiente continuo più lungo di 15 m?', h:'Servono giunti di dilatazione e profili.', o:['Sì','No',DUNNO] },
+        budget(),
+        { id:'spessoreLvt', ag:true, l:'Spessore totale', o:['4-5 mm','6-7 mm','8 mm',CONS] },
+        { id:'usura', ag:true, l:'Strato d\'usura', o:['0,3 mm','0,55 mm','0,7 mm',CONS] },
+        { id:'classeUso', ag:true, l:'Classe d\'uso', o:['23 casa','32 commerciale leggero','33 commerciale',CONS] },
+        { id:'materassino', ag:true, l:'Materassino', o:['Integrato','Da aggiungere',DUNNO] }
+      ].concat(finiture()) },
+
+      { k:'laminati', itemTxt:'Laminato', n:'Laminati', u:'m²', ic:'lvt', qty:'Quanti metri quadri?', sfrido:true, Q:[
+        { id:'classe', l:'Resistenza', h:'AC4 va bene per soggiorno e cucina, AC5 per negozi e uffici.',
+          o:['AC3','AC4','AC5',CONS] },
+        { id:'acqua', l:'Deve resistere all\'acqua?', o:['Non serve','Sì, in cucina o bagno',CONS] },
+        { id:'effetto', l:'Effetto', o:['Legno','Pietra','Cemento',CONS], altro:true },
+        { id:'colore', l:'Colorazione', o:['Chiaro','Naturale','Grigio','Scuro',CONS], altro:true },
+        prodotto(),
+        { id:'risc', una:true, l:'C\'è il riscaldamento a pavimento?', o:['Sì','No',DUNNO] },
+        { id:'esistente', una:true, l:'Dove si posa?', o:['Su massetto','Sopra il pavimento esistente','Da togliere il pavimento esistente',DUNNO] },
+        { id:'sole', una:true, l:'Prende sole diretto (vetrate a terra, veranda)?', h:'Il vinilico al sole forte può scolorire.', o:['Sì','No',DUNNO] },
+        { id:'lungo15', ag:true, una:true, l:'Ambiente continuo più lungo di 15 m?', h:'Servono giunti di dilatazione e profili.', o:['Sì','No',DUNNO] },
+        budget(),
+        { id:'spessoreLam', ag:true, l:'Spessore', o:['7-8 mm','10 mm','12 mm',CONS] },
+        { id:'acquaH', ag:true, l:'Resistenza all\'acqua (ore)', o:['24 h','48 h','72 h',CONS] },
+        { id:'materassino', ag:true, l:'Materassino', o:['Integrato','Da aggiungere',DUNNO] }
+      ].concat(finiture()) },
+
+      /* ================= ESTERNI =========================================== */
+      { k:'esterni', itemTxt:'Decking', n:'Decking da esterno: WPC e legno', u:'m²', ic:'esterni', qty:'Quanti metri quadri?', Q:[
+        { id:'materiale', l:'Materiale', h:'Il legno va oliato ogni anno o due. Il WPC praticamente no.',
+          o:['WPC (composito)','Legno',CONS] },
+        { id:'colore', l:'Colore', o:['Teak / miele','Marrone scuro','Grigio','Antracite',CONS], altro:true },
+        prodotto(),
+        { id:'supporto', una:true, l:'Su cosa si posa', o:['Massetto o cemento','Terrazzo o piastrelle esistenti','Terrazzo con guaina (non si fora)','Ghiaia o terra',DUNNO] },
+        { id:'dislivello', una:true, t:'num', suf:'cm', l:'Altezza disponibile o dislivello da recuperare' },
+        { id:'piscina', una:true, l:'È a bordo piscina?', o:['Sì','No'] },
+        budget(),
+        { id:'essenzaEst', ag:true, l:'Essenza', o:['IPE','Cumaru','Massaranduba','Teak','Frassino termotrattato','Bamboo',CONS], altro:true,
+          if:function(t){ return t.materiale==='Legno'; } },
+        { id:'doga', ag:true, l:'Doga', o:['Cava','Piena','Coestrusa',CONS], if:function(t){ return t.materiale==='WPC (composito)'; } },
+        { id:'fissaggio', ag:true, l:'Fissaggio', o:['Clip a scomparsa','Viti a vista',CONS] },
+        { id:'superficie', ag:true, l:'Superficie', o:['Liscia','Zigrinata','Reversibile',CONS] },
+        { id:'sottostruttura', ag:true, l:'Sottostruttura', o:['Magatelli in alluminio','Magatelli in WPC','Magatelli in legno','Piedini regolabili','C\'è già',DUNNO] },
+        { id:'lungDoga', ag:true, t:'num', suf:'m', l:'Lunghezza doga' }
+      ]},
+
+      /* ================= CERAMICHE ========================================= */
+      { k:'ceramiche', itemTxt:'Ceramica', n:'Pavimenti in ceramica', u:'m²', ic:'ceramiche', qty:'Quanti metri quadri?', Q:[
+        { id:'uso', l:'Pavimento o rivestimento?', o:['Pavimento','Rivestimento','Tutti e due',DUNNO] },
+        { id:'dove', l:'Interno o esterno?', o:['Interno','Esterno','Tutti e due'] },
+        { id:'formato', l:'Formato', o:['60×120','30×60','20×120 effetto legno','Grande formato',CONS], altro:true },
+        { id:'esistente', una:true, l:'Dove si posa?', o:['Su massetto','Sopra il pavimento esistente','Da togliere il pavimento esistente',DUNNO] },
+        { id:'effetto', l:'Effetto', o:['Legno','Pietra','Cemento','Marmo','Tinta unita',CONS], altro:true },
+        prodotto(),
+        budget(),
+        { id:'rettificato', ag:true, l:'Rettificato', o:['Sì','No',CONS] },
+        { id:'antiscivolo', ag:true, l:'Antiscivolo', o:['R9 interno','R10','R11 esterno','R12-R13','A/B/C piedi nudi (doccia, bordo piscina)',CONS] },
+        { id:'spessoreCer', ag:true, l:'Spessore', o:['6 mm','9-10 mm','20 mm (esterno)',CONS] },
+        { id:'posaCer', ag:true, l:'Schema di posa', o:['Dritta','Sfalsata 1/3','Sfalsata 1/2','Diagonale','Spina',CONS] },
+        { id:'mqRiv', ag:true, t:'num', suf:'m²', l:'Di cui m² di rivestimento' },
+        { id:'latoLungo', ag:true, t:'num', suf:'cm', l:'Lato lungo della lastra', h:'Per ascensore e scale con il grande formato.' }
+      ].concat(finiture()) },
+
+      /* ================= PORTE INTERNE ====================================== */
+      { k:'porte', n:'Porte interne', u:'porte', ic:'porte', qty:'Quante porte interne in tutto?',
+        hint:'Al passo 3 le dividi: ogni riga è una misura e un\'apertura, con la sua quantità.',
+        qtyItem:true, itemTxt:'Porta interna', qtyItemTxt:'Quante porte con questa misura e apertura',
+        addTxt:'Aggiungi un\'altra misura o apertura', Q:[
+        { id:'larghezza', l:'Misura porta (nominale)', h:'È la misura commerciale della porta: la luce libera è un po\' più piccola.', o:['60 cm','70 cm','80 cm','90 cm','Su misura',DUNNO] },
+        { id:'larghezzaSu', t:'num', suf:'cm', l:'Larghezza su misura', if:function(t){ return t.larghezza==='Su misura'; } },
+        { id:'altezza', l:'Altezza', o:['210 cm','220 cm','240 cm','Su misura',DUNNO] },
+        { id:'altezzaSu', t:'num', suf:'cm', l:'Altezza su misura', if:function(t){ return t.altezza==='Su misura'; } },
+        { id:'apertura', l:'Apertura (si guarda sempre dal lato dove si spinge)',
+          h:'Mettiti dal lato dove la porta si apre spingendo: se i cardini sono a destra è una destra a spingere.',
+          o:['Destra a spingere','Sinistra a spingere',DUNNO] },
+        { id:'tipo', l:'Tipo', o:['Battente','Battente a due ante','Scorrevole esterno muro','Scorrevole interno muro','A libro','Rototraslante','A bilico',DUNNO] },
+        { id:'vano', ag:true, t:'pair', l:'Vano muro', pair:[{id:'larg',l:'Larghezza',suf:'cm'},{id:'alt',l:'Altezza',suf:'cm'}] },
+        { id:'finitura', l:'Finitura', o:['Laccata','Laminato','Legno naturale',CONS], altro:true },
+        { id:'colore', l:'Colore', o:['Bianco','Legno chiaro','Legno scuro',CONS], altro:true },
+        { id:'maniglia', l:'Maniglia', o:['Argento / cromo satinato','Cromo lucido','Oro','Ottone','Bronzo','Nero',CONS], altro:true },
+        prodotto(),
+        { id:'telaio', una:true, l:'C\'è già il telaio?', o:['Sì, sostituisco solo l\'anta','No, tutto nuovo',DUNNO] },
+        budget(['€ a porta','€ in tutto']),
+        { id:'telaioTipo', ag:true, l:'Telaio', o:['Tradizionale con coprifili','Complanare','Filo muro rasomuro',DUNNO] },
+        { id:'controtelaioP', ag:true, l:'Controtelaio', o:['C\'è già','Da fornire','Per scorrevole (tipo Scrigno / Eclisse)',DUNNO] },
+        { id:'muro', ag:true, l:'Spessore del muro', o:['8 cm','10 cm','12 cm','15 cm','Altra misura'] },
+        { id:'muroSu', ag:true, t:'num', suf:'cm', l:'Spessore del muro (altra misura)', if:function(t){ return t.muro==='Altra misura'; } },
+        { id:'anta', ag:true, l:'Anta', o:['Cieca','Vetrata','Pantografata',CONS] },
+        { id:'cerniere', ag:true, l:'Cerniere', o:['Anuba','A scomparsa','A bilico',DUNNO] },
+        { id:'serratura', ag:true, l:'Serratura', o:['Normale (patent)','Magnetica','Con chiave yale','Nottolino WC',CONS] },
+        { id:'manigliaMod', ag:true, t:'text', l:'Maniglia: modello o nome' },
+        { id:'db', ag:true, l:'Isolamento acustico', o:['Standard','25 dB','30 dB','35 dB','40 dB'], altro:true },
+        { id:'ceramica', ag:true, una:true, l:'Ceramica sui muri accanto (bagno, cucina)?', o:['Sì','No',DUNNO] },
+        { id:'pavFinito', ag:true, una:true, l:'Il pavimento finito è già posato?', o:['Sì','No, si posa dopo',DUNNO] },
+        { id:'smontaggio', ag:true, una:true, l:'Smontaggio porte vecchie', o:['Sì','No',DUNNO] }
+      ]},
+
+      /* ================= PORTE BLINDATE ===================================== */
+      /* Le blindate si contano sempre a pezzi (mai a m²): totale al passo 1,
+         poi ogni riga = una misura + un'apertura + la sua quantità.
+         L'apertura si dice SEMPRE «a spingere» (vista dal lato dove si spinge). */
+      { k:'blind', n:'Porte blindate', u:'porte', ic:'blind', qty:'Quante porte blindate in tutto?',
+        hint:'Al passo 3 le dividi: ogni riga è una misura e un\'apertura, con la sua quantità.',
+        qtyItem:true, itemTxt:'Porta blindata', qtyItemTxt:'Quante blindate con questa misura e apertura',
+        addTxt:'Aggiungi un\'altra misura o apertura', Q:[
+        { id:'larghezza', l:'Larghezza (luce di passaggio)',
+          o:['80 cm','85 cm','90 cm','95 cm','110 cm a due ante (80 + 30)','120 cm a due ante (90 + 30)','Su misura',DUNNO] },
+        { id:'larghezzaSu', t:'num', suf:'cm', l:'Larghezza su misura', if:function(t){ return t.larghezza==='Su misura'; } },
+        { id:'altezza', l:'Altezza', o:['200 cm','205 cm','210 cm','Su misura',DUNNO] },
+        { id:'altezzaSu', t:'num', suf:'cm', l:'Altezza su misura', if:function(t){ return t.altezza==='Su misura'; } },
+        { id:'suMisura', t:'text', l:'Descrivi la blindata su misura', h:'Con parole tue: forma, ante, sopraluce, finitura.',
+          if:function(t){ return t.larghezza==='Su misura' || t.altezza==='Su misura'; } },
+        { id:'apertura', l:'Apertura (si guarda sempre dal lato dove si spinge)',
+          h:'Mettiti dal lato dove la porta si apre spingendo: se i cardini sono a destra è una destra a spingere.',
+          o:['Destra a spingere','Sinistra a spingere',DUNNO] },
+        { id:'versoApre', l:'La porta si apre verso', o:['Dentro casa','Fuori',DUNNO] },
+        { id:'sopraluce', l:'Sopraluce o fiancoluce', h:'Vetro sopra o di fianco alla porta: cambia molto il prezzo.', o:['No','Sopraluce','Fiancoluce laterale','Tutti e due',DUNNO] },
+        { id:'cilindri', l:'Serratura', o:['1 cilindro','2 cilindri','Combinata con elettronica',CONS] },
+        { id:'classe', l:'Classe antieffrazione', h:'Per una casa di solito la 3. La 4 per ville e piani terra.',
+          o:['Classe 3','Classe 4',DUNNO] },
+        { id:'pannEst', l:'Pannello esterno', h:'Se prende pioggia e sole: PVC, alluminio o vetroresina.',
+          o:['Laminato','PVC','Alluminio','Vetroresina','Okoumé marino','Laccato',CONS], altro:true },
+        { id:'pannInt', l:'Pannello interno', o:['Liscio bianco','Laminato legno','Laccato','Uguale alle porte interne',CONS], altro:true },
+        { id:'maniglia', l:'Maniglieria', o:['Argento / cromo satinato','Cromo lucido','Oro','Ottone','Bronzo','Nero',CONS], altro:true },
+        { id:'condominio', l:'Il condominio impone un colore o un modello esterno?', o:['No','Sì',DUNNO] },
+        { id:'condominioCol', t:'text', l:'Quale colore o modello?', h:'Anche «come quella del vicino»: una foto aiuta.',
+          if:function(t){ return t.condominio==='Sì'; } },
+        prodotto(),
+        { id:'dove', una:true, l:'Dove si trova', o:['Pianerottolo di condominio','Esterna ma riparata (portico)','Esterna, esposta al tempo',DUNNO] },
+        { id:'muroTipo', ag:true, una:true, l:'Tipo di muro', o:['Cemento armato','Mattone pieno','Forati','Cartongesso',DUNNO] },
+        { id:'confina', ag:true, una:true, l:'La porta confina con', h:'Solo nei primi due casi serve l\'Ud per le detrazioni energetiche.', o:['Esterno','Vano scala non riscaldato','Vano scala riscaldato',DUNNO] },
+        { id:'controtelaio', una:true, l:'C\'è già il controtelaio murato?', o:['Sì, da conservare','No',DUNNO] },
+        budget(['€ a porta','€ in tutto']),
+        { id:'classeAg', ag:true, l:'Classe (UNI EN 1627) se diversa', o:['Classe 2','Classe 3','Classe 4'] },
+        { id:'defender', ag:true, l:'Defender', o:['Sì','No',CONS] },
+        { id:'db', ag:true, l:'Isolamento acustico', o:['Standard','32 dB','37 dB','40 dB','42 dB','45 dB'], altro:true },
+        { id:'ud', ag:true, l:'Isolamento termico Ud', h:'Serve se dà sull\'esterno o per la detrazione.',
+          o:['Non serve','2,0 W/m²K','1,8 W/m²K','1,4 W/m²K','1,3 W/m²K','1,0 W/m²K'], altro:true },
+        { id:'ingombro', ag:true, t:'pair', l:'Ingombro controtelaio / vano muro', h:'Es. passaggio 90×210 → ingombro 103×217 circa.',
+          pair:[{id:'larg',l:'Larghezza',suf:'cm'},{id:'alt',l:'Altezza',suf:'cm'}] },
+        { id:'muro', ag:true, l:'Spessore del muro', o:['10 cm','15 cm','20 cm','30 cm','Altra misura'] },
+        { id:'muroSu', ag:true, t:'num', suf:'cm', l:'Spessore del muro (altra misura)', if:function(t){ return t.muro==='Altra misura'; } },
+        { id:'extraBl', ag:true, l:'Extra', o:['Spioncino digitale','Limitatore di apertura','Soglia mobile paraspifferi','Nessuno'], altro:true },
+        { id:'manigliaMod', ag:true, t:'text', l:'Maniglia / pomolo: modello' },
+        { id:'vecchia', ag:true, una:true, l:'Porta esistente', o:['Da smontare e smaltire','Si riveste il telaio esistente','Nessuna porta',DUNNO] }
+      ]},
+
+      /* ================= INFISSI E CHIUSURE ================================= */
+      { k:'infissi', n:'Infissi e finestre', u:'pezzi', ic:'infissi', qty:'Quanti infissi in tutto?',
+        hint:'Finestre e porte-finestre. Al passo 3 li dividi per tipo e misura.',
+        qtyItem:true, itemTxt:'Infisso', qtyItemTxt:'Quanti con questo tipo e questa misura', addTxt:'Aggiungi un altro tipo o misura', Q:[
+        { id:'tipoInf', uno:true, l:'Tipo', o:['Finestra 1 anta','Finestra 2 ante','Porta-finestra 1 anta','Porta-finestra 2 ante','Scorrevole','Fisso','Vasistas',DUNNO] },
+        { id:'misuraInf', t:'pair', l:'Misura (larghezza × altezza)', h:'Se non la sai lascia vuoto: la prendiamo al sopralluogo.',
+          pair:[{id:'larg',l:'Larghezza',suf:'cm'},{id:'alt',l:'Altezza',suf:'cm'}] },
+        { id:'aperturaInf', l:'Apertura (vista da dentro)', o:['Destra','Sinistra','Non serve',DUNNO] },
+        { id:'materiale', l:'Materiale', o:['PVC','Legno','Alluminio','Legno-alluminio',CONS], altro:true },
+        { id:'apre', l:'Apertura', h:'L\'anta-ribalta si apre anche a vasistas.',
+          o:['Battente','Anta-ribalta','Scorrevole','Alzante scorrevole',CONS] },
+        { id:'vetro', l:'Vetro', o:['Doppio','Triplo',CONS] },
+        { id:'colore', l:'Colore', o:['Bianco','Legno','Grigio antracite',CONS], altro:true },
+        { id:'lavoro', una:true, l:'Sostituzione o costruzione nuova?', o:['Sostituzione','Costruzione nuova',DUNNO] },
+        { id:'prima', una:true, l:'È l\'abitazione principale?', h:'Nel 2026 la detrazione è del 50% sull\'abitazione principale, 36% sugli altri immobili.', o:['Sì, abitazione principale','No',DUNNO] },
+        { id:'accessori', una:true, l:'Servono anche', o:['Tapparelle','Persiane','Zanzariere','No, solo infissi',VAL], altro:true },
+        budget(['€ in tutto','€ a finestra']),
+        { id:'coloreInt', ag:true, t:'text', l:'Colore interno' },
+        { id:'coloreEst', ag:true, t:'text', l:'Colore esterno' },
+        { id:'camere', ag:true, l:'Profilo', o:['5 camere','6 camere','7 camere','Taglio termico (alluminio)',CONS] },
+        { id:'vetroTipo', ag:true, l:'Tipo di vetro', o:['Basso emissivo','Stratificato di sicurezza','Acustico','Satinato (bagno)',CONS] },
+        { id:'uw', ag:true, t:'num', suf:'W/m²K', l:'Uw richiesto (finestra intera)' },
+        { id:'comune', ag:true, una:true, t:'text', l:'Comune', h:'Per la zona climatica e la detrazione.' },
+        { id:'telai', ag:true, una:true, l:'I vecchi telai', o:['Si tolgono','Si posa sopra',CONS] },
+        { id:'cassonetto', ag:true, una:true, l:'Cassonetto', o:['Non c\'è','C\'è, da conservare','C\'è, da isolare o sostituire','Monoblocco nuovo',DUNNO] },
+        { id:'soglia', ag:true, l:'Soglia porte-finestra', o:['Ribassata','Standard',CONS] },
+        { id:'ferramenta', ag:true, l:'Ferramenta', o:['Standard','Antieffrazione',CONS] }
+      ]},
+
+      { k:'chiusure', n:'Tapparelle, persiane, zanzariere, inferiate, garage', u:'pezzi', ic:'chiusure', qty:'Quanti pezzi in tutto?',
+        qtyItem:true, itemTxt:'Chiusura', qtyItemTxt:'Quanti con questa misura', addTxt:'Aggiungi un\'altra misura o prodotto', Q:[
+        { id:'cosa', l:'Che cosa', o:['Tapparelle','Persiane','Zanzariere','Inferiate / grate','Porta da garage'], altro:true },
+        { id:'misuraCh', t:'pair', l:'Misura (larghezza × altezza)', pair:[{id:'larg',l:'Larghezza',suf:'cm'},{id:'alt',l:'Altezza',suf:'cm'}] },
+        { id:'motore', l:'Motorizzata?', o:['Sì','No',CONS], if:function(t){ return t.cosa==='Tapparelle' || t.cosa==='Porta da garage'; } },
+        prodotto(),
+        budget(['€ in tutto','€ a pezzo']),
+        { id:'garageTipo', ag:true, l:'Porta garage: tipo', o:['Sezionale','Basculante','Avvolgibile',CONS], if:function(t){ return t.cosa==='Porta da garage'; } },
+        { id:'classeInf', ag:true, l:'Classe antieffrazione', o:['Classe 2','Classe 3','Classe 4',DUNNO], if:function(t){ return t.cosa==='Inferiate / grate'; } },
+        { id:'zanzTipo', ag:true, l:'Zanzariera', o:['A rullo verticale','Laterale','Plissé','Fissa',CONS], if:function(t){ return t.cosa==='Zanzariere'; } },
+        { id:'matChius', ag:true, l:'Materiale', o:['Alluminio','PVC','Acciaio','Legno',CONS] },
+        { id:'ral', ag:true, t:'text', l:'Colore RAL' }
+      ]},
+
+      /* ================= ARREDO BAGNO ====================================== */
+      { k:'doccia', n:'Box doccia e cabine', u:'box', ic:'doccia', qty:'Quanti box doccia in tutto?',
+        qtyItem:true, itemTxt:'Box doccia', qtyItemTxt:'Quanti box con questa misura', addTxt:'Aggiungi un\'altra misura', Q:[
+        { id:'tipo', l:'Come è messa la doccia', h:'Nicchia = fra tre muri. Angolo = fra due. Walk-in = una parete sola.',
+          o:['In nicchia','Ad angolo','Tre lati','Walk-in','Semicircolare',DUNNO] },
+        { id:'piastrellato', una:true, l:'Il bagno è già piastrellato e il piatto posato?', h:'Le misure vanno prese sul bagno finito.', o:['Sì','No',DUNNO] },
+        { id:'misura', l:'Misura del piatto', o:['70×90','80×80','80×100','80×120','90×90','90×120','100×100','Su misura',DUNNO] },
+        { id:'misureSu', t:'pair', l:'Misura su misura', pair:[{id:'larg',l:'Larghezza',suf:'cm'},{id:'prof',l:'Profondità',suf:'cm'}],
+          if:function(t){ return t.misura==='Su misura'; } },
+        { id:'apertura', l:'Apertura', o:['Scorrevole','Battente','Fissa senza porta',CONS] },
+        { id:'profilo', l:'Colore del profilo', o:['Cromato','Nero opaco','Oro spazzolato','Senza profilo',CONS], altro:true },
+        { id:'piatto', l:'Serve anche il piatto?', o:['Sì, a filo pavimento','Sì, appoggiato','No, ce l\'ho',DUNNO] },
+        prodotto(),
+        budget(['€ a box','€ in tutto']),
+        { id:'regolazione', ag:true, t:'pair', l:'Regolazione min–max necessaria', pair:[{id:'min',l:'Da',suf:'cm'},{id:'max',l:'A',suf:'cm'}] },
+        { id:'altezza', ag:true, t:'num', suf:'cm', l:'Altezza del box' },
+        { id:'cristallo', ag:true, l:'Cristallo', o:['6 mm','8 mm','10 mm (walk-in)',CONS] },
+        { id:'reversibile', ag:true, l:'Lato', o:['Reversibile','Fisso a destra','Fisso a sinistra',DUNNO] },
+        { id:'anticalcare', ag:true, l:'Anticalcare', o:['Sì','No',CONS] },
+        { id:'piattoMat', ag:true, l:'Materiale del piatto', o:['Resina effetto pietra','Ceramica','Acrilico',CONS] },
+        { id:'scarico', ag:true, l:'Scarico', o:['Al centro','Laterale',DUNNO] }
+      ]},
+
+      { k:'vasche', n:'Vasche da bagno', u:'vasche', ic:'vasche', qty:'Quante vasche in tutto?',
+        qtyItem:true, itemTxt:'Vasca', qtyItemTxt:'Quante vasche con questa misura', addTxt:'Aggiungi un\'altra misura', Q:[
+        { id:'tipo', l:'Che tipo', o:['Freestanding','Da incasso','Angolare','Rettangolare a muro',CONS] },
+        { id:'idro', l:'Idromassaggio', o:['No, normale','Sì, getti d\'acqua','Sì, acqua + aria',CONS] },
+        { id:'misura', l:'Misura', o:['160×70','170×70','170×75','180×80','Su misura',DUNNO] },
+        { id:'misureSu', t:'pair', l:'Misura su misura', pair:[{id:'lung',l:'Lunghezza',suf:'cm'},{id:'larg',l:'Larghezza',suf:'cm'}],
+          if:function(t){ return t.misura==='Su misura'; } },
+        { id:'lato', l:'Lato (vista di fronte)', o:['Destra','Sinistra',DUNNO] },
+        prodotto(),
+        budget(['€ a vasca','€ in tutto']),
+        { id:'materialeV', ag:true, l:'Materiale', o:['Acrilico','Resina / solid surface',CONS] },
+        { id:'pannellatura', ag:true, l:'Pannellatura', o:['Pannello frontale','Frontale e laterale','Da murare e piastrellare',DUNNO] },
+        { id:'solaio', ag:true, l:'Solaio (piena supera i 300 kg)', o:['Nessun problema','Da verificare',DUNNO] },
+        { id:'rubinetto', ag:true, l:'Rubinetteria', o:['A bordo vasca','A pavimento','A muro','Ce l\'ha già',CONS] },
+        { id:'presa', ag:true, l:'Presa elettrica per l\'idromassaggio', o:['C\'è','Da fare',DUNNO], if:function(t){ return t.idro && t.idro.indexOf('Sì')===0; } }
+      ]},
+
+      { k:'bagno', n:'Mobili da bagno', u:'mobili', ic:'bagno', qty:'Quanti mobili in tutto?',
+        qtyItem:true, itemTxt:'Mobile bagno', qtyItemTxt:'Quanti mobili con questa larghezza', addTxt:'Aggiungi un\'altra larghezza', Q:[
+        { id:'larghezza', uno:true, l:'Larghezza', o:['60 cm','70 cm','80 cm','90 cm','100 cm','120 cm (doppio lavabo)','Su misura',DUNNO] },
+        { id:'larghezzaSu', t:'num', suf:'cm', l:'Larghezza su misura', if:function(t){ return t.larghezza==='Su misura'; } },
+        { id:'tipo', l:'Sospeso o a terra?', o:['Sospeso','A terra',CONS] },
+        { id:'lavabo', l:'Il lavabo', o:['Integrato nel piano','Da appoggio',CONS] },
+        { id:'specchio', l:'Serve lo specchio?', o:['Sì, con luce','Sì, semplice','No',CONS] },
+        { id:'colonne', l:'Pensili o colonne?', o:['Sì','No',CONS] },
+        prodotto(),
+        { id:'altro', una:true, l:'Serve anche', o:['Sanitari','Rubinetteria','Tutti e due','No, solo il mobile',VAL] },
+        budget(['€ a mobile','€ in tutto']),
+        { id:'profondita', ag:true, l:'Profondità', o:['Salvaspazio 35-40 cm','Standard 45-50 cm',CONS] },
+        { id:'matMobile', ag:true, l:'Materiale', o:['Pietra ricostruita','Laccato','Legno','Idrofugo melaminico',CONS] },
+        { id:'foroRub', ag:true, l:'Foro rubinetto', o:['1 foro','3 fori','Nessuno (rubinetto a muro)',DUNNO] },
+        { id:'cassetti', ag:true, l:'Cassetti o ante', o:['Cassetti rallentati','Ante','Vano a giorno',CONS] },
+        { id:'scarico', ag:true, una:true, l:'Scarico', o:['A parete','A pavimento',DUNNO] },
+        { id:'montaggio', ag:true, l:'Consegna', o:['Montato','Da montare',CONS] }
+      ]},
+
+      /* ================= WELLNESS ========================================== */
+      { k:'saune', itemTxt:'Sauna', n:'Saune e bagno turco', u:'posti', ic:'saune', qty:'Per quante persone?', Q:[
+        { id:'tipo', l:'Che tipo', h:'Finlandese 70-100 °C; infrarossi 40-60 °C, si scalda in pochi minuti.',
+          o:['Sauna finlandese','Sauna a infrarossi','Combinata','Bagno turco',CONS] },
+        { id:'dove', l:'Dove va', o:['Dentro casa','All\'esterno',DUNNO] },
+        { id:'spazio', t:'pair', l:'Spazio disponibile', pair:[{id:'larg',l:'Larghezza',suf:'cm'},{id:'prof',l:'Profondità',suf:'cm'}] },
+        { id:'soffitto', t:'num', suf:'cm', l:'Altezza del soffitto' },
+        prodotto(),
+        budget(['€ in tutto']),
+        { id:'corrente', ag:true, l:'Corrente', o:['230 V','400 V trifase',DUNNO] },
+        { id:'kw', ag:true, t:'num', suf:'kW', l:'Potenza del contatore' },
+        { id:'legno', ag:true, l:'Legno', o:['Abete','Hemlock','Cedro rosso','Termotrattato',CONS] },
+        { id:'turcoTipo', ag:true, l:'Bagno turco', h:'In muratura serve un generatore più potente, scarico a pavimento e soffitto inclinato.', o:['Cabina pronta','Da costruire in muratura',DUNNO], if:function(t){ return t.tipo==='Bagno turco'; } },
+        { id:'acqua', ag:true, l:'Acqua e scarico vicino (bagno turco)', o:['Sì','No',DUNNO], if:function(t){ return t.tipo==='Bagno turco'; } },
+        { id:'montaggioS', ag:true, l:'Montaggio', o:['Nostro','Del cliente',CONS] }
+      ]},
+
+      /* Solo quelle del sito: minipiscine, jacuzzi, piscine fuori terra.
+         Niente interrate: niente scavi, permessi o coperture (sono già incluse). */
+      { k:'idro', itemTxt:'Minipiscina', n:'Minipiscine, jacuzzi e piscine', u:'pezzi', ic:'idro', qty:'Quante?', Q:[
+        { id:'tipo', l:'Che cosa', o:['Minipiscina / jacuzzi rigida','Jacuzzi gonfiabile','Piscina fuori terra',CONS] },
+        { id:'posti', t:'num', suf:'posti', l:'Per quante persone', if:function(t){ return t.tipo!=='Piscina fuori terra'; } },
+        { id:'misure', t:'text', l:'Spazio disponibile', h:'Es. «4×3 metri in giardino».' },
+        { id:'dove', l:'Dove va', h:'Su un terrazzo o dentro casa il peso va verificato: piena pesa molto.',
+          o:['In giardino','Su terrazzo o balcone','Dentro casa',DUNNO] },
+        { id:'base', l:'Su che base va', h:'Su prato o ghiaia non si può: serve una base piana e solida.', o:['Soletta in cemento','Pavimento esistente','Decking','Prato o ghiaia',DUNNO] },
+        prodotto(),
+        budget(['€ in tutto']),
+        { id:'gru', ag:true, l:'Serve la gru?', o:['Sì','No','Da valutare'] },
+        { id:'solaio', l:'Solaio verificato da un tecnico?', o:['Sì','No',DUNNO], if:function(t){ return t.dove==='Su terrazzo o balcone' || t.dove==='Dentro casa'; } },
+        { id:'linea', ag:true, l:'Linea elettrica', o:['230 V 16 A','230 V 32 A dedicata','400 V trifase',DUNNO] },
+        { id:'passaggio', ag:true, t:'num', suf:'cm', l:'Passaggio più stretto per la consegna' },
+        { id:'allacci', ag:true, l:'Acqua e scarico vicino', o:['Sì','No',DUNNO] },
+        { id:'coloreSpa', ag:true, l:'Colore', o:['Grigio','Bianco perla','Legno',CONS], altro:true }
+      ]},
+
+      /* ================= MATERASSI ========================================= */
+      { k:'materassi', n:'Materassi', u:'pezzi', ic:'materassi', qty:'Quanti materassi in tutto?',
+        qtyItem:true, itemTxt:'Materasso', qtyItemTxt:'Quanti materassi di questa misura',
+        addTxt:'Aggiungi un\'altra misura', Q:[
+        { id:'misura', uno:true, l:'Misura', o:['80×190','80×200','90×190','90×200','120×190','120×200','140×200','160×190','160×200','180×200','Su misura',DUNNO], altro:true },
+        { id:'tipo', l:'Tipo', o:['Memory','Molle insacchettate','Lattice','Ibrido',CONS], altro:true },
+        { id:'rigidita', l:'Rigidità', o:['Morbido','Medio','Rigido',CONS] },
+        { id:'per', l:'Per chi', o:['Adulti','Bambini e ragazzi','Ospiti'] },
+        prodotto(),
+        { id:'posizione', una:true, l:'Come dormi di solito', o:['Di lato','A pancia in su','A pancia in giù','Un po\' di tutto',CONS] },
+        { id:'medico', una:true, l:'Ti interessa un materasso dispositivo medico?',
+          h:'Certificato CE classe I: si detrae al 19% con pagamento tracciabile.',
+          o:['Sì, mi interessa','No','Spiegatemelo'] },
+        { id:'cfDetrae', ag:true, una:true, t:'text', l:'Codice fiscale di chi detrae', h:'Serve in fattura per la detrazione del 19%.', if:function(t){ return t.medico==='Sì, mi interessa'; } },
+        { id:'rete', l:'Serve anche la rete?', o:['Sì, fissa','Sì, motorizzata','No',DUNNO] },
+        budget(['€ a materasso','€ in tutto']),
+        { id:'altezzaMat', ag:true, l:'Altezza', o:['18-20 cm','22-25 cm','Oltre 25 cm',CONS] },
+        { id:'sfoderabile', ag:true, l:'Sfoderabile', o:['Sì','Indifferente'] },
+        { id:'guanciali', ag:true, t:'num', suf:'n.', l:'Guanciali' }
+      ]},
+
+      /* ================= ARREDO CASA ======================================= */
+      { k:'divani', itemTxt:'Divano', n:'Divani e poltrone', u:'pezzi', ic:'divani', qty:'Quanti divani o poltrone?',
+        addTxt:'Aggiungi un altro divano o poltrona', Q:[
+        { id:'cosa', l:'Che cosa', o:['Divano','Divano letto','Poltrona','Poltrona relax','Pouf'], altro:true },
+        { id:'posti', l:'Posti', o:['1','2','2 e mezzo','3','4','5 o più',DUNNO],
+          if:function(t){ return t.cosa!=='Poltrona' && t.cosa!=='Poltrona relax' && t.cosa!=='Pouf'; } },
+        { id:'forma', l:'Forma', o:['Lineare','Con penisola','Angolare','Modulare',CONS] },
+        { id:'stile', l:'Stile', o:['Moderno','Chesterfield','Classico','Scandinavo','Industriale',CONS], altro:true },
+        { id:'riv', l:'Rivestimento', o:['Tessuto','Tessuto Chesterfield (capitonné)','Pelle','Ecopelle','Velluto','Bouclé','Microfibra',CONS], altro:true },
+        { id:'colore', l:'Colore', o:['Grigio','Beige / tortora','Bianco panna','Marrone / cuoio','Blu','Verde','Nero',CONS], altro:true },
+        { id:'larghezza', l:'Larghezza massima disponibile', o:['Fino a 180 cm','180-220 cm','220-260 cm','260-300 cm','Oltre 300 cm','Su misura',DUNNO] },
+        { id:'larghezzaSu', t:'num', suf:'cm', l:'Larghezza su misura', if:function(t){ return t.larghezza==='Su misura'; } },
+        { id:'funzioni', l:'Funzioni', o:['Relax elettrico','Poggiatesta regolabili','Contenitore','Sfoderabile','Nessuna'] },
+        prodotto(),
+        budget(['€ a pezzo','€ in tutto']),
+        { id:'penisola', ag:true, l:'Lato penisola (visto di fronte)', o:['Destra','Sinistra','Reversibile',DUNNO] },
+        { id:'seduta', ag:true, l:'Profondità della seduta', o:['Standard 55-60 cm','Profonda 65 cm e oltre',CONS] },
+        { id:'imbottitura', ag:true, l:'Imbottitura', o:['Poliuretano','Memory','Piuma','Molle insacchettate',CONS] },
+        { id:'piedi', ag:true, l:'Piedini', o:['Legno','Metallo','Nascosti',CONS] },
+        { id:'passaggioDiv', ag:true, t:'num', suf:'cm', l:'Passaggio più stretto per la consegna', h:'Porta, scala, ascensore.' }
+      ]},
+
+      { k:'camerette', itemTxt:'Cameretta', n:'Camerette', u:'camerette', ic:'camerette', qty:'Quante camerette?', Q:[
+        { id:'letto', l:'Che letto', o:['Singoli','A castello','A soppalco','Scorrevole',CONS], altro:true },
+        { id:'stanza', t:'pair', l:'Misure della stanza', pair:[{id:'larg',l:'Larghezza',suf:'cm'},{id:'lung',l:'Lunghezza',suf:'cm'}] },
+        { id:'armadio', l:'Serve l\'armadio?', o:['Sì','No',DUNNO] },
+        { id:'scrivania', l:'Serve la scrivania?', o:['Sì','No',DUNNO] },
+        prodotto(),
+        budget(['€ in tutto']),
+        { id:'eta', ag:true, t:'text', l:'Età dei bambini', h:'Castello e soppalco: sopra solo dai 6 anni.' },
+        { id:'soffitto', ag:true, t:'num', suf:'cm', l:'Altezza del soffitto' },
+        { id:'materassoIncl', ag:true, l:'Materassi', o:['Inclusi','Li hanno già','Da aggiungere',CONS] },
+        { id:'scaletta', ag:true, l:'Lato della scaletta', o:['Destra','Sinistra','Indifferente'] },
+        { id:'coloreCam', ag:true, l:'Colore', o:['Bianco','Legno naturale','Colorato',CONS], altro:true }
+      ]},
+
+      { k:'arredo', itemTxt:'Arredo', n:'Letti, tavoli, sedie, armadi', u:'pezzi', ic:'arredo', qty:'Quanti pezzi?', Q:[
+        { id:'cosa', l:'Che cosa', o:['Letto','Tavolo','Sedie','Poltrone','Armadio','Madia','Tavolini'], altro:true },
+        { id:'spazio', t:'text', l:'Spazio o misure', h:'Es. «tavolo per 6, allungabile», «parete di 250 cm».' },
+        { id:'stile', l:'Stile', o:['Moderno','Classico','Industriale','Scandinavo',CONS] },
+        prodotto(),
+        budget(['€ in tutto','€ a pezzo']),
+        { id:'misuraLetto', ag:true, l:'Letto: misura', o:['80/90','120','160','180',DUNNO], if:function(t){ return t.cosa==='Letto'; } },
+        { id:'contenitore', ag:true, l:'Letto: contenitore', o:['Sì','No',CONS], if:function(t){ return t.cosa==='Letto'; } },
+        { id:'allungabile', ag:true, l:'Tavolo: allungabile', o:['Sì','No',CONS], if:function(t){ return t.cosa==='Tavolo'; } },
+        { id:'piano', ag:true, l:'Tavolo: piano', o:['Vetro','Ceramica','Legno','Marmo',CONS], if:function(t){ return t.cosa==='Tavolo'; } },
+        { id:'rivArredo', ag:true, l:'Materiale', o:['Tessuto','Pelle / ecopelle','Velluto','Legno','Metallo',CONS], altro:true },
+        { id:'coloreArr', ag:true, t:'text', l:'Colore' }
+      ]},
+
+      /* ================= EDILIZIA, ACCESSORI, ALTRO ======================== */
+      { k:'accessori', n:'Accessori per pavimenti: battiscopa, soglie, colle', u:'', ic:'accessori', noQty:true, multi:false, Q:[
+        { id:'cosa', l:'Che cosa ti serve', o:['Battiscopa','Soglie e profili','Colle e vernici','Prodotti per la pulizia'], altro:true },
+        { id:'ml', t:'num', suf:'metri lineari', l:'Quanti metri?', if:function(t){ return t.cosa==='Battiscopa' || t.cosa==='Soglie e profili'; } },
+        { id:'abbinato', t:'text', l:'Da abbinare a che pavimento?' },
+        budget(['€ in tutto'])
+      ]},
+
+      { k:'altro', n:'Edilizia e altro', u:'', ic:'altro', noQty:true, multi:false, Q:[
+        { id:'cosa', l:'Di che cosa si tratta', o:['Ristrutturazione / edilizia','Fotovoltaico e batterie','Allarmi, telecamere, domotica','Gazebo e pergole','Giochi: biliardo, calcio balilla, Montessori','Pannelli 3D e rivestimenti murali'], altro:true },
+        { id:'descrizione', t:'text', l:'Che cosa ti serve?', h:'Con parole tue: ci pensiamo noi.' },
+        budget(['€ in tutto']),
+        /* dalla vecchia «Scheda clienti edilizia» */
+        { id:'mqCasa', ag:true, t:'num', suf:'m²', l:'Superficie dell\'appartamento', if:function(t){ return t.cosa==='Ristrutturazione / edilizia'; } },
+        { id:'massettoEd', ag:true, l:'Massetto da rifare', o:['Sì, tutto','In parte','No',DUNNO], if:function(t){ return t.cosa==='Ristrutturazione / edilizia'; } },
+        { id:'tramezzi', ag:true, t:'num', suf:'m²', l:'Tramezzi / muri da costruire', if:function(t){ return t.cosa==='Ristrutturazione / edilizia'; } },
+        { id:'bagniEd', ag:true, t:'num', suf:'bagni', l:'Bagni da ristrutturare', if:function(t){ return t.cosa==='Ristrutturazione / edilizia'; } },
+        { id:'impianti', ag:true, l:'Impianti', o:['Elettrico','Idraulico','Elettrico + idraulico','Domotica / antifurto','Nessuno'], if:function(t){ return t.cosa==='Ristrutturazione / edilizia'; } },
+        { id:'certificazione', ag:true, l:'Certificazione degli impianti', o:['Sì','No',DUNNO], if:function(t){ return t.cosa==='Ristrutturazione / edilizia'; } },
+        { id:'pratiche', ag:true, l:'Pratiche', o:['CILA','SCIA','Nessuna','Già fatte',DUNNO], if:function(t){ return t.cosa==='Ristrutturazione / edilizia'; } },
+        { id:'kwp', ag:true, t:'num', suf:'kWp', l:'Potenza fotovoltaico', if:function(t){ return t.cosa==='Fotovoltaico e batterie'; } },
+        { id:'kwh', ag:true, t:'num', suf:'kWh', l:'Batteria', if:function(t){ return t.cosa==='Fotovoltaico e batterie'; } },
+        { id:'fase', ag:true, l:'Contatore', o:['Monofase','Trifase',DUNNO], if:function(t){ return t.cosa==='Fotovoltaico e batterie'; } }
+      ]}
+    ],
+
+    /* --- avvisi che compaiono da soli ------------------------------------ */
+    avvisi: [
+      { k:'porte', when:function(t){ return t.tipo==='Scorrevole interno muro'; },
+        html:'<b>Serve un muro di almeno 10 cm</b> per far scomparire l\'anta. Se è più sottile si va di scorrevole esterno muro.' },
+      { k:'blind', when:function(t){ return t.apertura===DUNNO; },
+        html:'<b>Nessun problema.</b> L\'apertura la rileviamo insieme al sopralluogo.' },
+      { k:'porte', when:function(t){ return t.apertura===DUNNO; },
+        html:'<b>Nessun problema.</b> L\'apertura la rileviamo insieme: una porta con la mano sbagliata non si può cambiare.' },
+      { k:'ceramiche', when:function(t){ return t.dove==='Esterno' || t.dove==='Tutti e due'; },
+        html:'Per fuori servono piastrelle <b>antiscivolo</b> e resistenti al gelo: è un\'altra gamma.' },
+      { k:'esterni', when:function(t){ return t.piscina==='Sì'; },
+        html:'A bordo piscina cloro e sale rovinano certi materiali: ti proponiamo solo quelli che reggono.' },
+      { k:'doccia', when:function(t){ return t.piatto==='Sì, a filo pavimento'; },
+        html:'Il piatto a filo pavimento vuole lo scarico nel posto giusto. Se non si può, si fa un piatto ultrasottile.' },
+      { k:'idro', when:function(t){ return t.dove==='Su terrazzo o balcone' || t.dove==='Dentro casa'; },
+        html:'<b>Prima di tutto il solaio.</b> Una minipiscina piena, con le persone dentro, arriva a circa <b>360 kg per m²</b>: serve la verifica di un tecnico.' },
+      { k:'materassi', when:function(t){ return t.medico==='Spiegatemelo'; }, ok:true,
+        html:'<b>In due righe:</b> alcuni materassi sono dispositivi medici CE di classe I. Si detraggono al <b>19%</b> pagando con carta o bonifico e con la dicitura giusta in fattura.' }
+    ]
+  };
+})(window);
+
+</script>
+
+<!-- ---- il motore ---- -->
+<script>
+/* ============================================================================
+   Disegnarecasa — Scheda cliente: il motore
+   Workstream J · v1.0 · 2026-08-28 · v1.4 · 2026-09-30 (due pagine: cliente e agente) · v1.5 · 2026-09-30 (gruppi chiusi, più prodotti, budget libero)
+   ----------------------------------------------------------------------------
+   Vanilla JS. Nessuna libreria, nessun build step, nessuna dipendenza.
+   Le domande stanno in dc-scheda-config.js: questo file non va toccato
+   per cambiare i testi.
+
+   Fa sei cose:
+     1. costruisce il modulo in tre passi dalla configurazione
+     2. mostra solo le domande che servono (condizioni)
+     3. salva una bozza nel browser, così una pagina ricaricata non azzera tutto
+     4. raccoglie i parametri di provenienza (gclid, utm…) SOLO se la scheda
+        la sta compilando un cliente
+     5. invia, e spinge l'evento nel dataLayer di GTM solo per i clienti
+     6. senza WordPress funziona lo stesso e mostra il JSON che avrebbe inviato
+   ============================================================================ */
+(function () {
+  'use strict';
+
+  var ROOT = document.getElementById('dc-scheda');
+  if (!ROOT) { return; }
+
+  var CFG = window.DC_SCHEDA_CONFIG;
+  if (!CFG) { ROOT.innerHTML = '<p>Configurazione non caricata.</p>'; return; }
+
+  var WP = window.DC_SCHEDA_WP || null;               // presente solo dentro WordPress
+
+  /* v1.4 · DUE PAGINE. La modalità la decide lo SHORTCODE, cioè il server:
+     [scheda_cliente] → pagina pubblica, sempre «Cliente», gclid tenuto;
+     [scheda_agente]  → pagina interna, sempre «Agente», codice obbligatorio,
+                         niente gclid e nessun evento per Google.
+     Fuori da WordPress (file di prova) si sceglie con ?modo=agente. */
+  var MODO = (ROOT.getAttribute('data-modo') ||
+              (!WP && (/[?&]modo=agente\b/.test(location.search) || location.hash === '#agente') ? 'agente' : 'cliente')) === 'agente'
+             ? 'agente' : 'cliente';
+  var AG_MODO = MODO === 'agente';
+  var ALTRO     = 'Altro…';
+  var DRAFT_KEY = 'dc_scheda_bozza_v1' + (AG_MODO ? '_agente' : '');
+  var COOKIE    = 'dc_src';
+
+  /* ==========================================================================
+     0 · PROVENIENZA
+     --------------------------------------------------------------------------
+     Il gclid va preso QUANDO IL CLIENTE ARRIVA, non quando invia: guarda un
+     pavimento oggi e scrive fra tre settimane. Lo teniamo in un cookie di
+     prima parte per 90 giorni.
+
+     wbraid e gbraid sono i sostituti del gclid quando arriva da iPhone.
+     Senza quelli, una fetta di traffico Google risulta "diretto".
+     ========================================================================== */
+  function leggiCookie(nome) {
+    var m = document.cookie.match('(^|;)\\s*' + nome + '\\s*=\\s*([^;]+)');
+    return m ? decodeURIComponent(m.pop()) : '';
+  }
+  function scriviCookie(nome, val, giorni) {
+    var d = new Date();
+    d.setTime(d.getTime() + giorni * 864e5);
+    document.cookie = nome + '=' + encodeURIComponent(val) + ';expires=' + d.toUTCString() +
+                      ';path=/;SameSite=Lax' + (location.protocol === 'https:' ? ';Secure' : '');
+  }
+
+  function catturaProvenienza() {
+    var p = new URLSearchParams(location.search);
+    var campi = ['gclid', 'wbraid', 'gbraid', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'msclkid', 'fbclid'];
+    var trovato = {};
+    var qualcosa = false;
+    campi.forEach(function (c) {
+      var v = p.get(c);
+      if (v) { trovato[c] = v; qualcosa = true; }
+    });
+
+    if (qualcosa) {
+      trovato.landing  = location.pathname;
+      trovato.referrer = document.referrer || '';
+      trovato.quando   = new Date().toISOString();
+      try { scriviCookie(COOKIE, JSON.stringify(trovato), 90); } catch (e) {}
+      return trovato;
+    }
+    // niente nell'indirizzo: usa quello che avevamo messo da parte
+    try { return JSON.parse(leggiCookie(COOKIE) || '{}'); } catch (e) { return {}; }
+  }
+  var PROVENIENZA = catturaProvenienza();
+
+  /* ==========================================================================
+     1 · STATO
+     ========================================================================== */
+  var APERTA_ALLE = Date.now();   // serve all'antispam: un bot compila in un secondo
+
+  var S = {
+    passo: 1,
+    fattaDa: AG_MODO ? 'Agente' : 'Cliente',
+    compilataDa: (WP && WP.utente) || '',
+    codiceAgente: '',
+    schedaPer: AG_MODO ? '' : 'No, è il primo contatto',   // v1.8 · già selezionato per il cliente
+    sel: {}, qta: {},
+    nome: '', mail: '', tel: '', citta: '', richiamo: '', chi: '', note: '',
+    canale: [], giorni: [], incontro: '', codiceProd: '',
+    com: {}, tec: {}, nItem: {}, open: {},
+    foto: null
+  };
+
+  // bozza
+  var BOZZA_RIPRESA = false;
+  try {
+    var b = JSON.parse(localStorage.getItem(DRAFT_KEY) || 'null');
+    if (b && b.v === 1) {
+      BOZZA_RIPRESA = true;   // il server non applica il controllo dei tempi
+      // il codice agente non si salva mai nella bozza: è una credenziale
+      ['fattaDa','sel','qta','nome','mail','tel','citta','richiamo','chi','note','com','tec','nItem','schedaPer','canale','giorni','incontro','codiceProd'].forEach(function (k) {
+        if (b.d[k] !== undefined) { S[k] = b.d[k]; }
+      });
+      S.fattaDa = AG_MODO ? 'Agente' : 'Cliente';   // la bozza non cambia la pagina
+      if (!Array.isArray(S.canale)) { S.canale = S.canale ? [S.canale === 'Solo e-mail' ? 'E-mail' : S.canale] : []; }
+    }
+  } catch (e) {}
+  function salvaBozza() {
+    try {
+      localStorage.setItem(DRAFT_KEY, JSON.stringify({ v: 1, d: {
+        fattaDa:S.fattaDa, sel:S.sel, qta:S.qta, nome:S.nome, mail:S.mail, tel:S.tel,
+        citta:S.citta, richiamo:S.richiamo, chi:S.chi, note:S.note, com:S.com, tec:S.tec, nItem:S.nItem, schedaPer:S.schedaPer,
+        canale:S.canale, giorni:S.giorni, incontro:S.incontro, codiceProd:S.codiceProd
+      }}));
+    } catch (e) {}
+  }
+
+  /* ==========================================================================
+     2 · ICONE — SVG in linea, nessun font di icone, nessuna richiesta in più
+     ========================================================================== */
+  var UI = {
+    check:'<path d="M4 12l5 5L20 6"/>',
+    right:'<path d="M9 5l7 7-7 7"/>', left:'<path d="M15 5l-7 7 7 7"/>',
+    send:'<path d="M4 12l16-8-6 16-3-6z"/>',
+    cam:'<path d="M3 8h4l2-3h6l2 3h4v12H3z"/><circle cx="12" cy="13" r="3.5"/>',
+    user:'<circle cx="12" cy="8" r="3.6"/><path d="M4.5 20a7.5 7.5 0 0115 0"/>',
+    info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 7.6v.6"/>'
+  };
+  function ui(n, s) {
+    return '<svg viewBox="0 0 24 24" width="' + s + '" height="' + s + '" fill="none" stroke="currentColor" ' +
+           'stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + UI[n] + '</svg>';
+  }
+  var FAMICO = {
+    pav:'<rect x="5" y="6" width="22" height="20" rx="2"/><path d="M5 12.6h22M5 19.4h22M13 6v6.6M20 12.6v6.8M11 19.4V26"/>',
+    lvt:'<rect x="5" y="6" width="10" height="20" rx="1.5"/><rect x="17" y="6" width="10" height="20" rx="1.5"/><path d="M10 6v20" opacity=".4"/>',
+    esterni:'<rect x="4" y="10" width="24" height="4" rx="1"/><rect x="4" y="17" width="24" height="4" rx="1"/><path d="M9 10v-4M23 21v4"/>',
+    ceramiche:'<rect x="5" y="5" width="10" height="10" rx="1"/><rect x="17" y="5" width="10" height="10" rx="1"/><rect x="5" y="17" width="10" height="10" rx="1"/><rect x="17" y="17" width="10" height="10" rx="1"/>',
+    porte:'<rect x="8" y="4" width="16" height="24" rx="1.5"/><circle cx="20" cy="16" r="1.2"/>',
+    blind:'<rect x="8" y="4" width="16" height="24" rx="1.5"/><path d="M16 13v6"/><circle cx="16" cy="11" r="2"/>',
+    infissi:'<rect x="5" y="5" width="22" height="22" rx="1.5"/><path d="M16 5v22M5 16h22"/>',
+    bagno:'<path d="M5 17h22v4a4 4 0 01-4 4H9a4 4 0 01-4-4z"/><path d="M9 17V8a3 3 0 016 0"/>',
+    doccia:'<path d="M6 5h10a4 4 0 014 4v3"/><path d="M14 12h12"/><path d="M17 17v2M20 16v3M23 17v2M20 22v2"/>',
+    piscine:'<rect x="4" y="9" width="24" height="16" rx="2"/><path d="M4 20c3-2 5 2 8 0s5 2 8 0 5 2 8 0"/><path d="M11 9v6M21 9v6"/>',
+    idro:'<path d="M5 14h22v7a4 4 0 01-4 4H9a4 4 0 01-4-4z"/><path d="M10 14V9M16 14V7M22 14V9"/><circle cx="10" cy="7" r="1.2"/><circle cx="16" cy="5" r="1.2"/><circle cx="22" cy="7" r="1.2"/>',
+    materassi:'<rect x="4" y="11" width="24" height="11" rx="3"/><path d="M4 16h24"/>',
+    divani:'<path d="M4 20v-5a3 3 0 016 0v3h12v-3a3 3 0 016 0v5z"/><path d="M7 20v3M25 20v3"/>',
+    camerette:'<path d="M4 22V10M4 16h16v6M20 16a4 4 0 018 0v6"/><circle cx="11" cy="12" r="2"/>',
+    accessori:'<path d="M6 26l8-8M14 18l-3-3 6-6 3 3z"/><path d="M17 9l4-4 4 4-4 4"/>',
+    saune:'<rect x="5" y="9" width="22" height="17" rx="1.5"/><path d="M5 15h22M10 9V5M22 9V5"/><path d="M12 20h8"/>',
+    vasche:'<path d="M4 15h24v4a6 6 0 01-6 6H10a6 6 0 01-6-6z"/><path d="M8 15V8a3 3 0 016 0"/><path d="M9 25l-1 2M23 25l1 2"/>',
+    chiusure:'<rect x="6" y="5" width="20" height="22" rx="1"/><path d="M6 10h20M6 14h20M6 18h20M6 22h20"/>',
+    arredo:'<path d="M5 13h22M8 13v12M24 13v12M5 13l3-6h16l3 6"/>',
+    altro:'<circle cx="16" cy="16" r="11"/><path d="M12.5 13a3.6 3.6 0 116 2.6c-1 .8-2.5 1.4-2.5 2.9"/><path d="M16 22.5h.01"/>'
+  };
+  function famico(k, s) {
+    return '<svg viewBox="0 0 32 32" width="' + s + '" height="' + s + '" fill="none" stroke="currentColor" ' +
+           'stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+           (FAMICO[k] || FAMICO.altro) + '</svg>';
+  }
+
+  /* ==========================================================================
+     3 · PEZZI DI MODULO
+     ========================================================================== */
+  function esc(v) {
+    return String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+  }
+  function morbida(o) { return /non lo so|consigliatemi|non so cos|altro…|ve lo dico dopo|da rilevare/i.test(o); }
+
+  /* v1.6 · SCELTA MULTIPLA nelle domande dei prodotti: il cliente può chiedere
+     più preventivi (es. listone, plancia e 3 strip, oppure rovere e noce).
+     Restano a scelta singola: i sì/no, e le domande da cui dipendono altre
+     domande o avvisi (es. «Su misura» che apre il campo di descrizione). */
+  var RIF = {};
+  (CFG.famiglie || []).forEach(function (c) {
+    var t = '';
+    c.Q.forEach(function (q) { if (q.if) { t += q.if.toString(); } });
+    (CFG.avvisi || []).forEach(function (a) { if (a.k === c.k) { t += a.when.toString(); } });
+    RIF[c.k] = t;
+  });
+  function multipla(q, scope) {
+    if (!q.o || q.uno) { return false; }
+    if (q.multi === true) { return true; }
+    if (scope === 'S' || scope === 'com') { return false; }
+    if (q.o.indexOf('Sì') > -1 || q.o.indexOf('No') > -1) { return false; }
+    var k = String(scope).split('~')[0];
+    return !new RegExp('t\\.' + q.id + '\\b').test(RIF[k] || '');
+  }
+  /* v1.6 · il cliente può scegliere PIÙ canali (WhatsApp, e-mail e telefono). */
+  function canaleTesto() {
+    var c = S.canale || [];
+    if (c.length === 1 && c[0] === 'E-mail') { return 'Solo e-mail'; }   // il server riconosce questa dicitura
+    return c.join(', ');
+  }
+  function soloMail() { return canaleTesto() === 'Solo e-mail'; }
+
+  function acceso1(v, o) { return Array.isArray(v) ? v.indexOf(o) > -1 : v === o; }
+
+  function scelte(id, lista, store, scope, multi) {
+    return '<div class="dcs-opts" role="group">' + lista.map(function (o) {
+      var acceso = (id === 'fattaDa')
+        ? ((o.indexOf('agente') > -1) === (S.fattaDa === 'Agente'))
+        : acceso1(store[id], o);
+      return '<button type="button" class="dcs-opt' + (morbida(o) ? ' is-soft' : '') +
+             (acceso ? ' is-on' : '') + '"' + (multi ? ' data-m="1"' : '') + ' data-scope="' + scope + '" data-set="' + id +
+             '" data-val="' + esc(o) + '" aria-pressed="' + acceso + '">' + o + '</button>';
+    }).join('') + '</div>';
+  }
+  /* Come scelte(), ma se ne possono accendere più d'uno: per i giorni, che
+     non sono un aut-aut — «lunedì o martedì» è la risposta normale. */
+  function scelteMulte(id, lista) {
+    var att = S[id] || [];
+    return '<div class="dcs-opts" role="group">' + lista.map(function (o) {
+      var acceso = att.indexOf(o) > -1;
+      return '<button type="button" class="dcs-opt' + (acceso ? ' is-on' : '') +
+             '" data-multi="' + id + '" data-val="' + esc(o) + '" aria-pressed="' + acceso + '">' + o + '</button>';
+    }).join('') + '</div>';
+  }
+
+  function libero(scope, id, val, suf, ph, tipo) {
+    var oggi = new Date(); oggi = oggi.getFullYear() + '-' + ('0' + (oggi.getMonth() + 1)).slice(-2) + '-' + ('0' + oggi.getDate()).slice(-2);
+    var i = '<input class="dcs-in" ' +
+            (tipo === 'num' ? 'type="number" inputmode="decimal" min="0" step="any"'
+             : tipo === 'date' ? 'type="date" min="' + oggi + '"' : 'type="text"') +
+            ' data-free="' + scope + '|' + id + '" value="' + esc(val) + '" placeholder="' + esc(ph || '') + '">';
+    return suf ? '<div class="dcs-numrow">' + i + '<span class="dcs-suf">' + suf + '</span></div>' : i;
+  }
+
+  function domanda(q, store, scope) {
+    /* La condizione vede anche QUALI famiglie sono state scelte: «serve la
+       posa?» non ha senso se uno chiede solo un materasso. */
+    if (q.if && !q.if(store, S.sel)) { return ''; }
+    if (q.ag && !AG_MODO) { return ''; }            // domanda solo per la scheda agente
+    if (q.cl && AG_MODO) { return ''; }             // domanda solo per la scheda cliente
+    /* v1.7 · valore proposto in automatico (es. battiscopa = m² + 10% di sfrido).
+       Resta automatico finché qualcuno non lo cambia a mano. */
+    if (q.def && (store[q.id] === undefined || store[q.id] === '' || store[q.id + '_auto'])) {
+      var dv = q.def({ qta: parseFloat(S.qta[String(scope).split('~')[0]] || 0) || 0 });
+      if (dv) { store[q.id] = String(dv); store[q.id + '_auto'] = true; }
+    }
+    if (q.una && String(scope).indexOf('~') > -1) { return ''; }   // chiesta una volta sola per famiglia
+    var h = '<div class="dcs-q' + (q.ag ? ' is-ag' : '') + '"><span class="dcs-lab">' + q.l + '</span>';
+    if (q.h) { h += '<p class="dcs-help">' + q.h + '</p>'; }
+
+    if (q.t === 'money') {
+      /* Budget libero: una cifra e l'unità (al m², in tutto, a pezzo). */
+      var un = q.u || ['€/m²', '€ in tutto'];
+      h += libero(scope, q.id, store[q.id], '€', 'es. 40', 'num') +
+           '<div style="margin-top:8px">' + scelte(q.id + '_u', un, store, scope) + '</div>';
+    } else if (q.t === 'date') {
+      /* v1.6 · calendario: il telefono apre il suo selettore di date. */
+      h += libero(scope, q.id, store[q.id], '', '', 'date');
+    } else if (q.t === 'num' || q.t === 'text') {
+      h += libero(scope, q.id, store[q.id], q.suf, q.t === 'num' ? '' : 'scrivi qui', q.t);
+    } else if (q.t === 'pair' || q.t === 'grid') {
+      h += '<div class="dcs-pair">' + q.pair.map(function (p) {
+        return '<div><label>' + p.l + '</label>' +
+               libero(scope, q.id + '_' + p.id, store[q.id + '_' + p.id], p.suf, '', 'num') + '</div>';
+      }).join('') + '</div>';
+    } else {
+      var lista = q.o.slice();
+      if (q.altro) { lista.push(ALTRO); }
+      var mm = multipla(q, scope);
+      if (mm) { h += '<p class="dcs-help dcs-multi">Puoi sceglierne più di una.</p>'; }
+      h += scelte(q.id, lista, store, scope, mm);
+      if (q.altro && acceso1(store[q.id], ALTRO)) {
+        h += '<div class="dcs-altro">' + libero(scope, q.id + '_x', store[q.id + '_x'], '', 'scrivi qui', 'text') + '</div>';
+      }
+    }
+    return h + '</div>';
+  }
+
+  /* leggibile, per il riepilogo e per la mail al venditore */
+  function valore(store, q) {
+    if (q.t === 'money') {
+      if (!store[q.id]) { return ''; }
+      return store[q.id] + ' ' + (store[q.id + '_u'] || (q.u || ['€/m²'])[0]);
+    }
+    if (q.t === 'grid') {          // quantità divise: «DX a spingere 5 · SX a tirare 3»
+      var g = q.pair.filter(function (p) { return store[q.id + '_' + p.id]; })
+                    .map(function (p) { return p.l + ' ' + store[q.id + '_' + p.id]; });
+      return g.join(' · ');
+    }
+    if (q.t === 'pair') {
+      var v = q.pair.map(function (p) { return store[q.id + '_' + p.id]; }).filter(Boolean);
+      return v.length ? v.join(' × ') + (q.pair[0].suf ? ' ' + q.pair[0].suf : '') : '';
+    }
+    var x = store[q.id] || '';
+    if (q.t === 'date' && /^\d{4}-\d{2}-\d{2}$/.test(x)) { var dd = x.split('-'); return dd[2] + '/' + dd[1] + '/' + dd[0]; }
+    if (Array.isArray(x)) {
+      x = x.map(function (v) { return v === ALTRO ? (store[q.id + '_x'] || '') : v; }).filter(Boolean).join(', ');
+    }
+    if (x === ALTRO) { x = store[q.id + '_x'] || ''; }
+    if (x && q.suf) { x = x + ' ' + q.suf; }
+    return x;
+  }
+
+  /* v1.5 · PIÙ PRODOTTI NELLA STESSA FAMIGLIA (es. un listone e una plancia,
+     oppure 5 blindate sinistre e 3 destre): ogni prodotto ha le sue risposte.
+     Il primo sta in S.tec[k], gli altri in S.tec['k~2'], S.tec['k~3']… */
+  function nItem(k) { return Math.max(1, S.nItem[k] || 1); }
+  function scopeDi(k, i) { return i === 1 ? k : k + '~' + i; }
+  function togliItem(k, i) {
+    var n = nItem(k);
+    for (var j = i; j < n; j++) { S.tec[scopeDi(k, j)] = S.tec[scopeDi(k, j + 1)] || {}; }
+    delete S.tec[scopeDi(k, n)];
+    S.nItem[k] = n - 1;
+  }
+
+  function fam(k) {
+    for (var i = 0; i < CFG.famiglie.length; i++) { if (CFG.famiglie[i].k === k) { return CFG.famiglie[i]; } }
+    return null;
+  }
+
+  /* ==========================================================================
+     4 · I TRE PASSI
+     ========================================================================== */
+  function intestazione() {
+    var ag = S.fattaDa === 'Agente';
+    var titoli = [
+      '<b>1 di 3</b> · Cosa serve · due minuti in tutto',
+      '<b>2 di 3</b> · ' + (ag ? 'Dati del cliente' : 'Chi sei') + ' · da qui si può già inviare',
+      '<b>3 di 3</b> · Facoltativo · ma è quello che rende il preventivo vero'
+    ];
+    return '<div class="dcs-head">' +
+      '<h2 class="dcs-title">' + (ag ? CFG.testi.titoloAgente : CFG.testi.titolo) + '</h2>' +
+      '<div class="dcs-steps">' + [1,2,3].map(function (i) {
+        return '<span class="dcs-step' + (i <= S.passo ? ' is-on' : '') + '"><i></i></span>';
+      }).join('') + '</div>' +
+      '<p class="dcs-stepTxt">' + titoli[S.passo - 1] + '</p></div>';
+  }
+
+  /* La scheda è pubblica e uguale per tutti. Questo blocco serve a una cosa
+     sola: sapere CHI la sta compilando davvero. Non ci sono due versioni del
+     modulo — c'è una domanda in più, e la risposta cambia solo due cose:
+     il nome di chi l'ha fatta, e il fatto che una scheda interna non porta
+     con sé la provenienza pubblicitaria. */
+  function bloccoChiLaFa() {
+    /* v1.4: sulla pagina cliente il blocco non c'è più (un cliente non può
+       dichiararsi agente per sbaglio); sulla pagina agente è fisso. */
+    if (!AG_MODO) { return ''; }
+    var ag = true;
+    var h = '<div class="dcs-by is-agente">' +
+            '<span class="dcs-lab">Scheda agente · uso interno</span>';
+    if (ag) {
+      h += '<div class="dcs-mini">' +
+        '<div><label>Nome dell\'agente <i style="color:#B5843F">*</i></label>' +
+          '<input class="dcs-in" data-free="S|compilataDa" value="' + esc(S.compilataDa) + '" placeholder="Nome e cognome" autocomplete="off"></div>' +
+        '<div><label>Codice agente <i style="color:#B5843F">*</i></label>' +
+          '<input class="dcs-in" type="text" inputmode="numeric" data-free="S|codiceAgente" value="' + esc(S.codiceAgente) +
+          '" placeholder="es. 4417" autocomplete="off" spellcheck="false"></div>' +
+        '</div>' +
+        '<div class="dcs-mini" style="grid-template-columns:1fr">' +
+          '<div><label>Scheda per</label><select class="dcs-in" data-free="S|schedaPer">' +
+            agenti().map(function (a) {
+              return '<option' + (S.schedaPer === a ? ' selected' : '') + '>' + a + '</option>';
+            }).join('') + '</select></div></div>' +
+        '<p class="dcs-note"><b>Senza il codice giusto la scheda non parte</b> (lo controlla il server). ' +
+        'È una scheda interna: niente gclid e nessuna conversione a Google. Scrivi <b>la stessa e-mail e lo stesso telefono</b> ' +
+        'che ha usato il cliente: è così che Google collega la vendita al suo clic.</p>';
+    }
+    return h + '</div>';
+  }
+
+  /* Detto una volta sola ma detto forte, e nello stesso rosso del sito:
+     una persona che teme un modulo lungo si ferma prima di cominciare. */
+  function soloEmail() {
+    return '<p class="dcs-solo">' + ui('info', 15) +
+      '<span>Di obbligatoria c\'è <b>solo l\'e-mail</b>. <b>Cellulare e città sono altamente consigliati</b>: ' +
+      'chi lascia il cellulare viene richiamato per primo, e con la città ti affidiamo un agente della tua zona. Tutto il resto lo lasci vuoto se non lo sai.</span></p>';
+  }
+
+  function passo1() {
+    var ag = S.fattaDa === 'Agente';
+    var h = intestazione() + bloccoChiLaFa() + soloEmail() +
+      '<div class="dcs-err is-hidden" data-err></div>' +
+      '<p class="dcs-sub">' + (ag
+        ? 'Segna <b>che cosa chiede il cliente e quanto</b>. I dati personali al passo dopo.'
+        : 'Dicci <b>che cosa ti serve e quanto</b>. Nessun dato personale in questo passo — quello viene dopo.') + '</p>';
+
+    /* v1.5 · famiglie raccolte in GRUPPI, tutti chiusi: si apre solo quello
+       che si tocca. Un gruppo con una famiglia sola si mostra direttamente. */
+    function cat(c) {
+      return '<div class="dcs-cat' + (S.sel[c.k] ? ' is-on' : '') + '">' +
+        '<button type="button" class="dcs-catHead" data-toggle="' + c.k + '" aria-pressed="' + !!S.sel[c.k] + '">' +
+          '<span class="dcs-ic">' + famico(c.ic || c.k, 32) + '</span><b>' + c.n + '</b>' +
+          '<span class="dcs-check">' + ui('check', 15) + '</span></button>' +
+        '<div class="dcs-catBody">' +
+          (c.noQty
+            ? '<p class="dcs-help" style="margin:12px 0 0">Le domande su questa voce arrivano al passo 3.</p>'
+            : '<span class="dcs-lab">' + c.qty + '</span>' +
+              (c.hint ? '<p class="dcs-help">' + c.hint + '</p>' : '') +
+              '<div class="dcs-qty"><div>' +
+                '<input class="dcs-in" type="number" inputmode="decimal" min="1" data-qty="' + c.k +
+                '" value="' + esc(S.qta[c.k] || '') + '" placeholder="0"></div>' +
+                '<span class="dcs-suf">' + c.u + '</span></div>') +
+          (c.sfrido ? '<div class="dcs-sfrido is-hidden" data-sfrido="' + c.k + '"></div>' : '') +
+        '</div></div>';
+    }
+    var gruppi = CFG.gruppi || CFG.famiglie.map(function (c) { return { n: c.n, f: [c.k] }; });
+    gruppi.forEach(function (g, gi) {
+      var fs = g.f.map(fam).filter(Boolean);
+      if (fs.length === 1) { h += cat(fs[0]); return; }
+      var scelti = fs.filter(function (c) { return S.sel[c.k]; }).length;
+      var aperto = !!S.open['g' + gi];
+      h += '<div class="dcs-grp' + (aperto ? ' is-open' : '') + '">' +
+        '<button type="button" class="dcs-grpHead" data-grp="' + gi + '" aria-expanded="' + aperto + '">' +
+          '<span class="dcs-ic">' + famico(g.ic || fs[0].ic || fs[0].k, 32) + '</span><b>' + g.n + '</b>' +
+          (scelti ? '<span class="dcs-badge">' + scelti + '</span>' : '') +
+          '<span class="dcs-chev">' + ui('right', 16) + '</span></button>' +
+        (aperto ? '<div class="dcs-grpBody">' + fs.map(cat).join('') + '</div>' : '') +
+        '</div>';
+    });
+
+    h += '<div class="dcs-foot"><button type="button" class="dcs-btn" data-next="2">Avanti ' + ui('right', 17) + '</button></div>';
+    if (!Object.keys(S.sel).some(function (k) { return S.sel[k]; })) {
+      h += '<p class="dcs-hint">Non sai ancora da dove partire? Vai avanti lo stesso: ' +
+           'basta l\'e-mail, e ci racconti il resto alla fine con parole tue.</p>';
+    }
+    return h;
+  }
+
+  function passo2() {
+    var ag = S.fattaDa === 'Agente';
+    return intestazione() + bloccoChiLaFa() +
+      '<p class="dcs-sub">' + (ag
+        ? 'Basta l\'e-mail. Il resto se ce l\'hai.'
+        : 'Un asterisco solo: l\'e-mail. <b>Tutto il resto puoi lasciarlo vuoto</b> — anche il nome. ' +
+          'L\'indirizzo non serve per un preventivo: lo chiediamo se e quando si ordina.') + '</p>' +
+      soloEmail() +
+      '<div class="dcs-err is-hidden" data-err></div>' +
+      /* Trappola per i robot: invisibile e fuori dal giro dei tasti, quindi una
+         persona non la vede e non ci arriva mai. I programmi che compilano i
+         moduli automaticamente riempiono ogni campo che trovano, e si tradiscono. */
+      '<div aria-hidden="true" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden">' +
+        '<label>Sito web</label>' +
+        '<input type="text" name="dc_sito_web" data-trappola tabindex="-1" autocomplete="off" value="' + esc(S.trappola || '') + '">' +
+      '</div>' +
+      '<div class="dcs-q"><label class="dcs-lab" for="dcs-mail">E-mail <i>*</i></label>' +
+        '<input class="dcs-in" id="dcs-mail" type="email" inputmode="email" autocomplete="email" ' +
+        'data-free="S|mail" value="' + esc(S.mail) + '" placeholder="nome@esempio.it"></div>' +
+      '<div class="dcs-grid2">' +
+        '<div class="dcs-q"><label class="dcs-lab" for="dcs-nome">Nome</label>' +
+          '<input class="dcs-in" id="dcs-nome" autocomplete="name" data-free="S|nome" value="' + esc(S.nome) + '" placeholder="Nome e cognome"></div>' +
+        '<div class="dcs-q"><label class="dcs-lab" for="dcs-tel">Cellulare <span class="dcs-consigliato">altamente consigliato</span></label>' +
+          '<input class="dcs-in" id="dcs-tel" type="tel" inputmode="tel" autocomplete="tel" data-free="S|tel" value="' + esc(S.tel) + '" placeholder="347 1234567">' +
+          '<p class="dcs-hint">Non è obbligatorio, ma <b>diamo priorità a chi lascia il cellulare</b>: ti richiamiamo per primo.</p></div>' +
+      '</div>' +
+
+      '<div class="dcs-q"><label class="dcs-lab" for="dcs-citta">Città o CAP del cantiere <span class="dcs-consigliato">altamente consigliato</span></label>' +
+        '<p class="dcs-help">Se non ci dici la città non possiamo affidarti un agente della tua zona. Serve anche per trasporto e posa.</p>' +
+        '<input class="dcs-in" id="dcs-citta" autocomplete="address-level2" data-free="S|citta" value="' + esc(S.citta) + '" placeholder="Monza, oppure 20900"></div>' +
+      /* Il canale prima dell'orario: chi sceglie «solo e-mail» non deve
+         nemmeno vedere le domande sul quando. Una tendina in meno per lui,
+         e per noi la certezza di non chiamare chi non vuole essere chiamato. */
+      '<div class="dcs-q"><span class="dcs-lab">Come preferisci essere contattato</span>' +
+        '<p class="dcs-help dcs-multi">Puoi sceglierne più di uno.</p>' +
+        scelteMulte('canale', ['WhatsApp','Telefonata','SMS','E-mail']) + '</div>' +
+      ((S.canale || []).length && !soloMail()
+        ? '<div class="dcs-q"><span class="dcs-lab">In che fascia oraria</span>' +
+            scelte('richiamo', ['Quando volete','Di mattina','Di pomeriggio','Dopo le 18'], S, 'S') + '</div>' +
+          '<div class="dcs-q"><span class="dcs-lab">In che giorni</span>' +
+            '<p class="dcs-help">Puoi sceglierne più di uno. Se lasci vuoto, proviamo quando capita.</p>' +
+            scelteMulte('giorni', ['Lun','Mar','Mer','Gio','Ven','Sab']) + '</div>'
+        : '') +
+      /* v1.8 · «privato / impresa» ora è nella sezione del lead predittivo */
+
+      (ag ? '' : '<p class="dcs-priv"><b>I tuoi dati restano nostri.</b> ' + CFG.testi.privacy + '</p>') +
+      '<div class="dcs-foot">' +
+        '<button type="button" class="dcs-btn is-ghost" data-next="1">' + ui('left', 17) + '</button>' +
+        '<button type="button" class="dcs-btn" data-next="3">Avanti ' + ui('right', 17) + '</button>' +
+      '</div>';
+  }
+
+  function avvisiPer(k, t) {
+    var h = '';
+    (CFG.avvisi || []).forEach(function (a) {
+      if (a.k !== k || !a.when(t)) { return; }
+      h += '<div class="dcs-note' + (a.ok ? ' is-ok' : '') + '">' +
+           (typeof a.html === 'function' ? a.html(t) : a.html) + '</div>';
+    });
+    return h;
+  }
+
+  function passo3() {
+    var ag = S.fattaDa === 'Agente';
+    var h = intestazione() +
+      '<p class="dcs-sub">' + (ag
+        ? 'Quello che riesci a farti dire al telefono. <b>«Non lo so» è una risposta valida</b> e va segnata: dice al preventivista di chiedere.'
+        : 'Ci servono per dirti <b>cosa si può fare e cosa no</b>, e per non farti perdere tempo con proposte sbagliate. Se una non la sai, <b>«Non lo so» va benissimo</b>.') + '</p>';
+
+    /* v1.5 · ogni prodotto scelto è una sezione CHIUSA: si apre toccandola. */
+    function sezione(key, icona, titolo, corpo, extra) {
+      var aperta = !!S.open[key];
+      return '<div class="dcs-sec' + (aperta ? ' is-open' : '') + '">' +
+        '<button type="button" class="dcs-secHead" data-sez="' + key + '" aria-expanded="' + aperta + '">' +
+          '<span class="dcs-ic">' + icona + '</span><b>' + titolo + '</b>' + (extra || '') +
+          '<span class="dcs-chev">' + ui('right', 16) + '</span></button>' +
+        (aperta ? '<div class="dcs-secBody">' + corpo() + '</div>' : '') + '</div>';
+    }
+
+    CFG.famiglie.forEach(function (c) {
+      if (!S.sel[c.k]) { return; }
+      var n = nItem(c.k);
+      h += sezione('s' + c.k, famico(c.ic || c.k, 22), c.n, function () {
+        var b = '';
+        for (var i = 1; i <= n; i++) {
+          var sc = scopeDi(c.k, i);
+          if (!S.tec[sc]) { S.tec[sc] = {}; }
+          var t = S.tec[sc];
+          var conQta = n > 1 || i > 1 || c.qtyItem;
+          if (conQta) {
+            /* intestazione della riga: nome del prodotto + quello che è già stato scelto */
+            var rias = ['larghezza','altezza','misura','tipoInf','cosa','apertura'].map(function (id) {
+              var v = t[id]; if (Array.isArray(v)) { v = v.join(', '); }
+              if (v === 'Su misura') { v = (t[id + 'Su'] ? t[id + 'Su'] + ' cm' : 'su misura'); }
+              return v || '';
+            }).filter(function (v) { return v && v !== 'Non lo so'; }).join(' · ');
+            b += '<div class="dcs-item"><div class="dcs-itemHead"><b>' + (c.itemTxt || c.n) + ' ' + i +
+                 (rias ? ' <span class="dcs-rias">' + esc(rias) + (t._qta ? ' · ' + esc(t._qta) + ' ' + c.u : '') + '</span>' : '') + '</b>' +
+                 (i > 1 ? '<button type="button" class="dcs-del" data-del="' + c.k + '|' + i + '">togli</button>' : '') + '</div>';
+            if (!c.noQty) {
+              b += '<div class="dcs-q"><span class="dcs-lab">' + (c.qtyItemTxt || 'Quantità di questo prodotto') + '</span>' +
+                   libero(sc, '_qta', t._qta, c.u, '', 'num') + '</div>';
+            }
+          }
+          c.Q.forEach(function (q) { b += domanda(q, t, sc); });
+          b += avvisiPer(c.k, t);
+          if (conQta) { b += '</div>'; }
+        }
+        /* v1.7 · conteggio: quante ne sono già state divise sul totale */
+        if (c.qtyItem && S.qta[c.k]) {
+          var ass = 0;
+          for (var z = 1; z <= n; z++) { ass += parseFloat((S.tec[scopeDi(c.k, z)] || {})._qta || 0) || 0; }
+          var tot = parseFloat(S.qta[c.k]) || 0;
+          b += '<div class="dcs-note' + (ass === tot ? ' is-ok' : '') + '" data-conta="' + c.k + '">Totale <b>' + tot + '</b> · divise <b>' + ass + '</b>' +
+               (ass < tot ? ' · mancano <b>' + (tot - ass) + '</b>' : ass > tot ? ' · <b>' + (ass - tot) + ' in più</b> del totale' : ' · tutto diviso') + '</div>';
+        }
+        if (c.multi !== false) {
+          b += '<button type="button" class="dcs-add" data-add="' + c.k + '">+ ' +
+               (c.addTxt || 'Aggiungi un altro prodotto') + '</button>';
+        }
+        return b;
+      }, n > 1 ? '<span class="dcs-badge">' + n + '</span>' : '');
+    });
+
+    /* v1.8 · i dati per il LEAD PREDITTIVO (§ 7.2 e § 9.1 del documento per il
+       Claude di Cataldo): come ci ha conosciuto, chi è, dove, showroom,
+       campioni, concorrenza, impressioni dell'agente. Nessuno è obbligatorio. */
+    if (CFG.profilo) {
+      h += sezione('sprof', ui('info', 20), AG_MODO ? 'Cliente e lead predittivo' : 'Come ci hai conosciuto', function () {
+        var b = '';
+        CFG.profilo.forEach(function (q) { b += domanda(q, S.com, 'com'); });
+        return b;
+      });
+    }
+
+    h += sezione('scom', ui('user', 20), 'Consegna, posa e tempi', function () {
+      var b = '';
+      CFG.comuni.forEach(function (q) { b += domanda(q, S.com, 'com'); });
+      if (S.com.ascensore === 'No') {
+        b += '<div class="dcs-note">Senza ascensore la consegna al piano ha un supplemento. Meglio saperlo adesso che nel preventivo.</div>';
+      }
+      return b;
+    });
+
+    h += '<p class="dcs-fam"><span>' + ui('cam', 20) + '</span> Ancora due cose</p>';
+    h += '<div class="dcs-q"><span class="dcs-lab">Una foto, se ce l\'hai</span>' +
+      '<p class="dcs-help">Del massetto, del pavimento attuale, del vano della porta con il metro appoggiato. Vale cinque risposte.</p>' +
+      '<input class="dcs-in" type="file" accept="image/*" data-foto style="height:auto;padding:11px 13px"></div>';
+
+    if (!ag) {
+      h += '<div class="dcs-q"><span class="dcs-lab">Vuoi vedere i prodotti e parlare con un agente?</span>' +
+        '<p class="dcs-help">In videochiamata ti facciamo vedere i campioni dal vivo, senza muoverti da casa. ' +
+        'In showroom li tocchi. Nessuna delle due impegna a niente.</p>' +
+        scelte('incontro', ['Sì, in videochiamata','Sì, in showroom','No, per ora scriviamoci'], S, 'S') + '</div>';
+      if (S.incontro && S.incontro.indexOf('Sì') === 0) {
+        h += '<div class="dcs-note is-ok">Ti mandiamo noi due o tre proposte di giorno e ora, ' +
+             'sui giorni che hai segnato. Non devi cercare niente adesso.</div>';
+      }
+    }
+
+    h += '<div class="dcs-q"><span class="dcs-lab">Hai un codice prodotto o un nome?</span>' +
+      '<p class="dcs-help">Se hai visto qualcosa sul sito o su un catalogo, scrivilo qui: partiamo da lì. ' +
+      'Va bene anche «quello rovere chiaro a spina».</p>' +
+      libero('S', 'codiceProd', S.codiceProd, '', 'Es. 3S-ROV-NAT, oppure il nome che ricordi', 'text') + '</div>';
+
+    h += '<div class="dcs-q"><span class="dcs-lab">' + (ag ? 'Note dell\'agente' : 'Raccontaci il resto') + '</span>' +
+      '<p class="dcs-help">' + (ag
+        ? 'Quello che il cliente ha detto e che non entra nelle caselle: com\'è la casa, che fretta ha, cosa lo preoccupa.'
+        : 'Il prodotto che hai visto e ti piace, una stanza difficile, una data che non puoi spostare. Anche tre righe ci fanno risparmiare una telefonata.') + '</p>' +
+      '<textarea class="dcs-in" data-free="S|note" placeholder="' + (ag
+        ? 'Es. ha già preso i preventivi da altri due, decide entro settimana prossima…'
+        : 'Es. ho visto il Rovere Naturale 3 Strip e mi piace, ma la cucina è aperta sul soggiorno e non so se regge…') + '">' + esc(S.note) + '</textarea></div>';
+
+    if (!ag) {
+      h += '<div class="dcs-q"><span class="dcs-lab">Hai già parlato con qualcuno di noi?</span>' +
+        '<p class="dcs-help">Se sì, la mandiamo direttamente a lui e non ricominci da capo.</p>' +
+        scelte('schedaPer', ['No, è il primo contatto'].concat(agenti().filter(function (a) { return a !== 'Il primo disponibile'; })), S, 'S') + '</div>';
+    }
+
+    h += '<div class="dcs-sum"><div class="dcs-sumHead">La richiesta</div><div class="dcs-sumBody" data-sum></div></div>';
+    h += '<div class="dcs-err is-hidden" data-err></div>';
+    h += '<div class="dcs-foot">' +
+      '<button type="button" class="dcs-btn is-ghost" data-next="2">' + ui('left', 17) + '</button>' +
+      '<button type="button" class="dcs-btn" data-invia>' + (ag ? 'Salva la scheda' : 'Invia la richiesta') + ' ' + ui('send', 17) + '</button>' +
+      '</div>';
+    return h;
+  }
+
+  /* ==========================================================================
+     5 · DISEGNA
+     ========================================================================== */
+  function disegna(mantieniScroll) {
+    var y = window.pageYOffset;
+    ROOT.innerHTML = S.passo === 1 ? passo1() : S.passo === 2 ? passo2() : passo3();
+    aggiornaSfrido();
+    aggiornaRiepilogo();
+    validaAvanti();
+    if (mantieniScroll) { window.scrollTo(0, y); }
+    else { ROOT.scrollIntoView({ block: 'start', behavior: 'smooth' }); }
+  }
+
+  function aggiornaSfrido() {
+    ROOT.querySelectorAll('[data-sfrido]').forEach(function (el) {
+      var k = el.getAttribute('data-sfrido');
+      var mq = parseFloat(S.qta[k] || 0);
+      if (!S.sel[k] || !mq) { el.className = 'dcs-sfrido is-hidden'; return; }
+      el.className = 'dcs-sfrido';
+      el.innerHTML = 'Per <b>' + mq + ' m²</b> di stanza servono circa <b>' + Math.ceil(mq * 1.10) +
+        ' m²</b> di materiale a posa dritta, <b>' + Math.ceil(mq * 1.15) +
+        ' m²</b> a spina. Lo sfrido lo calcoliamo noi: tu scrivi la stanza.';
+    });
+  }
+
+  function aggiornaRiepilogo() {
+    var el = ROOT.querySelector('[data-sum]');
+    if (!el) { return; }
+    var h = '';
+    CFG.famiglie.forEach(function (c) {
+      if (!S.sel[c.k]) { return; }
+      h += '<div class="dcs-sumRow"><b>' + c.n + '</b><span>' +
+           (c.noQty ? '—' : (S.qta[c.k] ? S.qta[c.k] + ' ' + c.u : 'da definire')) + '</span></div>';
+      for (var i = 1; i <= nItem(c.k); i++) {
+        var t = S.tec[scopeDi(c.k, i)] || {};
+        c.Q.forEach(function (q) {
+          if (q.id !== 'budget') { return; }
+          var v = valore(t, q);
+          if (v) { h += '<div class="dcs-sumRow"><b>&nbsp;&nbsp;budget' + (nItem(c.k) > 1 ? ' ' + i : '') + '</b><span>' + v + '</span></div>'; }
+        });
+      }
+    });
+    CFG.comuni.forEach(function (q) {
+      if (q.t !== 'date' || !S.com[q.id]) { return; }
+      h += '<div class="dcs-sumRow"><b>' + (q.breve || q.l) + '</b><span>' + valore(S.com, q) + '</span></div>';
+    });
+    if (S.com.posa)   { h += '<div class="dcs-sumRow"><b>Posa</b><span>' + S.com.posa + '</span></div>'; }
+    if (S.com.piano !== undefined && String(S.com.piano).trim() !== '') {
+      h += '<div class="dcs-sumRow"><b>Piano</b><span>' + S.com.piano + (S.com.ascensore === 'No' ? ' · no ascensore' : '') + '</span></div>';
+    }
+    if (S.citta) { h += '<div class="dcs-sumRow"><b>Dove</b><span>' + esc(S.citta) + '</span></div>'; }
+    el.innerHTML = h || '<em>Niente selezionato.</em>';
+  }
+
+  function mailOk() { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test((S.mail || '').trim()); }
+
+  /* Nessun passo si blocca, tranne l'e-mail: è l'unica cosa che serve davvero.
+     Chi non sa da dove partire va avanti lo stesso e lo scrive nelle note —
+     una scheda con solo un indirizzo e due righe vale più di una persona che
+     si arrende a metà. */
+  function validaAvanti() {
+    var c = ROOT.querySelector('[data-next="3"]');
+    if (c) { c.disabled = !mailOk(); }
+  }
+
+  function errore(msg) {
+    var e = ROOT.querySelector('[data-err]');
+    if (!e) { return; }
+    e.textContent = msg;
+    e.className = 'dcs-err';
+    e.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  }
+
+  /* ==========================================================================
+     6 · INVIO
+     ========================================================================== */
+  function pacchetto() {
+    var prodotti = [];
+    CFG.famiglie.forEach(function (c) {
+      if (!S.sel[c.k]) { return; }
+      var n = nItem(c.k);
+      for (var i = 1; i <= n; i++) {
+        var t = S.tec[scopeDi(c.k, i)] || {}, risposte = {};
+        c.Q.forEach(function (q) {
+          if (q.if && !q.if(t)) { return; }
+          if (q.ag && !AG_MODO) { return; }
+          if (q.cl && AG_MODO) { return; }
+          if (q.una && i > 1) { return; }
+          var v = valore(t, q);
+          if (v) { risposte[q.l] = v; }
+        });
+        prodotti.push({ famiglia: c.n + (n > 1 ? ' · ' + (c.itemTxt || 'prodotto').toLowerCase() + ' ' + i : ''),
+                        quantita: c.noQty ? '' : ((n > 1 || c.qtyItem) ? (t._qta || (n === 1 ? S.qta[c.k] : '') || '') : (S.qta[c.k] || '')),
+                        totale_famiglia: c.noQty ? '' : (S.qta[c.k] || ''),
+                        unita: c.u, risposte: risposte });
+      }
+    });
+
+    var comuni = {}, profilo = {};
+    (CFG.profilo || []).forEach(function (q) {
+      if (q.if && !q.if(S.com, S.sel)) { return; }
+      if (q.ag && !AG_MODO) { return; }
+      if (q.cl && AG_MODO) { return; }
+      var v = valore(S.com, q);
+      if (v) { profilo[q.l] = v; }
+    });
+    CFG.comuni.forEach(function (q) {
+      if (q.if && !q.if(S.com, S.sel)) { return; }
+      if (q.ag && !AG_MODO) { return; }
+      var v = valore(S.com, q);
+      if (v) { comuni[q.l] = v; }
+    });
+
+    var dati = {
+      modo:         MODO,
+      fatta_da:     S.fattaDa,
+      compilata_da: S.fattaDa === 'Agente' ? S.compilataDa : '',
+      codice_agente: S.fattaDa === 'Agente' ? S.codiceAgente : '',
+      utente_connesso: (WP && WP.utente) || '',
+      /* le due cose che il server guarda per capire se è un robot */
+      trappola: S.trappola || '',
+      secondi: Math.round((Date.now() - APERTA_ALLE) / 1000),
+      scheda_per:   S.schedaPer || '',
+      cliente: {
+        nome:S.nome, email:S.mail, telefono:S.tel, citta:S.citta, tipo:S.chi,
+        canale: canaleTesto(),
+        richiamo: soloMail() ? '' : S.richiamo,
+        giorni:  soloMail() ? [] : (S.giorni || []),
+        incontro: S.incontro,
+        codice_prodotto: S.codiceProd
+      },
+      prodotti: prodotti,
+      consegna: comuni,
+      profilo: profilo,
+      note: S.note,
+      pagina: location.pathname
+    };
+
+    /* LA REGOLA: il gclid si butta via SOLO davanti a un agente riconosciuto.
+       Una scheda compilata da un agente che si porta dietro il gclid del
+       computer dell'ufficio insegna a Google che un annuncio ha prodotto una
+       conversione che non ha prodotto — e non si vede, i numeri sembrano buoni.
+       Ma "agente" senza un codice valido è una parola: in quel caso davanti c'è
+       un cliente, e il suo gclid non si perde. Il browser non può controllare
+       il codice, quindi manda sempre la provenienza e decide il server. */
+    /* v1.6 · promemoria «foto e video da mandare», in chiaro per la mail */
+    var pm = [];
+    var fv = [].concat(S.com.fotoVideo || []).filter(function (v) { return v && v.indexOf('Sì') === 0; });
+    if (fv.length) { pm.push('Il cliente vuole foto e video (' + fv.map(function (v) { return v.replace('Sì, ', ''); }).join(', ') + ')'); }
+    var dm = [].concat(S.com.daMandare || []).map(function (v) { return v === ALTRO ? (S.com.daMandare_x || '') : v; }).filter(Boolean);
+    if (dm.length) { pm.push('Mandare: ' + dm.join(', ') + ([].concat(S.com.daMandareCome || []).length ? ' via ' + [].concat(S.com.daMandareCome).join(' e ') : '')); }
+    if (S.com.daMandareCosa) { pm.push('Prodotti: ' + S.com.daMandareCosa); }
+    dati.promemoria = pm.join(' · ');
+
+    dati.provenienza = AG_MODO ? {} : PROVENIENZA;   // la scheda agente non porta mai il gclid
+    dati.bozza = BOZZA_RIPRESA ? 1 : 0;
+
+    return dati;
+  }
+
+  function invia(btn) {
+    if (!mailOk()) { errore('Manca l\'e-mail, o non è scritta bene. È l\'unica cosa che ci serve per forza.'); return; }
+    if (S.fattaDa === 'Agente' &&
+        (!String(S.compilataDa || '').trim() || !String(S.codiceAgente || '').trim())) {
+      S.passo = 1; disegna(false);
+      errore('Scheda agente: servono il nome e il codice agente, altrimenti non si può inviare.');
+      return;
+    }
+    btn.disabled = true;
+    var testoOrig = btn.innerHTML;
+    btn.innerHTML = 'Invio in corso…';
+
+    var dati = pacchetto();
+
+    /* GTM: l'evento parte solo per i clienti — e chi è cliente lo dice il
+       SERVER, dopo aver controllato il codice. Qui nel browser un "sono un
+       agente" senza codice valido vale zero, e non deve costare una
+       conversione vera. Perciò l'evento si spinge nella risposta, non qui.
+       In GTM: trigger sull'evento dc_scheda_inviata con condizione
+       fatta_da = Cliente, e da lì la conversione Google Ads. Niente gtag nel
+       codice: la decisione resta nel contenitore GTM-NXFPPJN. */
+
+    if (!WP) {                                   // fuori da WordPress: prova a vuoto
+      /* SOLO nel file di prova: finto controllo del codice (1101-1111).
+         In WordPress lo fa il server e il codice non è mai nella pagina. */
+      if (AG_MODO && !/^11(0[1-9]|1[01])$/.test(String(S.codiceAgente).trim())) {
+        btn.disabled = false; btn.innerHTML = testoOrig;
+        S.codiceAgente = ''; S.passo = 1; disegna(false);
+        errore('Codice agente non riconosciuto: la scheda NON è stata inviata. (Prova: usa un codice da 1101 a 1111.)');
+        return;
+      }
+      setTimeout(function () { evento(dati, S.fattaDa); fine(dati, true); }, 500);
+      return;
+    }
+
+    var fd = new FormData();
+    fd.append('action', 'dc_scheda_invia');
+    fd.append('nonce', WP.nonce);
+    fd.append('dati', JSON.stringify(dati));
+    if (S.foto) { fd.append('foto', S.foto); }
+
+    fetch(WP.ajax, { method: 'POST', body: fd, credentials: 'same-origin' })
+      .then(function (r) { return r.json(); })
+      .then(function (r) {
+        if (r && r.success) {
+          /* il server dice com'è stata registrata davvero */
+          evento(dati, (r.data && r.data.fatta_da) || 'Cliente', r.data && r.data.numero);
+          fine(dati, false, r.data && r.data.numero);
+        }
+        else { throw new Error((r && r.data) || 'errore'); }
+      })
+      .catch(function (err) {
+        btn.disabled = false; btn.innerHTML = testoOrig;
+        if (err && (err.message === 'codice' || err.message === 'troppi')) {
+          S.codiceAgente = ''; S.passo = 1; disegna(false);
+          errore(err.message === 'codice'
+            ? 'Codice agente non riconosciuto: la scheda NON è stata inviata. Controlla il codice e riprova — i dati scritti restano.'
+            : 'Troppi codici sbagliati da questa connessione. Riprova fra 15 minuti.');
+          return;
+        }
+        errore('Non siamo riusciti a inviare. Riprova, oppure chiamaci allo ' + CFG.testi.telefono + '.');
+      });
+  }
+
+  /* I nomi vengono da WordPress (pagina Persone), così la tendina e i codici
+     non possono andare fuori sincrono. Fuori da WordPress — nel file di prova —
+     si usa l'elenco scritto nella configurazione. */
+  function agenti() {
+    return (WP && WP.agenti && WP.agenti.length) ? WP.agenti : CFG.agenti;
+  }
+
+  /* La frase finale: gli si ripete quello che ha chiesto, con parole sue.
+     Serve a una cosa sola — che chiuda la pagina sapendo cosa succede adesso. */
+  var GIORNI_INTERI = { Lun:'lunedì', Mar:'martedì', Mer:'mercoledì',
+                        Gio:'giovedì', Ven:'venerdì', Sab:'sabato' };
+  function promessa() {
+    if (soloMail()) {
+      return 'Ti scriviamo per <b>e-mail</b>, come hai chiesto: nessuna telefonata.';
+    }
+    var NOMI = { WhatsApp:'su <b>WhatsApp</b>', Telefonata:'con una <b>telefonata</b>', SMS:'con un <b>SMS</b>', 'E-mail':'per <b>e-mail</b>' };
+    var cc = (S.canale || []).map(function (c) { return NOMI[c]; }).filter(Boolean);
+    var come = cc.length ? 'Ti contattiamo ' + (cc.length > 1 ? cc.slice(0, -1).join(', ') + ' o ' + cc[cc.length - 1] : cc[0])
+                         : 'Ti rispondiamo';
+    var gg = (S.giorni || []).map(function (g) { return GIORNI_INTERI[g] || g; });
+    var quando = '';
+    if (gg.length === 1) { quando = ' <b>' + gg[0] + '</b>'; }
+    else if (gg.length > 1) {
+      quando = ' <b>' + gg.slice(0, -1).join(', ') + ' o ' + gg[gg.length - 1] + '</b>';
+    }
+    if (S.richiamo && S.richiamo !== 'Quando volete') {
+      quando += ' ' + S.richiamo.toLowerCase();
+    }
+    return come + quando + (quando ? '.' : ' presto, di solito entro il giorno lavorativo successivo.');
+  }
+
+  /* L'evento per GTM. Parte una volta sola, e solo per un cliente. */
+  /* telefono in formato internazionale +39… (solo cifre) */
+  function telE164(t) {
+    var d = String(t || '').replace(/[^\d+]/g, '');
+    if (!d) { return ''; }
+    if (d.indexOf('+') === 0) { return d; }
+    if (d.indexOf('00') === 0) { return '+' + d.slice(2); }
+    return '+39' + d;
+  }
+  function evento(dati, fattaDa, numero) {
+    if (fattaDa !== 'Cliente') { return; }
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'dc_scheda_inviata',
+      fatta_da: 'Cliente',
+      /* integrazione · numero della scheda = order ID della conversione (§13b):
+         Google toglie i doppioni e le conversioni offline si agganciano a questo. */
+      lead_id: numero ? String(numero) : '',
+      /* v1.9 · conversioni avanzate per i lead: il tag Google legge e-mail e
+         telefono IN CHIARO (li cifra Google). Mai nell'URL, solo nel dataLayer. */
+      user_data: {
+        email: String(dati.cliente.email || '').trim().toLowerCase(),
+        phone_number: telE164(dati.cliente.telefono)
+      },
+      famiglie: dati.prodotti.map(function (p) { return p.famiglia; }).join(' | '),
+      gclid: (PROVENIENZA.gclid || '')
+    });
+  }
+
+  function fine(dati, prova, numero) {
+    try { localStorage.removeItem(DRAFT_KEY); } catch (e) {}
+    var ag = S.fattaDa === 'Agente';
+    ROOT.innerHTML = '<div class="dcs-done"><div class="dcs-tick">' + ui('check', 32) + '</div>' +
+      (ag
+        ? '<h3>Scheda salvata' + (numero ? ' · #' + numero : '') + '</h3>' +
+          '<p>Compilata da <b>' + esc(S.compilataDa || '—') + '</b>, assegnata a <b>' + esc(S.schedaPer || agenti()[0]) + '</b>.<br>' +
+          'Segnata come <b>interna</b>: niente <code>gclid</code>, nessuna conversione inviata a Google.</p>'
+          + (dati.promemoria ? '<p class="dcs-note" style="text-align:left"><b>Promemoria:</b> ' + esc(dati.promemoria) + '</p>' : '')
+        : '<h3>Ci siamo' + (S.nome ? ', ' + esc(S.nome.split(' ')[0]) : '') + '</h3>' +
+          '<p>Abbiamo tutto quello che serve per prepararti una proposta vera.<br>' +
+          promessa() + '</p>' +
+          (S.incontro && S.incontro.indexOf('Sì') === 0
+            ? '<p>E ti proponiamo due o tre orari per l\'appuntamento ' +
+              (S.incontro.indexOf('video') > -1 ? 'in videochiamata' : 'in showroom') + '.</p>' : '') +
+          '<p>Se hai fretta chiamaci tu: <a href="tel:' + CFG.testi.telefonoTel + '"><b>' + CFG.testi.telefono + '</b></a></p>') +
+      (prova ? '<div class="dcs-debug"><b>Prova senza WordPress — questo è quello che sarebbe stato inviato:</b>' +
+               esc(JSON.stringify(dati, null, 2)) + '</div>' : '') +
+      '</div>';
+    ROOT.scrollIntoView({ block: 'start', behavior: 'smooth' });
+  }
+
+  /* ==========================================================================
+     7 · EVENTI
+     ========================================================================== */
+  ROOT.addEventListener('click', function (e) {
+    var t = e.target.closest('[data-toggle],[data-set],[data-multi],[data-next],[data-invia],[data-grp],[data-sez],[data-add],[data-del]');
+    if (!t) { return; }
+
+    if (t.hasAttribute('data-grp')) { var gk = 'g' + t.getAttribute('data-grp'); S.open[gk] = !S.open[gk]; disegna(true); return; }
+    if (t.hasAttribute('data-sez')) { var sk = t.getAttribute('data-sez'); S.open[sk] = !S.open[sk]; disegna(true); return; }
+    if (t.hasAttribute('data-add')) {
+      var ak = t.getAttribute('data-add'); S.nItem[ak] = nItem(ak) + 1; S.open['s' + ak] = true;
+      salvaBozza(); disegna(true); return;
+    }
+    if (t.hasAttribute('data-del')) {
+      var dp = t.getAttribute('data-del').split('|'); togliItem(dp[0], parseInt(dp[1], 10));
+      salvaBozza(); disegna(true); return;
+    }
+    if (t.hasAttribute('data-toggle')) {
+      var k = t.getAttribute('data-toggle');
+      S.sel[k] = !S.sel[k];
+      if (!S.sel[k]) {
+        delete S.qta[k];
+        for (var ii = 1; ii <= nItem(k); ii++) { delete S.tec[scopeDi(k, ii)]; }
+        delete S.nItem[k];
+      }
+      salvaBozza(); disegna(true); return;
+    }
+    if (t.hasAttribute('data-multi')) {
+      var mid = t.getAttribute('data-multi'), mval = t.getAttribute('data-val');
+      var arr = S[mid] || [];
+      var i = arr.indexOf(mval);
+      if (i > -1) { arr.splice(i, 1); } else { arr.push(mval); }
+      S[mid] = arr; salvaBozza(); disegna(true); return;
+    }
+    if (t.hasAttribute('data-set')) {
+      var id = t.getAttribute('data-set'), val = t.getAttribute('data-val'), sc = t.getAttribute('data-scope');
+      var store = sc === 'S' ? S : sc === 'com' ? S.com : (S.tec[sc] = S.tec[sc] || {});
+      if (id === 'fattaDa') {          // le due etichette lunghe, il valore corto
+        S.fattaDa = (val.indexOf('agente') > -1 || val === 'Agente') ? 'Agente' : 'Cliente';
+        salvaBozza(); disegna(true); return;
+      }
+      if (t.hasAttribute('data-m')) {                 // scelta multipla
+        var arr2 = Array.isArray(store[id]) ? store[id] : (store[id] ? [store[id]] : []);
+        var j2 = arr2.indexOf(val);
+        if (j2 > -1) { arr2.splice(j2, 1); } else { arr2.push(val); }
+        store[id] = arr2;
+      } else {
+        store[id] = store[id] === val ? '' : val;
+      }
+      salvaBozza(); disegna(true); return;
+    }
+    if (t.hasAttribute('data-next')) {
+      var n = parseInt(t.getAttribute('data-next'), 10);
+      if (n === 3 && !mailOk()) { errore('Manca l\'e-mail, o non è scritta bene.'); return; }
+      S.passo = n; disegna(false); return;
+    }
+    if (t.hasAttribute('data-invia')) { invia(t); }
+  });
+
+  ROOT.addEventListener('input', function (e) {
+    var el = e.target;
+    if (el.hasAttribute('data-qty')) {
+      S.qta[el.getAttribute('data-qty')] = el.value; aggiornaSfrido(); salvaBozza(); return;
+    }
+    if (el.hasAttribute('data-trappola')) { S.trappola = el.value; return; }
+    if (el.hasAttribute('data-free')) {
+      var p = el.getAttribute('data-free').split('|'), sc = p[0], id = p[1];
+      var store = sc === 'S' ? S : sc === 'com' ? S.com : (S.tec[sc] = S.tec[sc] || {});
+      store[id] = el.value;
+      delete store[id + '_auto'];                     // cambiato a mano: non più automatico
+      aggiornaRiepilogo(); validaAvanti(); salvaBozza();
+    }
+  });
+
+  ROOT.addEventListener('change', function (e) {
+    var el = e.target;
+    if (el.hasAttribute('data-foto')) { S.foto = el.files && el.files[0] ? el.files[0] : null; return; }
+    if (el.hasAttribute('data-free') && el.tagName === 'SELECT') {
+      var p = el.getAttribute('data-free').split('|');
+      if (p[0] === 'S') { S[p[1]] = el.value; salvaBozza(); }
+    }
+  });
+
+  /* il piano fa comparire la domanda sull'ascensore quando esci dal campo */
+  ROOT.addEventListener('blur', function (e) {
+    var el = e.target;
+    if (el.hasAttribute && el.hasAttribute('data-free') &&
+        (el.getAttribute('data-free') === 'com|piano' || /\|_qta$/.test(el.getAttribute('data-free'))) && S.passo === 3) {
+      disegna(true);
+    }
+  }, true);
+
+  disegna(true);
+})();
+
+</script>
+</body>
+</html>

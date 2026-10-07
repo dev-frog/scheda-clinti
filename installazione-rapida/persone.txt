@@ -1,0 +1,14 @@
+# Persone della Scheda agente — formato:  Nome = codice = e-mail
+# DIEGO: metti i CODICI VERI (da 4 a 6 caratteri, non banali) e le e-mail. Le righe con # sono ignorate.
+# Diego S e Diego J sono due persone diverse.
+Serena     = 1101 =
+Alex       = 1102 =
+Giselle    = 1103 =
+Iri        = 1104 =
+Diego S    = 1105 =
+Diego J    = 1106 =
+Rosaria    = 1107 =
+Aldrin     = 1108 =
+Ferdinando = 1109 =
+Ferrari    = 1110 =
+Aldo       = 1111 =

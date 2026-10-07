@@ -1,0 +1,304 @@
+{
+  "exportFormatVersion": 2,
+  "containerVersion": {
+    "container": {
+      "usageContext": [
+        "WEB"
+      ]
+    },
+    "builtInVariable": [
+      {
+        "type": "PAGE_PATH",
+        "name": "Page Path"
+      },
+      {
+        "type": "EVENT",
+        "name": "Event"
+      }
+    ],
+    "variable": [
+      {
+        "variableId": "9101",
+        "name": "CONFIG - Scheda - AW Conversion ID",
+        "type": "c",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "value",
+            "value": "SOSTITUIRE-CON-ID-CONVERSIONE"
+          }
+        ],
+        "notes": "Google Ads > Obiettivi > Conversioni > azione 'Scheda cliente' > Configurazione tag: il numero dopo AW-"
+      },
+      {
+        "variableId": "9102",
+        "name": "CONFIG - Scheda - AW Conversion Label",
+        "type": "c",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "value",
+            "value": "SOSTITUIRE-CON-ETICHETTA"
+          }
+        ]
+      },
+      {
+        "variableId": "9103",
+        "name": "DLV - fatta_da",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "fatta_da"
+          }
+        ]
+      },
+      {
+        "variableId": "9104",
+        "name": "DLV - user_data",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "user_data"
+          }
+        ]
+      },
+      {
+        "variableId": "9105",
+        "name": "DLV - famiglie",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "famiglie"
+          }
+        ]
+      },
+      {
+        "variableId": "9106",
+        "name": "UPD - Scheda cliente",
+        "type": "awec",
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "mode",
+            "value": "CODE"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "dataSource",
+            "value": "{{DLV - user_data}}"
+          }
+        ],
+        "notes": "user_data = {email, phone_number} spinto dal plugin dc-scheda-cliente v1.9"
+      },
+      {
+        "variableId": "9107",
+        "name": "DLV - lead_id",
+        "type": "v",
+        "parameter": [
+          {
+            "type": "INTEGER",
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "name",
+            "value": "lead_id"
+          }
+        ],
+        "notes": "Numero della scheda (post ID). Usato come Order ID: toglie i doppioni e aggancia le conversioni offline (§13b)."
+      }
+    ],
+    "trigger": [
+      {
+        "triggerId": "9201",
+        "name": "CE - dc_scheda_inviata - Cliente",
+        "type": "CUSTOM_EVENT",
+        "customEventFilter": [
+          {
+            "type": "EQUALS",
+            "parameter": [
+              {
+                "type": "TEMPLATE",
+                "key": "arg0",
+                "value": "{{_event}}"
+              },
+              {
+                "type": "TEMPLATE",
+                "key": "arg1",
+                "value": "dc_scheda_inviata"
+              }
+            ]
+          }
+        ],
+        "filter": [
+          {
+            "type": "EQUALS",
+            "parameter": [
+              {
+                "type": "TEMPLATE",
+                "key": "arg0",
+                "value": "{{DLV - fatta_da}}"
+              },
+              {
+                "type": "TEMPLATE",
+                "key": "arg1",
+                "value": "Cliente"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "triggerId": "9202",
+        "name": "ESCLUSIONE - pagina Scheda agente",
+        "type": "PAGEVIEW",
+        "filter": [
+          {
+            "type": "CONTAINS",
+            "parameter": [
+              {
+                "type": "TEMPLATE",
+                "key": "arg0",
+                "value": "{{Page Path}}"
+              },
+              {
+                "type": "TEMPLATE",
+                "key": "arg1",
+                "value": "/scheda-agente"
+              }
+            ]
+          }
+        ],
+        "notes": "Blocca solo i tag che partono su 'pagina vista'. Per i tag che partono da clic/moduli/eventi usare anche 'ESCLUSIONE - pagina Scheda agente - tutti gli eventi'. Aggiungere TUTTI E DUE come eccezione ai tag di conversione Google Ads e GA4 esistenti."
+      },
+      {
+        "triggerId": "9203",
+        "name": "ESCLUSIONE - pagina Scheda agente - tutti gli eventi",
+        "type": "CUSTOM_EVENT",
+        "customEventFilter": [
+          {
+            "type": "MATCH_REGEX",
+            "parameter": [
+              {
+                "type": "TEMPLATE",
+                "key": "arg0",
+                "value": "{{_event}}"
+              },
+              {
+                "type": "TEMPLATE",
+                "key": "arg1",
+                "value": ".*"
+              }
+            ]
+          }
+        ],
+        "filter": [
+          {
+            "type": "CONTAINS",
+            "parameter": [
+              {
+                "type": "TEMPLATE",
+                "key": "arg0",
+                "value": "{{Page Path}}"
+              },
+              {
+                "type": "TEMPLATE",
+                "key": "arg1",
+                "value": "/scheda-agente"
+              }
+            ]
+          }
+        ],
+        "notes": "Un'eccezione in GTM blocca solo se scatta sullo STESSO evento del tag. Il trigger 'pagina vista' (9202) blocca solo i tag su pagina vista; questo blocca i tag che partono da clic, invio moduli ed eventi personalizzati. Aggiungere TUTTI E DUE come eccezione a ogni tag di conversione Google Ads e GA4 esistente."
+      }
+    ],
+    "tag": [
+      {
+        "tagId": "9301",
+        "name": "AW - UPD - Scheda cliente",
+        "type": "awud",
+        "parameter": [
+          {
+            "type": "BOOLEAN",
+            "key": "enableConversionLinker",
+            "value": "true"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "conversionId",
+            "value": "{{CONFIG - Scheda - AW Conversion ID}}"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "userDataVariable",
+            "value": "{{UPD - Scheda cliente}}"
+          }
+        ],
+        "firingTriggerId": [
+          "9201"
+        ],
+        "blockingTriggerId": [
+          "9202",
+          "9203"
+        ]
+      },
+      {
+        "tagId": "9302",
+        "name": "AW - Conversione - Scheda cliente",
+        "type": "awct",
+        "parameter": [
+          {
+            "type": "BOOLEAN",
+            "key": "enableConversionLinker",
+            "value": "true"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "conversionId",
+            "value": "{{CONFIG - Scheda - AW Conversion ID}}"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "conversionLabel",
+            "value": "{{CONFIG - Scheda - AW Conversion Label}}"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "orderId",
+            "value": "{{DLV - lead_id}}"
+          }
+        ],
+        "firingTriggerId": [
+          "9201"
+        ],
+        "blockingTriggerId": [
+          "9202",
+          "9203"
+        ],
+        "notes": "Order ID = numero della scheda. Le conversioni avanzate arrivano dal tag 'AW - UPD - Scheda cliente' sullo stesso evento: controllare in Tag Assistant che e-mail e telefono compaiano nella hit di conversione (in alternativa: 'Includi dati forniti dagli utenti' in questo tag con la variabile 'UPD - Scheda cliente')."
+      }
+    ]
+  }
+}

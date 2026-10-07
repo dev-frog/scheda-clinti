@@ -1,0 +1,265 @@
+/* ============================================================================
+   Disegnarecasa — Scheda cliente
+   Workstream J · v1.0 · 2026-08-28
+   ----------------------------------------------------------------------------
+   Standalone. No framework, no build step, no dependencies.
+   Everything is prefixed .dcs- and scoped under #dc-scheda, so it cannot
+   collide with the theme, with Elementor or with anything else on the page.
+   ============================================================================ */
+
+#dc-scheda{
+  /* one red only */
+  --dcs-red:#d80612;
+  --dcs-red-press:#a8040e;
+  --dcs-ink:#1B1614;
+  --dcs-muted:#5F5651;
+  --dcs-faint:#8C817B;
+  --dcs-line:#E6DFDA;
+  --dcs-line-2:#D6CCC5;
+  --dcs-cream:#F6F1EC;
+  --dcs-white:#fff;
+  --dcs-ok:#177245;
+  --dcs-wood:#9A6B3C;
+  --dcs-amber:#FFFBF0;
+  --dcs-amber-line:#EEE0BC;
+
+  --dcs-sans:"Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --dcs-serif:"Fraunces",Georgia,"Times New Roman",serif;
+  --dcs-mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,monospace;
+
+  max-width:760px;
+  margin:0 auto;
+  font-family:var(--dcs-sans);
+  color:var(--dcs-ink);
+  font-size:16px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+#dc-scheda *{box-sizing:border-box}
+#dc-scheda button{font-family:inherit}
+#dc-scheda :focus-visible{outline:2px solid var(--dcs-red);outline-offset:2px}
+
+/* ---------------- intestazione e avanzamento ---------------- */
+.dcs-head{margin-bottom:22px}
+.dcs-title{
+  font-family:var(--dcs-serif);font-size:clamp(26px,4.2vw,34px);font-weight:600;
+  letter-spacing:-.02em;line-height:1.1;margin:0 0 8px;color:var(--dcs-ink);
+}
+.dcs-sub{font-size:15px;color:var(--dcs-muted);margin:0 0 18px;max-width:60ch}
+.dcs-steps{display:flex;gap:6px;align-items:center;margin-bottom:8px}
+.dcs-step{flex:1;height:4px;border-radius:2px;background:var(--dcs-line);overflow:hidden}
+.dcs-step i{display:block;height:100%;width:0;background:var(--dcs-red);transition:width .3s ease}
+.dcs-step.is-on i{width:100%}
+.dcs-stepTxt{
+  font-family:var(--dcs-mono);font-size:11px;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--dcs-faint);margin:0;
+}
+.dcs-stepTxt b{color:var(--dcs-ink)}
+
+/* ---------------- blocco "scheda fatta da" ---------------- */
+/* Neutro come tutto il resto: la scheda è pubblica e uguale per tutti.
+   Si colora solo quando si sceglie l'agente, e serve a far vedere a chi
+   compila che la scelta è registrata. */
+.dcs-by{
+  background:var(--dcs-white);border:1px solid var(--dcs-line);border-radius:10px;
+  padding:13px 14px;margin-bottom:22px;transition:background .15s ease,border-color .15s ease;
+}
+.dcs-by.is-agente{background:var(--dcs-amber);border-color:var(--dcs-amber-line)}
+.dcs-by .dcs-lab{margin-bottom:7px}
+.dcs-by .dcs-mini{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+@media (max-width:540px){.dcs-by .dcs-mini{grid-template-columns:1fr}}
+.dcs-by .dcs-mini label{display:block;font-size:11.5px;font-weight:700;color:#6B5720;margin-bottom:4px}
+.dcs-by .dcs-in{height:42px;font-size:15px}
+.dcs-by.is-agente .dcs-in{border-color:#DCCB9E}
+.dcs-by .dcs-note{background:transparent;border:0;padding:0;font-size:12px;color:#8C7A48;margin:11px 0 0;line-height:1.5}
+.dcs-by .dcs-note b{color:#6B5720}
+.dcs-by.is-agente .dcs-opt.is-on{border-color:#B5843F;background:rgba(181,132,63,.12);color:#6B5720}
+
+/* ---------------- domande ---------------- */
+.dcs-q{margin-bottom:20px}
+.dcs-lab{display:block;font-size:14.5px;font-weight:700;color:var(--dcs-ink);margin-bottom:3px}
+.dcs-lab i{font-style:normal;color:var(--dcs-red)}
+.dcs-help{font-size:12.5px;color:var(--dcs-faint);margin:0 0 9px;line-height:1.45;max-width:58ch}
+/* nota gentile SOTTO un campo: non chiede, spiega perché conviene */
+.dcs-hint{font-size:12.5px;color:var(--dcs-faint);margin:6px 0 0;line-height:1.45;max-width:58ch}
+/* «solo l'e-mail è obbligatoria»: nel rosso del marchio, una volta per passo.
+   Non è un errore, quindi non urla: è un fondo tenue e un filo rosso a sinistra. */
+.dcs-solo{display:flex;gap:9px;align-items:flex-start;margin:0 0 18px;padding:11px 13px;
+  border-left:3px solid var(--dcs-red);border-radius:0 8px 8px 0;
+  background:rgba(216,6,18,.055);color:var(--dcs-red);
+  font-size:13.5px;line-height:1.5;max-width:62ch}
+.dcs-solo svg{flex:0 0 auto;margin-top:2px}
+.dcs-solo b{font-weight:700}
+.dcs-solo span{color:var(--dcs-ink)}
+.dcs-solo b{color:var(--dcs-red)}
+.dcs-in{
+  width:100%;height:46px;padding:0 13px;
+  border:1.5px solid var(--dcs-line-2);border-radius:9px;
+  font:400 16px/1 var(--dcs-sans);color:var(--dcs-ink);background:var(--dcs-white);
+}
+.dcs-in:focus{outline:none;border-color:var(--dcs-red)}
+textarea.dcs-in{height:96px;padding:12px 13px;line-height:1.55;resize:vertical}
+.dcs-opts{display:flex;flex-wrap:wrap;gap:8px}
+.dcs-opt{
+  font-size:13.5px;font-weight:600;padding:10px 14px;min-height:42px;
+  border:1.5px solid var(--dcs-line);border-radius:9px;
+  background:var(--dcs-white);color:var(--dcs-ink);cursor:pointer;
+}
+.dcs-opt:hover{border-color:var(--dcs-line-2)}
+.dcs-opt.is-on{border-color:var(--dcs-red);background:rgba(216,6,18,.06);color:var(--dcs-red)}
+.dcs-opt.is-soft{border-style:dashed;color:var(--dcs-faint)}
+.dcs-opt.is-soft.is-on{border-style:solid;border-color:var(--dcs-red);color:var(--dcs-red)}
+.dcs-numrow{display:flex;align-items:center;gap:10px}
+.dcs-numrow .dcs-in{flex:1;min-width:0}
+.dcs-suf{font-family:var(--dcs-mono);font-size:13px;color:var(--dcs-faint);flex:0 0 auto;white-space:nowrap}
+.dcs-pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.dcs-pair label{display:block;font-size:12px;font-weight:700;color:var(--dcs-muted);margin-bottom:5px}
+.dcs-altro{margin-top:10px}
+.dcs-grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:600px){.dcs-grid2{grid-template-columns:1fr;gap:0}}
+
+/* ---------------- famiglie di prodotto ---------------- */
+.dcs-cat{
+  border:1px solid var(--dcs-line);border-radius:12px;margin-bottom:10px;
+  overflow:hidden;background:var(--dcs-white);
+}
+.dcs-catHead{
+  display:flex;align-items:center;gap:13px;padding:15px;width:100%;
+  background:none;border:0;text-align:left;font:inherit;cursor:pointer;
+}
+.dcs-catHead .dcs-ic{width:32px;height:32px;flex:0 0 auto;color:var(--dcs-wood)}
+.dcs-catHead .dcs-ic svg{width:32px;height:32px;display:block}
+.dcs-catHead b{flex:1;font-size:15px;font-weight:700}
+.dcs-check{
+  width:24px;height:24px;flex:0 0 auto;border:1.5px solid var(--dcs-line-2);border-radius:6px;
+  display:grid;place-items:center;color:#fff;
+}
+.dcs-check svg{width:15px;height:15px;opacity:0}
+.dcs-cat.is-on{border-color:var(--dcs-line-2)}
+.dcs-cat.is-on .dcs-check{background:var(--dcs-red);border-color:var(--dcs-red)}
+.dcs-cat.is-on .dcs-check svg{opacity:1}
+.dcs-catBody{display:none;padding:0 15px 16px;border-top:1px solid var(--dcs-cream)}
+.dcs-cat.is-on .dcs-catBody{display:block}
+.dcs-qty{display:flex;gap:10px;align-items:flex-end;margin-top:13px}
+.dcs-qty>div{flex:1}
+.dcs-sfrido{
+  margin-top:11px;padding:11px 13px;background:var(--dcs-cream);border:1px solid var(--dcs-line);
+  border-radius:9px;font-size:13px;color:var(--dcs-muted);line-height:1.5;
+}
+.dcs-sfrido b{color:var(--dcs-ink)}
+.dcs-sfrido.is-hidden{display:none}
+
+/* ---------------- gruppi al passo 3 ---------------- */
+.dcs-fam{
+  display:flex;align-items:center;gap:10px;margin:32px 0 16px;padding-bottom:8px;
+  border-bottom:1px solid var(--dcs-line);
+  font-family:var(--dcs-mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--dcs-faint);
+}
+.dcs-fam:first-child{margin-top:0}
+.dcs-fam span{color:var(--dcs-wood);display:block}
+.dcs-fam span svg{width:20px;height:20px;display:block}
+
+/* ---------------- avvisi ---------------- */
+.dcs-note{
+  margin:0 0 20px;padding:13px 15px;border-radius:10px;
+  background:#FFF6F6;border:1px solid #F3D5D7;
+  font-size:13.5px;color:var(--dcs-muted);line-height:1.55;
+}
+.dcs-note b{color:var(--dcs-red)}
+.dcs-note.is-ok{background:#F1F8F3;border-color:#CBE4D4}
+.dcs-note.is-ok b{color:var(--dcs-ok)}
+
+/* ---------------- riepilogo ---------------- */
+.dcs-sum{margin-top:26px;border:1px solid var(--dcs-line);border-radius:12px;overflow:hidden}
+.dcs-sumHead{
+  padding:13px 15px;background:var(--dcs-cream);border-bottom:1px solid var(--dcs-line);
+  font-size:13px;font-weight:700;
+}
+.dcs-sumBody{padding:13px 15px;font-size:13.5px;color:var(--dcs-muted)}
+.dcs-sumRow{display:flex;justify-content:space-between;gap:14px;padding:6px 0}
+.dcs-sumRow b{color:var(--dcs-ink);font-weight:700}
+.dcs-sumRow span{font-family:var(--dcs-mono);white-space:nowrap;text-align:right}
+
+/* ---------------- pulsanti ---------------- */
+.dcs-foot{
+  display:flex;gap:10px;align-items:center;margin-top:28px;
+  padding-top:20px;border-top:1px solid var(--dcs-line);
+}
+.dcs-btn{
+  flex:1;min-height:50px;padding:0 20px;border:0;border-radius:10px;
+  background:var(--dcs-red);color:#fff;font:800 15px/1 var(--dcs-sans);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;
+}
+.dcs-btn:hover{background:var(--dcs-red-press)}
+.dcs-btn[disabled]{opacity:.4;cursor:not-allowed}
+.dcs-btn svg{width:17px;height:17px}
+.dcs-btn.is-ghost{
+  flex:0 0 auto;background:var(--dcs-white);color:var(--dcs-ink);
+  border:1.5px solid var(--dcs-line-2);padding:0 18px;
+}
+.dcs-btn.is-ghost:hover{background:var(--dcs-cream)}
+.dcs-priv{font-size:12px;color:var(--dcs-faint);margin:18px 0 0;line-height:1.5}
+.dcs-priv b{color:var(--dcs-muted)}
+
+/* ---------------- schermata finale ---------------- */
+.dcs-done{padding:48px 20px;text-align:center}
+.dcs-done .dcs-tick{
+  width:64px;height:64px;border-radius:50%;background:var(--dcs-ok);color:#fff;
+  display:grid;place-items:center;margin:0 auto 20px;
+}
+.dcs-done .dcs-tick svg{width:32px;height:32px}
+.dcs-done h3{font-family:var(--dcs-serif);font-size:26px;font-weight:600;margin:0 0 12px}
+.dcs-done p{font-size:15px;color:var(--dcs-muted);margin:0 0 14px;line-height:1.6}
+.dcs-done code{
+  font-family:var(--dcs-mono);font-size:13px;background:var(--dcs-cream);
+  padding:2px 6px;border-radius:4px;
+}
+.dcs-debug{
+  margin-top:26px;text-align:left;background:var(--dcs-cream);border:1px solid var(--dcs-line);
+  border-radius:10px;padding:14px;font-family:var(--dcs-mono);font-size:11.5px;
+  color:var(--dcs-muted);white-space:pre-wrap;word-break:break-word;max-height:340px;overflow:auto;
+}
+.dcs-debug b{color:var(--dcs-ink);display:block;margin-bottom:8px;font-family:var(--dcs-sans);font-size:12px}
+
+/* ---------------- errore ---------------- */
+.dcs-err{
+  margin:0 0 18px;padding:13px 15px;border-radius:10px;
+  background:#FFF1F1;border:1px solid #F0C9CB;color:#8A1116;font-size:13.5px;
+}
+.dcs-err.is-hidden{display:none}
+
+/* v1.4 · 30/9/2026 — domande che compaiono solo nella Scheda agente */
+.dcs-q.is-ag{border-left:3px solid #B5843F;padding-left:12px}
+.dcs-q.is-ag > .dcs-lab::after{content:"agente";margin-left:8px;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#B5843F;border:1px solid #B5843F;border-radius:50px;padding:1px 7px;vertical-align:middle}
+
+/* v1.5 · gruppi e sezioni chiusi, più prodotti per famiglia */
+.dcs-grp,.dcs-sec{border:1px solid var(--dcs-line);border-radius:14px;background:var(--dcs-white);margin-bottom:10px;overflow:hidden}
+.dcs-grpHead,.dcs-secHead{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:12px;width:100%;min-height:56px;padding:12px 15px;cursor:pointer}
+.dcs-grpHead .dcs-ic,.dcs-secHead .dcs-ic{width:32px;height:32px;flex:0 0 auto;color:var(--dcs-wood);display:flex;align-items:center;justify-content:center}
+.dcs-grpHead b,.dcs-secHead b{flex:1;font-size:15px;font-weight:700}
+.dcs-chev{display:flex;color:var(--dcs-faint);transition:transform .2s}
+.is-open > .dcs-grpHead .dcs-chev,.is-open > .dcs-secHead .dcs-chev{transform:rotate(90deg)}
+.dcs-grpHead:focus-visible,.dcs-secHead:focus-visible{outline:2px solid var(--dcs-red);outline-offset:-2px}
+.dcs-grpBody{padding:0 10px 4px;border-top:1px solid var(--dcs-cream)}
+.dcs-grpBody .dcs-cat{margin:10px 0}
+.dcs-secBody{padding:4px 15px 16px;border-top:1px solid var(--dcs-cream)}
+.dcs-badge{min-width:22px;height:22px;border-radius:50px;background:var(--dcs-red);color:#fff;font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;padding:0 6px}
+.dcs-item{border:1px dashed var(--dcs-line-2);border-radius:12px;padding:10px 12px;margin:14px 0}
+.dcs-itemHead{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.dcs-del{all:unset;cursor:pointer;color:var(--dcs-muted);font-size:13px;text-decoration:underline;padding:6px}
+.dcs-add{all:unset;box-sizing:border-box;cursor:pointer;display:block;width:100%;text-align:center;margin-top:12px;padding:12px;border:1px dashed var(--dcs-red);border-radius:50px;color:var(--dcs-red);font-weight:700;font-size:14px}
+.dcs-multi{margin:-2px 0 8px;font-style:italic}
+
+/* v1.7b · 30/9 — BUG: con il telefono in modalità scura il nome del prodotto
+   diventava bianco su bianco (i pulsanti prendono il colore del sistema).
+   Colori fissati e modulo sempre chiaro, anche per calendario e campi. */
+#dc-scheda{color-scheme:light;color:var(--dcs-ink)}
+#dc-scheda button,#dc-scheda input,#dc-scheda select,#dc-scheda textarea{color:var(--dcs-ink)}
+#dc-scheda .dcs-btn{color:#fff}
+#dc-scheda .dcs-btn.is-ghost{color:var(--dcs-ink)}
+#dc-scheda .dcs-add{color:var(--dcs-red)}
+#dc-scheda .dcs-del{color:var(--dcs-muted)}
+#dc-scheda .dcs-badge{color:#fff}
+.dcs-rias{display:block;font-weight:500;font-size:12.5px;color:var(--dcs-muted);margin-top:2px}
+.dcs-consigliato{display:inline-block;margin-left:6px;font-size:11px;font-weight:700;color:#fff;background:var(--dcs-red);border-radius:50px;padding:2px 8px;vertical-align:middle}

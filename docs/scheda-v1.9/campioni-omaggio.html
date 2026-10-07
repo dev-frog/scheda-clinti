@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><title>Campioni omaggio – Disegnarecasa (demo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--red:#DC3545;--red-d:#b52a37;--ink:#111;--muted:#5f6368;--line:#D6D6D6;--bg:#F6F9F9;--card:#fff;--ok:#1e8e3e;--r:14px;--pill:50px}
+*{box-sizing:border-box}
+body{margin:0;font-family:Roboto,system-ui,-apple-system,Segoe UI,Arial,sans-serif;color:var(--ink);background:var(--bg);font-size:16px;line-height:1.45}
+.top{background:#fff;border-bottom:1px solid var(--line);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logo{font-weight:700;font-size:20px;letter-spacing:-.3px}.logo b{color:var(--red)}
+.demo{font-size:12px;background:#fff4e5;color:#8a4b00;border:1px solid #ffd8a8;border-radius:var(--pill);padding:4px 10px}
+#dc-form{max-width:760px;margin:20px auto 60px;padding:0 16px}
+form,.thanks{background:var(--card);border-radius:var(--r);box-shadow:0 1px 3px rgba(0,0,0,.08);padding:22px 18px}
+h1{font-size:26px;margin:0 0 4px;font-weight:600}h2{font-size:19px;margin:18px 0 6px;font-weight:600}
+.sub{color:var(--muted);margin:0 0 14px}
+.prog{margin:12px 0 4px}.prog .bar{height:6px;background:var(--red);border-radius:6px;transition:width .3s}.prog{background:#eee;border-radius:6px;position:relative}
+.step-lab{position:absolute;right:0;top:10px;font-size:12px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:1fr;gap:14px 16px;margin-top:10px}
+@media(min-width:640px){.grid{grid-template-columns:1fr 1fr}.wide{grid-column:1/-1}}
+.fld{border:0;margin:0;padding:0;min-width:0}.lab{display:block;font-weight:500;margin-bottom:6px;font-size:15px}.req{color:var(--red)}
+input[type=text],input[type=email],input[type=tel],input[type=number],select,textarea{width:100%;min-height:48px;border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;font:inherit;background:#fff;color:var(--ink)}
+textarea{min-height:90px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--ink);box-shadow:0 0 0 3px rgba(220,53,69,.15)}
+.help{font-size:13px;color:var(--muted);margin-top:4px}
+.err input,.err select,.err textarea{border-color:var(--red);background:#fff7f7}.err .lab::after{content:"  Campo obbligatorio";color:var(--red);font-size:12px;font-weight:400}
+.chips{display:flex;flex-wrap:wrap;gap:8px}.chip input{position:absolute;opacity:0}
+.chip label{display:inline-flex;align-items:center;min-height:44px;padding:8px 16px;border:1.5px solid var(--line);border-radius:var(--pill);cursor:pointer;background:#fff;user-select:none}
+.chip input:checked+label{background:var(--ink);border-color:var(--ink);color:#fff}.chip input:focus-visible+label{box-shadow:0 0 0 3px rgba(220,53,69,.3)}
+.err .chip label{border-color:var(--red)}
+.accs{display:flex;flex-direction:column;gap:10px;margin-top:8px}
+.acc{border:1.5px solid var(--line);border-radius:var(--r);background:#fff;overflow:hidden}.acc.on{border-color:var(--ink)}
+.acc-head{width:100%;display:flex;align-items:center;gap:12px;padding:14px 16px;min-height:56px;background:none;border:0;font:inherit;font-weight:500;cursor:pointer;text-align:left;color:var(--ink)}
+.tick{width:22px;height:22px;border:2px solid var(--line);border-radius:6px;flex:none;display:grid;place-items:center}
+.acc.on .tick{background:var(--red);border-color:var(--red)}.acc.on .tick::after{content:"✓";color:#fff;font-size:14px}
+.acc-title{flex:1}.arrow{transition:transform .2s;color:var(--muted)}.acc.on .arrow{transform:rotate(180deg)}
+.acc-body{display:none;padding:0 16px 16px;border-top:1px dashed var(--line)}.acc.on .acc-body{display:block}
+.acc-err{color:var(--red);font-weight:500;margin:6px 0}
+.check{display:flex;gap:10px;align-items:flex-start}.check input{width:22px;height:22px;margin-top:2px;accent-color:var(--red);flex:none}
+.nav{display:flex;gap:10px;justify-content:space-between;margin-top:22px;flex-wrap:wrap}
+.btn{appearance:none;border:0;background:var(--red);color:#fff;font:inherit;font-weight:500;font-size:17px;border-radius:var(--pill);padding:14px 26px;min-height:52px;cursor:pointer;flex:1}
+.btn:hover{background:var(--red-d)}.btn.ghost{background:#fff;color:var(--ink);border:1.5px solid var(--line);flex:0 0 auto}
+.thanks{text-align:center}.ok{width:64px;height:64px;border-radius:50%;background:var(--ok);color:#fff;font-size:34px;display:grid;place-items:center;margin:0 auto}
+details{text-align:left;margin:16px 0;font-size:13px}pre{background:#f3f3f3;padding:10px;border-radius:8px;overflow:auto;white-space:pre-wrap}
+.note{max-width:760px;margin:0 auto 30px;padding:0 16px;font-size:13px;color:var(--muted)}
+.lock{display:flex;align-items:center;gap:8px;background:#111;color:#fff;border-radius:10px;padding:10px 14px;margin:6px 0 4px;font-size:14px}
+</style></head>
+<body>
+<header class="top"><div class="logo"><b>D</b>isegnare<b>casa</b></div><span class="demo">DEMO – link personale</span></header>
+<div id="dc-form"></div>
+<p class="note">Prova: aggiungi <code>?lid=L260930-AB12&amp;gclid=TEST123</code>.</p>
+<script>
+/* ===== CONFIG: CAMPIONI OMAGGIO (link personale) — per cambiare il modulo si modifica SOLO questo blocco ===== */
+window.FORM_CONFIG={
+  title:'I tuoi campioni omaggio',
+  subtitle:'Conferma i dati: spediamo i campioni gratis a casa tua.',
+  submitLabel:'Ricevi i campioni',
+  dataLayerEvent:'campioni_conferma',       // conversione SECONDARIA "Conferma dati cliente – campioni"
+  thankYouUrl:'/grazie-campioni/',
+  thankYouTitle:'Perfetto, i campioni partono!', thankYouText:'Riceverai un’email con il tracking della spedizione.',
+  hidden:['gclid','gbraid','wbraid','utm_source','utm_medium','utm_campaign','landing_page','lead_id'],
+  steps:[{fields:[
+    {name:'campioni',label:'Quali campioni vuoi ricevere? (fino a 3)',type:'chips',wide:true,required:true,options:['Rovere naturale','Rovere sbiancato','Rovere grigio','Rovere fumè','Noce','Spina italiana','SPC effetto rovere']},
+    {name:'nome',label:'Nome e cognome',type:'text',required:true,autocomplete:'name'},
+    {name:'email',label:'Email',type:'email',required:true},
+    {name:'telefono',label:'Telefono (per il corriere)',type:'tel',required:true},
+    {name:'indirizzo',label:'Via e numero civico',type:'text',required:true,autocomplete:'street-address'},
+    {name:'cap',label:'CAP',type:'cap',required:true},
+    {name:'citta',label:'Città',type:'text',required:true,autocomplete:'address-level2'},
+    {name:'privacy',label:'Ho letto l’<a href="/privacy-policy/" target="_blank">informativa privacy</a>',type:'checkbox',required:true},
+    {name:'consent_ads_data',label:'Acconsento all’uso della mia email e del mio telefono per misurare l’efficacia della pubblicità (Google). <i>Facoltativo</i>',type:'checkbox'}
+  ]}],
+  beforeSubmit:async d=>{ const n=[].concat(d.campioni||[]).length; if(n>3) return 'Puoi scegliere al massimo 3 campioni.'; },
+  onRender:form=>{ // DEMO precompilazione da ?lid= (in produzione il server legge i dati dal numero richiesta: MAI email nell'URL)
+    const lid=new URLSearchParams(location.search).get('lid'); if(!lid) return;
+    document.getElementById('h_lead_id').value=lid;
+    const demo={nome:'Mario Rossi',email:'mario.rossi@email.it',telefono:'333 123 4567'};
+    Object.entries(demo).forEach(([k,v])=>{const i=form.querySelector(`[name="${k}"]`); if(i) i.value=v;});
+  }
+};
+
+</script>
+<script>
+/* ================================================================
+   DISEGNARECASA – MINI FORM ENGINE (demo)  v1 30-9-2026
+   Tutto il modulo è descritto in FORM_CONFIG (sopra).
+   Per aggiungere un campo: aggiungi una riga nel config. Niente altro.
+   Tipi di campo: chips (scelta multipla a pulsanti), radio (scelta singola a pulsanti),
+   select (tendina), text, email, tel, cap, number, textarea, checkbox, hidden
+   ================================================================ */
+(function(){
+const C = window.FORM_CONFIG;
+const $ = (s,r=document)=>r.querySelector(s);
+const el=(t,a={},...k)=>{const e=document.createElement(t);for(const[x,y]of Object.entries(a)){if(x==='class')e.className=y;else if(x==='html')e.innerHTML=y;else if(x.startsWith('on'))e.addEventListener(x.slice(2),y);else if(y!==false&&y!=null)e.setAttribute(x,y===true?'':y)}k.flat().forEach(c=>c!=null&&e.append(c));return e};
+const qs=new URLSearchParams(location.search);
+const cookie=n=>(document.cookie.match('(^|;)\\s*'+n+'=([^;]*)')||[])[2]||'';
+
+/* ---------- tracking: gclid & co. (in produzione lo fa dc-tracking.js) ---------- */
+function tracking(){
+  // 1) URL  2) nostro cookie dc (primo clic vince)  3) cookie Google _gcl_aw (formato GCL.<ts>.<gclid>)
+  const fromGcl = (cookie('_gcl_aw').split('.')[2])||'';
+  return {
+    gclid: qs.get('gclid')||cookie('dc_gclid')||fromGcl,
+    gbraid: qs.get('gbraid')||cookie('dc_gbraid'),
+    wbraid: qs.get('wbraid')||cookie('dc_wbraid'),
+    utm_source: qs.get('utm_source')||'', utm_medium: qs.get('utm_medium')||'', utm_campaign: qs.get('utm_campaign')||'',
+    landing_page: sessionStorage.getItem('dc_landing')||location.pathname,
+    product_url: qs.get('prodotto')||document.referrer||''
+  };
+}
+const newLeadId=()=>'L'+new Date().toISOString().slice(2,10).replace(/-/g,'')+'-'+Math.random().toString(36).slice(2,6).toUpperCase();
+
+/* ---------- rendering ---------- */
+function field(f, ns=''){
+  const name=(ns?ns+'__':'')+f.name, id='f_'+name;
+  const req=f.required?el('span',{class:'req'},' *'):null;
+  const help=f.help?el('div',{class:'help'},f.help):null;
+  const lab=el('label',{for:id,class:'lab'},f.label,req);
+  let input;
+  switch(f.type){
+    case 'select': input=el('select',{id,name,required:f.required||false},el('option',{value:''},f.placeholder||'Seleziona…'),...f.options.map(o=>el('option',{value:o},o))); break;
+    case 'chips': case 'radio': {
+      const multi=f.type==='chips';
+      input=el('div',{class:'chips',role:multi?'group':'radiogroup','aria-label':f.label},...f.options.map((o,i)=>{
+        const oid=id+'_'+i;
+        return el('span',{class:'chip'},el('input',{type:multi?'checkbox':'radio',id:oid,name,value:o,required:(!multi&&f.required)||false}),el('label',{for:oid},o));
+      }));
+      return el('fieldset',{class:'fld'+(f.wide?' wide':''),'data-name':name},el('legend',{class:'lab'},f.label,req),input,help);
+    }
+    case 'textarea': input=el('textarea',{id,name,rows:3,placeholder:f.placeholder||'',required:f.required||false}); break;
+    case 'checkbox': return el('div',{class:'fld wide check'},el('input',{type:'checkbox',id,name,value:'si',required:f.required||false}),el('label',{for:id,html:f.label+(f.required?' <span class="req">*</span>':'')}),help);
+    case 'hidden': return el('input',{type:'hidden',name,id});
+    default: {
+      const map={email:['email','email','email'],tel:['tel','tel','tel'],cap:['text','numeric','postal-code'],number:['number','numeric','off'],text:['text','text',f.autocomplete||'off']}[f.type]||['text','text','off'];
+      input=el('input',{id,name,type:map[0],inputmode:map[1],autocomplete:f.autocomplete||map[2],placeholder:f.placeholder||'',required:f.required||false,pattern:f.type==='cap'?'[0-9]{5}':false,maxlength:f.type==='cap'?5:false});
+    }
+  }
+  return el('div',{class:'fld'+(f.wide?' wide':'')},lab,input,help);
+}
+function productBlock(p){
+  const body=el('div',{class:'acc-body',id:'acc_'+p.id},el('div',{class:'grid'},...p.fields.map(f=>field(f,p.id))));
+  const head=el('button',{type:'button',class:'acc-head','aria-expanded':'false','aria-controls':'acc_'+p.id,onclick:()=>toggle(p.id)},
+      el('span',{class:'tick'}),el('span',{class:'acc-title'},p.icon?p.icon+'  ':'',p.label),el('span',{class:'arrow'},'▾'));
+  return el('div',{class:'acc','data-p':p.id},head,body);
+}
+function toggle(id,force){
+  const a=$(`.acc[data-p="${id}"]`), on=force!=null?force:!a.classList.contains('on');
+  a.classList.toggle('on',on); $('.acc-head',a).setAttribute('aria-expanded',on);
+  a.querySelectorAll('[data-req]').forEach(i=>i.required=on);
+}
+function render(){
+  const root=$('#dc-form');
+  const form=el('form',{novalidate:true,onsubmit:submit});
+  form.append(el('h1',{},C.title), C.subtitle?el('p',{class:'sub'},C.subtitle):null);
+  if(C.steps.length>1) form.append(el('div',{class:'prog'},el('div',{class:'bar'}),el('div',{class:'step-lab'})));
+  C.steps.forEach((s,i)=>{
+    const sec=el('section',{class:'step','data-i':i},s.title?el('h2',{},s.title):null, s.intro?el('p',{class:'sub'},s.intro):null);
+    if(s.products) sec.append(el('div',{class:'accs'},...C.products.map(productBlock)));
+    if(s.fields) sec.append(el('div',{class:'grid'},...s.fields.map(f=>field(f))));
+    const nav=el('div',{class:'nav'});
+    if(i>0) nav.append(el('button',{type:'button',class:'btn ghost',onclick:()=>go(i-1)},'← Indietro'));
+    nav.append(i<C.steps.length-1?el('button',{type:'button',class:'btn',onclick:()=>next(i)},s.next||'Avanti →'):el('button',{type:'submit',class:'btn'},C.submitLabel||'Invia'));
+    sec.append(nav); form.append(sec);
+  });
+  // campi nascosti di tracciamento
+  (C.hidden||[]).forEach(n=>form.append(el('input',{type:'hidden',name:n,id:'h_'+n})));
+  root.append(form);
+  // prodotti: i campi obbligatori valgono solo se la sezione è aperta
+  C.products&&C.products.forEach(p=>p.fields.forEach(f=>{if(f.required){form.querySelectorAll(`[name="${p.id}__${f.name}"]`).forEach(i=>{i.dataset.req=1;i.required=false})}}));
+  go(0);
+  if(C.onRender) C.onRender(form);
+}
+let cur=0;
+function go(i){cur=i;document.querySelectorAll('.step').forEach(s=>s.hidden=+s.dataset.i!==i);
+  const b=$('.bar'); if(b){b.style.width=((i+1)/C.steps.length*100)+'%';$('.step-lab').textContent=`Passo ${i+1} di ${C.steps.length}`;}
+  window.scrollTo({top:$('#dc-form').offsetTop-10,behavior:'smooth'});}
+function valid(scope){
+  let ok=true;
+  scope.querySelectorAll('input,select,textarea').forEach(i=>{if(i.type==='hidden')return;const f=i.closest('.fld');if(f)f.classList.remove('err');});
+  scope.querySelectorAll('fieldset.fld').forEach(fs=>{const req=fs.querySelector('input[required]');if(req&&!fs.querySelector('input:checked')){fs.classList.add('err');ok=false}});
+  scope.querySelectorAll('input:not([type=radio]):not([type=hidden]),select,textarea').forEach(i=>{if(!i.checkValidity()){i.closest('.fld').classList.add('err');ok=false}});
+  if(C.steps[cur].products && C.minProducts){const n=scope.querySelectorAll('.acc.on').length;$('.acc-err')&&$('.acc-err').remove();if(n<C.minProducts){scope.querySelector('.accs').before(el('div',{class:'acc-err'},'Scegli almeno un prodotto.'));ok=false}}
+  if(!ok){const e=scope.querySelector('.err,.acc-err');e&&e.scrollIntoView({behavior:'smooth',block:'center'})}
+  return ok;
+}
+function next(i){if(valid($(`.step[data-i="${i}"]`)))go(i+1)}
+function collect(form){
+  const d={};new FormData(form).forEach((v,k)=>{if(v==='')return;d[k]=d[k]?[].concat(d[k],v):v});
+  d.prodotti=[...form.querySelectorAll('.acc.on')].map(a=>a.dataset.p);
+  Object.keys(d).forEach(k=>{const p=k.split('__')[0];if(k.includes('__')&&!d.prodotti.includes(p))delete d[k]});
+  return d;
+}
+async function submit(e){
+  e.preventDefault();
+  if(!valid($(`.step[data-i="${cur}"]`)))return;
+  const form=e.target, t=tracking();
+  (C.hidden||[]).forEach(n=>{const h=$('#h_'+n);if(h&&!h.value)h.value=t[n]||''});
+  if($('#h_lead_id')&&!$('#h_lead_id').value)$('#h_lead_id').value=qs.get('lead_id')||qs.get('lid')||newLeadId();
+  const data=collect(form);
+  if(C.beforeSubmit){const msg=await C.beforeSubmit(data);if(msg){alert(msg);return}}
+  if(C.dataLayerEvent){ // SOLO scheda cliente e campioni. MAI scheda agente.
+    window.dataLayer=window.dataLayer||[];
+    const email=(data.email||'').trim().toLowerCase();
+    let tel=(data.telefono||'').replace(/[^\d+]/g,''); if(tel&&!tel.startsWith('+'))tel='+39'+tel.replace(/^0039/,'');
+    dataLayer.push({event:C.dataLayerEvent,lead_id:data.lead_id,user_data:{email:email||undefined,phone_number:tel||undefined}});
+  }
+  // DEMO: in produzione qui JetFormBuilder salva il record, manda l'email e fa il redirect a C.thankYouUrl
+  form.hidden=true;
+  $('#dc-form').append(el('div',{class:'thanks'},el('div',{class:'ok'},'✓'),el('h2',{},C.thankYouTitle),el('p',{},C.thankYouText),
+     el('details',{},el('summary',{},'Dati inviati (solo per la demo, per Miju)'),el('pre',{},JSON.stringify(data,null,2)),
+       C.dataLayerEvent?el('pre',{},'dataLayer:\n'+JSON.stringify(window.dataLayer.slice(-1)[0],null,2)):el('p',{class:'help'},'Nessun evento dataLayer: la scheda agente non deve far scattare conversioni.')),
+     el('button',{class:'btn ghost',onclick:()=>location.reload()},'Nuova compilazione')));
+}
+document.addEventListener('DOMContentLoaded',()=>{try{if(!sessionStorage.getItem('dc_landing'))sessionStorage.setItem('dc_landing',location.pathname)}catch(e){};render()});
+})();
+
+</script>
+</body></html>
