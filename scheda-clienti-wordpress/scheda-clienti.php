@@ -3,7 +3,7 @@
  * Plugin Name: Scheda Clienti - Furniture Quote Form
  * Plugin URI: https://github.com/dev-frog/scheda-clinti
  * Description: A modern furniture quote form plugin for WordPress. Display the form with shortcode [scheda_clienti]
- * Version: 1.0.6
+ * Version: 1.0.7
  * Author: dev-frog
  * Author URI: https://dev-frog.github.io/blog
  * License: GPL v2 or later
@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Plugin constants
-define('SC_VERSION', '1.0.6');
+define('SC_VERSION', '1.0.7');
 define('SC_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('SC_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('SC_PLUGIN_BASENAME', plugin_basename(__FILE__));
